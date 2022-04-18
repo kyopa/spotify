@@ -1,0 +1,205 @@
+body, html {
+    margin: 0;
+    font-family: spotifyFont;
+}
+
+@font-face {
+    font-family: spotifyFont;
+    src: url("GothamBold.ttf");
+}
+
+.app {
+    display: grid;
+    color: white;
+    grid-template-columns: 1fr 7fr;
+    grid-template-rows: 8fr 1fr;
+    height: 100vh;
+    width: 100%;
+}
+
+.sidebar {
+    background-color: black;
+}
+
+.main {
+    background-color: #121212;
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    overflow: auto;
+}
+
+.music-player {
+    background-color: #181818;
+    grid-column: 1 / 3;
+}
+
+.topbar {
+    background-color: #121212;
+    position: sticky;
+    top: 0;
+    height: 64px;
+    display: flex;
+
+}
+
+.topbar-container {
+    display: flex;
+    align-items: center;
+    background-color: #121212;
+    width: 100%;
+    gap: 16px;
+    padding: 16px 32px;
+}
+
+
+.searchbar-input {
+    width: 364px;
+    height: 40px;
+    min-width: 40px;
+    font-size: 0.875rem;
+    line-height: 1rem;
+    text-transform: none;
+    letter-spacing: normal;
+    box-sizing: border-box;
+    border: 0;
+    border-radius: 500px;
+}
+
+.profile {
+    background-color: darkviolet;
+    margin-left: auto;
+}
+
+.arrows {
+    display: flex;
+    gap: 16px;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.searchpage h2 {
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+    text-transform: none;
+    letter-spacing: -0.04em;
+    margin: 0;
+}
+
+.content-spacing {
+    padding: 0 32px;
+}
+
+.searchpage {
+    margin-top: 16px;
+}
+
+.search-results {
+    display: grid;
+    grid-template-rows: repeat(6, 1fr);
+    row-gap: 24px;
+}
+
+.top-result-grid {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+
+.top-result h2 {
+    margin-bottom: 15px;
+}
+
+.top-result-songs h2 {
+    margin-bottom: 12px;
+}
+
+.top-result-box {
+    background-color: #181818;
+    padding: 20px;
+    
+    width: 385px;
+}
+
+.top-result-box > .container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.top-result-box > .container > .details {
+    display: flex;
+    gap: 5px;
+}
+
+.details a {
+    font-size: 14px;
+    color: #b3b3b3;
+}
+
+.top-result-box img {
+    width: 92px;
+}
+
+.explicit-symbol {
+    background-color: rgba(255,255,255,.6);
+    color: black;
+    font-size: 9px;
+    width: 15px;
+    height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2px;
+    line-height: 10px;
+    text-transform: uppercase;
+    font-weight: lighter;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+
+#name {
+    font-size: 2rem;
+    line-height: 2.25rem;
+    text-transform: none;
+    letter-spacing: -0.04em;
+    margin: 0;
+}
+
+.playbutton-box {
+    position: relative;
+    right: 10px;
+}
+
+
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 13px;
+}
+  
+/* Track */
+::-webkit-scrollbar-track {
+    background: #070707
+}
+  
+/* Handle */
+::-webkit-scrollbar-thumb {
+
+    background: #595959;
+  
+}
+  
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+
+    background: #555;
+}
+
+
+
