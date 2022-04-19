@@ -2,7 +2,8 @@ import { prev } from "cheerio/lib/api/traversing";
 import { useContext, useEffect } from "react";
 import { useMemo } from "react";
 import { useState } from "react";
-import { tokenContext, TracksContext } from "../../Context";
+import { createContext } from "react";
+import { tokenContext, TracksContext, songContext, styleContext } from "../../Context";
 import playIcon from "../../extra/playicon.png";
 
 
@@ -13,7 +14,6 @@ function FourSongs() {
     const four = useMemo(() => {
         return [tracks[0], tracks[1], tracks[2], tracks[3]]
     }, [tracks])
-
 
     return (
         <div>
@@ -35,6 +35,7 @@ function FourSongs() {
 
 function Song(props) {
     const [song, setSong] = useState()
+    const [style, setStyle] = useState({})
     const {token, setToken} = useContext(tokenContext)
 
     const fetchSong = (song) => {
@@ -49,7 +50,6 @@ function Song(props) {
 
     useEffect(() => {
         if (!props.song) return
-
         fetchSong(props.song)
         .then(data => data.json())
         .then(res => {
@@ -58,13 +58,31 @@ function Song(props) {
             })
             console.log(artists)
             setSong({...res, artists: artists})
-            
         })
     }, [])
 
-    const [style, setStyle] = useState({
-        opacity: 1
-    });
+    // next: set playbutton for song
+
+    return (
+        <div>
+            {song && (
+                <ul className="songs">
+                    <songContext.Provider value={{song, setSong}}>
+                    <styleContext.Provider value={{style, setStyle}}>
+
+                        <Box />
+
+                        </styleContext.Provider>
+                        </songContext.Provider>
+                </ul>
+            )}
+    </div>
+    )
+}
+
+function Box() {
+    const {style, setStyle} = useContext(styleContext)
+    const {song, setSong} = useContext(songContext)
 
     const hover = () => {
         setStyle({
@@ -80,12 +98,28 @@ function Song(props) {
                 color: "#fff"
             }
         })
-
     }
 
-    const noHover = () => {
-        setStyle({})
-    }
+    const noHover = () => setStyle({});
+
+    return (
+        <li style={style.box} className="song" onMouseEnter={() => hover()} onMouseLeave={() => noHover()}>
+        <Img/>
+        <div className="song-details">
+        <SongTitle />
+        <div className="grey-details">
+            {song.explicit ? <div id="E">E</div> : null}
+            <Artists />
+        </div>
+        </div>
+        <div id="length">4:17</div>
+        </li>
+    )
+}
+
+function Artists() {
+    const {song, setSong} = useContext(songContext)
+    const {style, setStyle} = useContext(styleContext)
 
     const artistHover = (e) => {
         const artists = song.artists.map(artist => {
@@ -107,41 +141,41 @@ function Song(props) {
         }
     }
 
-    // next: set playbutton for song
+    return (
+        <div style={style.artists} id="artists">{song.artists.map((artist, i) => {
+            console.log(artist)
+            return (
+                <a onMouseEnter={e => artistHover(e)}
+                style={artist.hovering ? artistObj.hoverStyle : artistObj.noHoverStyle}
+                id={artist.id} >
+                {i !== song.artists.length - 1 ? `${artist.name}, ` : artist.name}</a>
+            )
+        })}</div>
+    )
+}
+
+function Img() {
+    const {song} = useContext(songContext);
+    const {style} = useContext(styleContext)
 
     return (
-        <div>
-            {song && (
-                <ul className="songs">
-                    <li style={style.box} className="song" onMouseEnter={() => hover()} onMouseLeave={() => noHover()}>
-                        <div className="img-container">
-                            <button className="song-play-icon">p</button>
-                            <img style={style.img}  className="song-img" src={song.album.images[0].url}></img>
-                        </div>
-                            <div className="song-details">
-                            <div>{song.name}</div>
-                            <div className="grey-details">
-                                {song.explicit ? <div id="E">E</div> : null}
-                                <div style={style.artists} id="artists">{song.artists.map((artist, i) => {
-                                    console.log(artist)
-                                    return (
-                                        <a onMouseEnter={e => artistHover(e)}
-                                        style={artist.hovering ? artistObj.hoverStyle : artistObj.noHoverStyle}
-                                        id={artist.id} >
-                                        {i !== song.artists.length - 1 ? `${artist.name}, ` : artist.name}</a>
-                                    )
-                                })}</div>
-                            </div>
-
-                            </div>
-                            <div id="length">4:17</div>
-                        </li>
-                </ul>
-            )}
-
+        <div className="img-container">
+        <img style={style.img}  className="song-img" src={song.album.images[0].url}></img>
     </div>
     )
 }
+
+function SongTitle() {
+    const {song} = useContext(songContext)
+
+    return (
+        <div>
+            {song.name}
+        </div>
+    )
+}
+
+
 
 
 export default FourSongs;
