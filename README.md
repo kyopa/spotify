@@ -1,1 +1,1 @@
-spotify app with a little twist
+spotify with a little twist

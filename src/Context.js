@@ -9,6 +9,7 @@ const ArtistsContext = createContext();
 const topTrackContext = createContext();
 const topAlbumContext = createContext();
 const topArtistContext = createContext(); 
+const tokenContext = createContext();
 
 export {
     SearchContext, 
@@ -17,5 +18,6 @@ export {
     ArtistsContext,
     topTrackContext,
     topAlbumContext,
-    topArtistContext
+    topArtistContext,
+    tokenContext
 }

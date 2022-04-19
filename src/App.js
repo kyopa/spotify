@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext } from "react";
 import Search from "./Components/Search.js"
-import Searchbar from "./Components/Searchbar"
-import Top from "./Components/Top.js";
-import Main from "./Components/Main.js";
+import Searchbar from "./Components/Top/Searchbar"
+import Top from "./Components/Top/Top.js";
+import Main from "./Components/Main/Main.js";
 import {
   SearchContext,
   AlbumsContext,
@@ -10,10 +10,15 @@ import {
   ArtistsContext,
   topAlbumContext,
   topTrackContext,
-  topArtistContext
+  topArtistContext,
+  tokenContext
 } from "./Context.js";
 
 function App() {
+
+  const client_id = "de8735e4e92a4bbe8bb99948f6dfbb1d"
+  const client_secret = "7a1e27603bd84785a7d5b3465a5cbfe1"
+
 
   const [search, setSearch] = useState("drake")
   const [tracks, setTracks] = useState([])
@@ -22,6 +27,26 @@ function App() {
   const [topTrack, setTopTrack] = useState()
   const [topAlbum, setTopAlbum] = useState()
   const [topArtist, setTopArtist] = useState()
+  const [token, setToken] = useState();
+
+  const getToken = () => {
+    return fetch('https://accounts.spotify.com/api/token', {
+        method: "POST",
+        body: "grant_type=client_credentials",
+        headers: {
+          "Authorization": `Basic ` + window.btoa(`${client_id}:${client_secret}`),
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+      })
+  }
+  useEffect(() => {
+    getToken()
+    .then(data => data.json())
+    .then(res => {
+      console.log(res)
+    setToken(res.access_token)
+    })
+  },[])
   
   
   return (
@@ -39,13 +64,14 @@ function App() {
         <topAlbumContext.Provider value={{topAlbum, setTopAlbum}}>
         <topArtistContext.Provider value={{topArtist, setTopArtist}}>
         <topTrackContext.Provider value={{topTrack, setTopTrack}}>
-        
+        <tokenContext.Provider value={{token, setToken}}>
         <div className="topbar">
           <Top />
         </div>
         <div className="content-spacing">
         <Main />
         </div>
+        </tokenContext.Provider>
         </topTrackContext.Provider>
         </topArtistContext.Provider>
         </topAlbumContext.Provider>

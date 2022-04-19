@@ -1,13 +1,13 @@
 import { useContext, useMemo } from "react"
-import {SearchContext, topAlbumContext, topArtistContext, topTrackContext} from "../Context"
-
+import {SearchContext, topAlbumContext, topArtistContext, topTrackContext} from "../../Context"
+import hamming from "../../extra/hamming"
+import FourSongs from "./FourSongs"
 
 
 function Main() {
     return (
         <div>
             <SearchPage />
-
         </div>
     )
 }
@@ -31,24 +31,11 @@ function TopResult() {
     const {topTrack, setTopTrack} = useContext(topTrackContext)
     
     const topResult = useMemo(() => {
-        if (topTrack === undefined || topArtist === undefined || topAlbum === undefined) return;
-        if (!topArtist.popularity) topArtist.popularity = topTrack.popularity - 1;
-        
-        const array = [topTrack, topArtist, topAlbum]
-  
-        // If a track is featuring the artist and is more popular
-        // show the artist rather than the track
-        const featuring = topTrack.artists.slice(1)
-        if (featuring.some(artist => artist.name === topArtist.name)) {
-          return topArtist
-        } else {
-          return array.sort((a, b) => a.popularity - b.popularity)[array.length - 1]
-        }
-      }, [topTrack, topArtist, topAlbum])
+        if (!topArtist || !topTrack || !topAlbum) return
+        return hamming(search, topArtist, topTrack, topAlbum)
+      }, [topAlbum, topTrack, topArtist])
 
-      if (topResult) console.log(topResult)
 
-      
       // TODO: On click disable the current song that is playing
       const handleClick = () => {
           const song = new Audio(topResult.preview_url)
@@ -96,14 +83,12 @@ function TopResult() {
             </div>
 
             <div className="top-result-songs">
-                <h2>Songs</h2>
-                <ul>
-                    <li>Song 1</li>
-                    <li>Song 2</li>
-                    <li>Song 3</li>
-                    <li>Song 4</li>
-                </ul>
+                <FourSongs/>
+
+
             </div>
+
+
         </div>
     )
 }
