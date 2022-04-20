@@ -191,6 +191,7 @@ ul {
     box-sizing: border-box;
     width: 100%;
     padding: 5px 8px;
+
     
 }
 
@@ -203,6 +204,7 @@ ul {
 
 .song-img {
     width: 40px;
+
 }
 
 .song-play-icon {
@@ -230,9 +232,6 @@ ul {
     border-radius: 2px;
     
 }
-
-
-
 
 .song-details > .grey-details > #artists {
     color: #b3b3b3;
@@ -265,6 +264,24 @@ ul {
 
 #see-all:hover {
     text-decoration: underline;
+}
+
+.play-mini-song {
+    position: absolute;
+
+    right: 8px;
+    top: 9px;
+
+    background-color: transparent;
+    border: 0;
+}
+
+.play-mini-song > img {
+    width: 25px;
+}
+
+.img-container {
+    position: relative;
 }
 
 

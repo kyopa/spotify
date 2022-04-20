@@ -50,7 +50,7 @@ function TopResult() {
                     {topResult && (
                         <div className="container">
                             { 
-                            !topResult.images ? <img src={topResult.album.images[0].url}></img>
+                            topResult && !topResult.images ? <img src={topResult.album.images[0].url}></img>
                             : <img src={topResult.images[0].url}></img>
                             }
                         <div id="name">{topResult && <div>{topResult.name}</div>}</div>

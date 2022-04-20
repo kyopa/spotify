@@ -1,4 +1,5 @@
 import { prev } from "cheerio/lib/api/traversing";
+import { prevElementSibling } from "domutils";
 import { useContext, useEffect } from "react";
 import { useMemo } from "react";
 import { useState } from "react";
@@ -56,7 +57,7 @@ function Song(props) {
             const artists = props.song.artists.map(artist => {
                 return {...artist, hovering: false}
             })
-            console.log(artists)
+
             setSong({...res, artists: artists})
         })
     }, [])
@@ -85,25 +86,35 @@ function Box() {
     const {song, setSong} = useContext(songContext)
 
     const hover = () => {
-        setStyle({
-            box: {
-                backgroundColor: "rgba(255,255,255,.1)",
-                borderRadius: "4px"
-            },
-            img: {
-               opacity: .5,
-               backgroundImage: `url(${playIcon})`
-            },
-            artists: {
-                color: "#fff"
-            }
-        })
+        setSong(prev => ({...prev, hovering: true}))
     }
 
-    const noHover = () => setStyle({});
+    const hoverStyle = {
+        box: {
+            backgroundColor: "rgba(255,255,255,.1)",
+            borderRadius: "4px",
+            
+        },
+        img: {
+           opacity: .5,
+           zIndex: "-1"
+        },
+        artists: {
+            color: "#fff"
+        }
+    }
+
+    const noHover = () => {
+        setSong(prev => ({...prev, hovering: false}))
+        console.log("no hovering")
+    };
 
     return (
-        <li style={style.box} className="song" onMouseEnter={() => hover()} onMouseLeave={() => noHover()}>
+        <li style={song.hovering === true ? hoverStyle.box : null}
+        className="song" 
+        onMouseEnter={() => hover()} onMouseLeave={() => noHover()}
+        >
+        
         <Img/>
         <div className="song-details">
         <SongTitle />
@@ -119,9 +130,9 @@ function Box() {
 
 function Artists() {
     const {song, setSong} = useContext(songContext)
-    const {style, setStyle} = useContext(styleContext)
 
     const artistHover = (e) => {
+        console.log("hovering")
         const artists = song.artists.map(artist => {
             return artist.id === e.target.id ? {...artist, hovering: true}
             : 
@@ -130,37 +141,76 @@ function Artists() {
         setSong(prev => ({...prev, artists: artists})) 
     }
 
+    const unHoverArtist = (e) => {
+        console.log("unhovering")
+        const artists = song.artists.map(artist => {
+            return artist.id === e.target.id ? {...artist, hovering: false}
+            : 
+            {...artist}
+        })
+        setSong(prev => ({...prev, artists: artists})) 
+    }
+
     const artistObj = {
         hoverStyle: {
-            textDecoration: "underline",
-            cursor: "pointer"
+            cursor: "pointer",
+            color: "#fff"
         },
         noHoverStyle: {
-            textDecoration: "none",
-            cursor: "default"
+            cursor: "default",
+            color: "rgb(179, 179, 179)"
+        },
+        artist: {
+            hover: {
+                color: "#fff",
+                textDecoration: "underline"
+            },
+            noHover: {
+                color: "rgb(179, 179, 179)",
+                textDecoration: "unset"
+            }
         }
     }
 
     return (
-        <div style={style.artists} id="artists">{song.artists.map((artist, i) => {
-            console.log(artist)
+        <div style={song.hovering === true ? artistObj.hoverStyle : artistObj.noHoverStyle} 
+        id="artists">{song.artists.map((artist, i) => {
+
+            const stylee = {
+                hover: {
+                    textDecoration: "underline"
+                }
+            }
+            
             return (
-                <a onMouseEnter={e => artistHover(e)}
-                style={artist.hovering ? artistObj.hoverStyle : artistObj.noHoverStyle}
-                id={artist.id} >
+                <a onMouseEnter={(e => artistHover(e))} onMouseLeave={(e) => unHoverArtist(e)}
+                style={{textDecoration: artist.hovering === true ? "underline" : "unset"}}
+                id={artist.id} key={crypto.randomUUID()}>
                 {i !== song.artists.length - 1 ? `${artist.name}, ` : artist.name}</a>
+
             )
-        })}</div>
+        })}
+        
+        </div>
     )
 }
 
 function Img() {
-    const {song} = useContext(songContext);
-    const {style} = useContext(styleContext)
+    const {song, setSong} = useContext(songContext);
+
+    const playSong = () => {
+        setSong(prev => ({...prev, playing: true}))
+        alert("play song")
+    }
+
 
     return (
-        <div className="img-container">
-        <img style={style.img}  className="song-img" src={song.album.images[0].url}></img>
+        <div className="img-container" onClick={() => playSong()}>
+        <img style={{opacity: song.hovering === true ? "0.5" : "1"}}  className="song-img" src={song.album && song.album.images[0].url}></img>
+        <div className="play-mini-song">
+            <img style={{display: song.hovering === true ? "block" : "none"}} src={playIcon}></img>
+            </div>
+        
     </div>
     )
 }
