@@ -11,7 +11,9 @@ import {
   topAlbumContext,
   topTrackContext,
   topArtistContext,
-  tokenContext
+  tokenContext,
+  topResultContext,
+  relatedArtistsContext
 } from "./Context.js";
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
   const [topAlbum, setTopAlbum] = useState()
   const [topArtist, setTopArtist] = useState()
   const [token, setToken] = useState();
+  const [topResult, setTopResult] = useState();
+  const [relatedArtists, setRelatedArtists] = useState();
 
   const getToken = () => {
     return fetch('https://accounts.spotify.com/api/token', {
@@ -65,12 +69,18 @@ function App() {
         <topArtistContext.Provider value={{topArtist, setTopArtist}}>
         <topTrackContext.Provider value={{topTrack, setTopTrack}}>
         <tokenContext.Provider value={{token, setToken}}>
+        <topResultContext.Provider value={{topResult, setTopResult}}>
+        <relatedArtistsContext.Provider value={{relatedArtists, setRelatedArtists}}>
+
+        
         <div className="topbar">
           <Top />
         </div>
         <div className="content-spacing">
         <Main />
         </div>
+        </relatedArtistsContext.Provider>
+        </topResultContext.Provider>
         </tokenContext.Provider>
         </topTrackContext.Provider>
         </topArtistContext.Provider>

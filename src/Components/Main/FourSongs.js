@@ -1,3 +1,4 @@
+import { unhover } from "@testing-library/user-event/dist/hover";
 import { prev } from "cheerio/lib/api/traversing";
 import { prevElementSibling } from "domutils";
 import { useContext, useEffect } from "react";
@@ -62,7 +63,6 @@ function Song(props) {
         })
     }, [])
 
-    // next: set playbutton for song
 
     return (
         <div>
@@ -93,7 +93,6 @@ function Box() {
         box: {
             backgroundColor: "rgba(255,255,255,.1)",
             borderRadius: "4px",
-            
         },
         img: {
            opacity: .5,
@@ -106,14 +105,12 @@ function Box() {
 
     const noHover = () => {
         setSong(prev => ({...prev, hovering: false}))
-        console.log("no hovering")
     };
 
     return (
-        <li style={song.hovering === true ? hoverStyle.box : null}
-        className="song" 
-        onMouseEnter={() => hover()} onMouseLeave={() => noHover()}
-        >
+        <li 
+        className="song" onMouseEnter={() => hover()} 
+        onMouseLeave={() => noHover()}>
         
         <Img/>
         <div className="song-details">
@@ -131,63 +128,18 @@ function Box() {
 function Artists() {
     const {song, setSong} = useContext(songContext)
 
-    const artistHover = (e) => {
-        console.log("hovering")
-        const artists = song.artists.map(artist => {
-            return artist.id === e.target.id ? {...artist, hovering: true}
-            : 
-            {...artist, hovering: false}
-        })
-        setSong(prev => ({...prev, artists: artists})) 
-    }
-
-    const unHoverArtist = (e) => {
-        console.log("unhovering")
-        const artists = song.artists.map(artist => {
-            return artist.id === e.target.id ? {...artist, hovering: false}
-            : 
-            {...artist}
-        })
-        setSong(prev => ({...prev, artists: artists})) 
-    }
-
-    const artistObj = {
-        hoverStyle: {
-            cursor: "pointer",
-            color: "#fff"
-        },
-        noHoverStyle: {
-            cursor: "default",
-            color: "rgb(179, 179, 179)"
-        },
-        artist: {
-            hover: {
-                color: "#fff",
-                textDecoration: "underline"
-            },
-            noHover: {
-                color: "rgb(179, 179, 179)",
-                textDecoration: "unset"
-            }
-        }
-    }
-
     return (
-        <div style={song.hovering === true ? artistObj.hoverStyle : artistObj.noHoverStyle} 
+        <div 
         id="artists">{song.artists.map((artist, i) => {
-
-            const stylee = {
-                hover: {
-                    textDecoration: "underline"
-                }
-            }
-            
             return (
-                <a onMouseEnter={(e => artistHover(e))} onMouseLeave={(e) => unHoverArtist(e)}
-                style={{textDecoration: artist.hovering === true ? "underline" : "unset"}}
+                <span key={crypto.randomUUID()}>
+                {i !== song.artists.length - 1 ? <span>
+                    <a 
                 id={artist.id} key={crypto.randomUUID()}>
-                {i !== song.artists.length - 1 ? `${artist.name}, ` : artist.name}</a>
-
+                    {artist.name} 
+                </a>, </span> : <span>
+                    <a 
+                id={artist.id} key={crypto.randomUUID()}>{artist.name}</a></span>}</span>
             )
         })}
         
@@ -203,14 +155,12 @@ function Img() {
         alert("play song")
     }
 
-
     return (
         <div className="img-container" onClick={() => playSong()}>
-        <img style={{opacity: song.hovering === true ? "0.5" : "1"}}  className="song-img" src={song.album && song.album.images[0].url}></img>
+        <img style={{opacity: song.hovering  ? "0.5" : "1"}}  className="song-img" src={song.album && song.album.images[0].url}></img>
         <div className="play-mini-song">
-            <img style={{display: song.hovering === true ? "block" : "none"}} src={playIcon}></img>
+            <img style={{display: song.hovering  ? "block" : "none"}} src={playIcon}></img>
             </div>
-        
     </div>
     )
 }
@@ -219,7 +169,7 @@ function SongTitle() {
     const {song} = useContext(songContext)
 
     return (
-        <div>
+        <div className="song-title">
             {song.name}
         </div>
     )

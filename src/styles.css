@@ -68,8 +68,11 @@ body, html {
     letter-spacing: normal;
     box-sizing: border-box;
     border: 0;
+    outline: 0;
     border-radius: 500px;
 }
+
+
 
 .profile {
     background-color: darkviolet;
@@ -104,7 +107,7 @@ button:hover {
 .search-results {
     display: grid;
     grid-template-rows: repeat(6, 1fr);
-    row-gap: 24px;
+    row-gap: 10px;
 }
 
 .top-result-grid {
@@ -172,7 +175,19 @@ a {
     line-height: 2.25rem;
     text-transform: none;
     letter-spacing: -0.04em;
-    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.song-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .playbutton-box {
@@ -195,6 +210,24 @@ ul {
     
 }
 
+.song:hover {
+    background-color:rgba(255,255,255,.1);
+    border-radius: 4px;
+}
+
+.song:hover #artists > span >span > a {
+    color: white;
+}
+
+.song-title {
+    user-select: none;
+}
+
+
+#artists > span > span  > a:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
 
 
 .song > div {
@@ -253,7 +286,7 @@ ul {
     align-items: baseline;
 }
 
-.songs-see-all > #see-all {
+#see-all {
     margin-left: auto;
     font-size: 0.75rem;
     line-height: 1rem;
@@ -284,7 +317,86 @@ ul {
     position: relative;
 }
 
+.item-row {
+    display: flex;
+    gap: 24px;
 
+}
+
+
+.item-row > div {
+    padding: 15px;
+    background: #181818;
+    width: 150px;
+    height: 235px;
+    border-radius: 4px;
+    transition: background .3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.item-row > div:hover {
+    background: #282828;
+    cursor: pointer;
+}
+
+.item-row > div > img {
+    height: 150px;
+    width: 150px;
+    align-self: center;
+    border-radius: 500px;
+}
+
+.item-row > div > .item-name {
+    margin-top: 20px;
+    margin-bottom: 3px;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    text-transform: none;
+    letter-spacing: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.type {
+    font-size: 0.875rem;
+    line-height: 1rem;
+    text-transform: none;
+    letter-spacing: normal;
+    font-family: circular;
+    color: #b3b3b3;
+}
+
+.row-see-all {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 20px;
+}
+
+
+.albums {
+    display: flex;
+}
+
+
+.album-details {
+    font-size: 0.875rem;
+  
+    text-transform: none;
+    letter-spacing: normal;
+    font-family: circular;
+    color: #b3b3b3;
+    margin-top: 4px;
+
+}
+
+#dot {
+    font-size: .5rem;
+    vertical-align: middle;
+}
 
 
 

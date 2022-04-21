@@ -39,6 +39,7 @@ function Search() {
           .then(data => data.json())
           .then(res => setTopAlbum(res))
           
+          setAlbums([])
           res.albums.items.map(album => {
             fetchAlbum(album)
             .then(data => data.json())
@@ -57,7 +58,7 @@ function Search() {
     }, [search])
 
     const searchApi = () => {
-      return fetch(`https://api.spotify.com/v1/search?q=${search}&type=track%2Cartist%2Calbum%2Cplaylist%2Cshow%2Cepisode&market=FI&limit=${limit}`, {
+      return fetch(`https://api.spotify.com/v1/search?q=${search}&type=track%2Cartist%2Calbum%2Cplaylist%2Cshow%2Cepisode&market=US&limit=${limit}`, {
           headers: {
             "Accept": "application/json",
             "Authorization": `Bearer ${token}`,
