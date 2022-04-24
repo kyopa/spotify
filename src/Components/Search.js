@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react"
 import { useContext } from "react"
 import {tokenContext, AlbumsContext, ArtistsContext, SearchContext, topAlbumContext, topArtistContext, topTrackContext, TracksContext} from "../Context"
 import hamming from "../extra/hamming"
+import { debounce } from 'lodash'
 
 function Search() {
   
@@ -24,7 +25,7 @@ function Search() {
         searchApi()
         .then(data => data.json())
         .then(res => {
-          console.log(res)
+
 
           setTopTrack(res.tracks.items[0])
           
@@ -38,6 +39,7 @@ function Search() {
           fetchAlbum(res.albums.items[0])
           .then(data => data.json())
           .then(res => setTopAlbum(res))
+          .catch(err => console.log(err))
           
           setAlbums([])
           res.albums.items.map(album => {
@@ -46,6 +48,7 @@ function Search() {
             .then(res => {
               setAlbums(prev => [...prev, res])
             })
+            .catch(err => console.log(err))
           })
           setTracks([])
           const sorted = res.tracks.items.sort((a, b) => a.popularity - b.popularity)
@@ -55,6 +58,7 @@ function Search() {
             setArtists(prev => [...prev, artist])
           })
         })
+        .catch(err => console.log(err))
     }, [search])
 
     const searchApi = () => {

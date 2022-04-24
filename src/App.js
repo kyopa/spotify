@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useReducer } from "react";
 import Search from "./Components/Search.js"
 import Searchbar from "./Components/Top/Searchbar"
 import Top from "./Components/Top/Top.js";
@@ -13,8 +13,12 @@ import {
   topArtistContext,
   tokenContext,
   topResultContext,
-  relatedArtistsContext
+  relatedArtistsContext,
+  currentSongContext,
+  songContext
 } from "./Context.js";
+import Player from "./Components/Player.js/Player.js";
+
 
 function App() {
 
@@ -32,6 +36,8 @@ function App() {
   const [token, setToken] = useState();
   const [topResult, setTopResult] = useState();
   const [relatedArtists, setRelatedArtists] = useState();
+  const [currentSong, setCurrentSong] = useState("initial");
+
 
   const getToken = () => {
     return fetch('https://accounts.spotify.com/api/token', {
@@ -47,19 +53,20 @@ function App() {
     getToken()
     .then(data => data.json())
     .then(res => {
-      console.log(res)
-    setToken(res.access_token)
+      setToken(res.access_token)
     })
   },[])
   
   
   return (
     <div className="app">
+
+       
       <div className="sidebar">
         sidebar
 
       </div>
-
+      <currentSongContext.Provider value={{currentSong, setCurrentSong}}>
       <div className="main">
         <SearchContext.Provider value={{search, setSearch}}>
         <TracksContext.Provider value={{tracks, setTracks}}>
@@ -72,13 +79,13 @@ function App() {
         <topResultContext.Provider value={{topResult, setTopResult}}>
         <relatedArtistsContext.Provider value={{relatedArtists, setRelatedArtists}}>
 
-        
         <div className="topbar">
           <Top />
         </div>
         <div className="content-spacing">
-        <Main />
+          <Main />
         </div>
+        
         </relatedArtistsContext.Provider>
         </topResultContext.Provider>
         </tokenContext.Provider>
@@ -91,9 +98,10 @@ function App() {
         </SearchContext.Provider>
       </div>
       
-      <div className="music-player">
-        music player
+      <div className="music-player player">
+        <Player />
       </div>
+      </currentSongContext.Provider>
     </div>
   )
 }

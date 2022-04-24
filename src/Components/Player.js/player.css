@@ -1,0 +1,93 @@
+
+.music-player {
+    align-items: center;
+    
+}
+
+.player {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+}
+
+.playbar {
+    width: 35%;
+    margin: auto;
+    position: absolute;
+    left: 33%;
+    
+}
+
+.progressbar {
+    width: 100%;
+    background-color: coral;
+    padding: 5px;
+}
+
+.player-song-details {
+    margin-left: 16px;
+    font-family: circular;
+    position: relative;
+}
+
+.player-song-details > div {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 200px;
+}
+
+.player-artists > span {
+    color: #b3b3b3;
+    font-size: 0.6875rem;
+    line-height: 1rem;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.player-artists > span:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #fff;
+}
+
+.player-song-title {
+    font-size: 0.875rem;
+    line-height: 1rem;
+    margin-bottom: -5px;
+    width: 400px;
+    white-space: nowrap;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,1) 95%, rgba(0,0,0,0));
+}
+
+.player-song-title:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.player-song-details > div > .name-artists {
+    display: flex;
+    flex-direction: column;
+}
+
+.otherstuff {
+    margin-right: 16px;
+}
+
+.player-img {
+    width: 56px;
+}
+
+.playbar-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.playbar-container > .buttons {
+    width: max-content;
+    margin: auto;
+}
+

@@ -5,8 +5,9 @@ import { useContext, useEffect } from "react";
 import { useMemo } from "react";
 import { useState } from "react";
 import { createContext } from "react";
-import { tokenContext, TracksContext, songContext, styleContext } from "../../Context";
+import { tokenContext, TracksContext, styleContext, currentSongContext } from "../../Context";
 import playIcon from "../../extra/playicon.png";
+import pause from "../../extra/pause.png";
 
 
 function FourSongs() {
@@ -27,7 +28,7 @@ function FourSongs() {
             {four && four.map(song => {
                 return (
                     <div key={crypto.randomUUID()}>
-                        <Song song={song}/>
+                        <Song song={song} four={four}/>
                         </div>
                 )
             })}
@@ -36,7 +37,7 @@ function FourSongs() {
 }
 
 function Song(props) {
-    const [song, setSong] = useState()
+    const [song, setSong] = useState();
     const [style, setStyle] = useState({})
     const {token, setToken} = useContext(tokenContext)
 
@@ -59,8 +60,9 @@ function Song(props) {
                 return {...artist, hovering: false}
             })
 
-            setSong({...res, artists: artists})
+            setSong({...res, artists: artists, playing: false})
         })
+        .catch(err => console.log(err))
     }, [])
 
 
@@ -68,65 +70,54 @@ function Song(props) {
         <div>
             {song && (
                 <ul className="songs">
-                    <songContext.Provider value={{song, setSong}}>
+                    
                     <styleContext.Provider value={{style, setStyle}}>
 
-                        <Box />
+                        <Box song={song} setSong={setSong}/>
 
                         </styleContext.Provider>
-                        </songContext.Provider>
                 </ul>
             )}
     </div>
     )
 }
 
-function Box() {
-    const {style, setStyle} = useContext(styleContext)
-    const {song, setSong} = useContext(songContext)
+function Box({song, setSong}) {
 
     const hover = () => {
         setSong(prev => ({...prev, hovering: true}))
-    }
-
-    const hoverStyle = {
-        box: {
-            backgroundColor: "rgba(255,255,255,.1)",
-            borderRadius: "4px",
-        },
-        img: {
-           opacity: .5,
-           zIndex: "-1"
-        },
-        artists: {
-            color: "#fff"
-        }
     }
 
     const noHover = () => {
         setSong(prev => ({...prev, hovering: false}))
     };
 
+    const _getLength = () => {
+        const mins = Math.floor(song.duration_ms / 60000)
+        const secs = ((song.duration_ms % 60000) / 1000).toFixed(0)
+        return `${mins}:${secs < 10 ? `0${secs}` : `${secs}`}`
+    }
+
     return (
         <li 
-        className="song" onMouseEnter={() => hover()} 
+        className="song" onMouseEnter={() => hover()}
         onMouseLeave={() => noHover()}>
         
-        <Img/>
+        <Img song={song} setSong={setSong}/>
         <div className="song-details">
-        <SongTitle />
+        <SongTitle song={song}/>
         <div className="grey-details">
             {song.explicit ? <div id="E">E</div> : null}
-            <Artists />
+            <Artists song={song} setSong={setSong}/>
         </div>
         </div>
-        <div id="length">4:17</div>
+        <div id="length">{_getLength()}</div>
         </li>
     )
 }
 
-function Artists() {
-    const {song, setSong} = useContext(songContext)
+function Artists({song, setSong}) {
+
 
     return (
         <div 
@@ -147,26 +138,33 @@ function Artists() {
     )
 }
 
-function Img() {
-    const {song, setSong} = useContext(songContext);
+function Img({song, setSong}) {
 
-    const playSong = () => {
-        setSong(prev => ({...prev, playing: true}))
-        alert("play song")
+    const {currentSong, setCurrentSong} = useContext(currentSongContext)
+
+    const _playSong = () => {
+        setCurrentSong(song)
+        setSong(prev => ({...prev, playing: !song.playing}))
     }
 
+    
     return (
-        <div className="img-container" onClick={() => playSong()}>
-        <img style={{opacity: song.hovering  ? "0.5" : "1"}}  className="song-img" src={song.album && song.album.images[0].url}></img>
+        <div id={song.id} className="img-container" onClick={() => _playSong()}>
+        <img style={{opacity: song.hovering || song.playing ? "0.5" : "1"}}  className="song-img" 
+         src={song.album && song.album.images[0].url}></img>
         <div className="play-mini-song">
-            <img style={{display: song.hovering  ? "block" : "none"}} src={playIcon}></img>
-            </div>
+
+            <img style={{display: song.hovering && !song.playing ? "block" : "none"}} src={playIcon}></img>
+            <img style={{display: song.playing ? "block" : "none"}} src={pause}></img>
+        </div>
+       {song.shitter ? <h1>HYELLO</h1> : null}
     </div>
+
     )
 }
 
-function SongTitle() {
-    const {song} = useContext(songContext)
+function SongTitle({song}) {
+
 
     return (
         <div className="song-title">
@@ -174,6 +172,8 @@ function SongTitle() {
         </div>
     )
 }
+
+
 
 
 

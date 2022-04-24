@@ -1,7 +1,7 @@
 body, html {
     margin: 0;
     font-family: spotifyFont;
-    
+    user-select: none;
 }
 
 @font-face {
@@ -347,19 +347,36 @@ ul {
     border-radius: 500px;
 }
 
+.item-row > div > .album {
+    height: 150px;
+    width: 150px;
+    align-self: center;
+    border-radius: 0;
+}
+
+.item-img-container {
+    position: relative;
+}
+
+.green-button {
+    position: absolute;
+    bottom: 10px;
+}
+
+
+
 .item-row > div > .item-name {
     margin-top: 20px;
     margin-bottom: 3px;
-    font-size: 1rem;
-    line-height: 1.5rem;
-    text-transform: none;
-    letter-spacing: normal;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+    
 }
+
+
 
 .type {
     font-size: 0.875rem;
@@ -384,13 +401,11 @@ ul {
 
 .album-details {
     font-size: 0.875rem;
-  
     text-transform: none;
     letter-spacing: normal;
     font-family: circular;
     color: #b3b3b3;
     margin-top: 4px;
-
 }
 
 #dot {

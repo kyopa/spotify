@@ -23,14 +23,14 @@ function SearchPage() {
     const [artists, setArtists] = useArtists();
     const [albums, setAlbums] = useAlbums();
 
-    console.log(albums)
+
 
     return (
         <div className="searchpage">
             <div className="search-results">
                 <TopResult />
                 <Section array={artists} title={"Artists"}/>
-                <Section array={albums} title={"Albums"}/>
+                <Section array={albums} title={"Albums"} album/>
                 
                 
             </div>

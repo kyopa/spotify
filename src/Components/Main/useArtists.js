@@ -69,7 +69,9 @@ function useArtists() {
                 setRelatedArtists([])
                 setRelatedArtists([artist, ...threeArtists, ...fourArtists])
             })
+            .catch(err => console.log(err))
         })
+        .catch(err => console.log(err))
 
     }, [topResult])
 

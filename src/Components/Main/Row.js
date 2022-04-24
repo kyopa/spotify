@@ -5,7 +5,7 @@ import blackImg from "../../extra/blackImage.webp"
 import { useMemo } from "react";
 
 
-function Row({array}) {
+function Row({array, album}) {
 
     return (
         <div>
@@ -13,7 +13,7 @@ function Row({array}) {
                {array && (
                    array.length > 1 ? array.map(item => {
                        return (
-                           <Item item={item} artist={item.type === "artist"
+                           <Item album={album} item={item} artist={item.type === "artist"
                            ? true : false}/>
                        )
                    }) :  <h2>hello</h2>
@@ -25,9 +25,8 @@ function Row({array}) {
     )
 }
 
-function Item({item, artist}) {
-
-    console.log(item)
+function Item({item, artist, album}) {
+    
 
     const img = useMemo(() => {
         if (!item) return
@@ -39,7 +38,12 @@ function Item({item, artist}) {
 
     return (
         <div className="item-details">
-            <img className={"item-img"} src={img} ></img>
+
+
+            <img className={album === true ? "album" : ""} src={img} ></img>
+
+            
+            
             <div className="item-name">{item.name}</div>
             {artist && (
                 <div className="type">Artist</div>
@@ -48,7 +52,7 @@ function Item({item, artist}) {
                 <span>{item.release_date.substring(0, 4)}</span> <span id="dot">  • </span> 
                 {item.artists.map((artist, index) => {
                     return (
-                         <span>
+                         <span key={crypto.randomUUID()}>
                             {index !== item.artists.length - 1 ? (
                                 <a > {artist.name}, </a>
                             ): <a > {artist.name}</a>}
@@ -61,14 +65,5 @@ function Item({item, artist}) {
         </div>
     )
 }
-
-/*
-        <div >
-            
-            <img src={img} className="artist-img"></img>
-            <div className="artist-name">{artist.name}</div>
-            <div className="type">Artist</div>
-        </div>
-*/
 
 export default Row;
