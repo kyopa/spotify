@@ -51,6 +51,7 @@ function Search() {
             .catch(err => console.log(err))
           })
           setTracks([])
+          console.log(res)
           const sorted = res.tracks.items.sort((a, b) => a.popularity - b.popularity)
           setTracks(sorted.reverse())
           res.artists.items.map(artist => {

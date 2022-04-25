@@ -13,7 +13,9 @@ function Row({array, album}) {
                {array && (
                    array.length > 1 ? array.map(item => {
                        return (
-                           <Item album={album} item={item} artist={item.type === "artist"
+                           <Item key={crypto.randomUUID()}
+                            album={album} item={item} 
+                            artist={item.type === "artist"
                            ? true : false}/>
                        )
                    }) :  <h2>hello</h2>

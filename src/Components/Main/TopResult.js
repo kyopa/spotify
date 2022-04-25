@@ -54,11 +54,6 @@ function TopResult() {
                                 {topResult.type}
                             </div>
                         </div>
-
-                        <div className="playbutton-box">
-                            <button id="Play" onClick={() => handleClick()}>B</button>
-
-                        </div>
                     
                         </div>
                     )}

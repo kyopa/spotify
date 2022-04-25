@@ -127,7 +127,6 @@ button:hover {
 .top-result-box {
     background-color: #181818;
     padding: 20px;
-    
     width: 385px;
 }
 
@@ -206,13 +205,13 @@ ul {
     box-sizing: border-box;
     width: 100%;
     padding: 5px 8px;
-
+    border-radius: 4px;
     
 }
 
 .song:hover {
     background-color:rgba(255,255,255,.1);
-    border-radius: 4px;
+
 }
 
 .song:hover #artists > span >span > a {
@@ -320,7 +319,10 @@ ul {
 .item-row {
     display: flex;
     gap: 24px;
+}
 
+.playing > span {
+    color: #fff;
 }
 
 

@@ -22,6 +22,7 @@ import Player from "./Components/Player.js/Player.js";
 
 function App() {
 
+
   const client_id = "de8735e4e92a4bbe8bb99948f6dfbb1d"
   const client_secret = "7a1e27603bd84785a7d5b3465a5cbfe1"
 
@@ -36,7 +37,9 @@ function App() {
   const [token, setToken] = useState();
   const [topResult, setTopResult] = useState();
   const [relatedArtists, setRelatedArtists] = useState();
-  const [currentSong, setCurrentSong] = useState("initial");
+
+  
+
 
 
   const getToken = () => {
@@ -66,7 +69,7 @@ function App() {
         sidebar
 
       </div>
-      <currentSongContext.Provider value={{currentSong, setCurrentSong}}>
+
       <div className="main">
         <SearchContext.Provider value={{search, setSearch}}>
         <TracksContext.Provider value={{tracks, setTracks}}>
@@ -101,8 +104,11 @@ function App() {
       <div className="music-player player">
         <Player />
       </div>
-      </currentSongContext.Provider>
+
+      
     </div>
+
+    
   )
 }
 

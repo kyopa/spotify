@@ -1,6 +1,8 @@
 import { useContext } from "react"
 import { useEffect } from "react"
 import { useState } from "react"
+import { useRecoilState } from "recoil"
+import { currentSongState, pauseState } from "../../atoms"
 import { currentSongContext } from "../../Context"
 
 
@@ -21,10 +23,13 @@ function Player() {
     )
 }
 
+
+
+
 function SongDetails() {
 
-
-    const {currentSong, setCurrentSong} = useContext(currentSongContext)
+    const [currentSong, setCurrentSong] = useRecoilState(currentSongState)
+    
     const [img, setImg] = useState()
 
 
@@ -64,7 +69,18 @@ function SongDetails() {
 
 function PlayBar() {
 
-    const {currentSong, dispatch} = useContext(currentSongContext)
+    const [currentSong, setCurrentSong] = useRecoilState(currentSongState)
+    const [pause, setPause] = useRecoilState(pauseState)
+
+    const _handleClick = () => {
+        setCurrentSong(prev => ({...prev, playing: !currentSong.playing}))
+
+        if (!pause) {
+            
+        }
+    }
+
+    console.log(currentSong)
 
     return (
         <div className="playbar-container">
@@ -72,7 +88,8 @@ function PlayBar() {
 
                 <button>shuffle</button>
                 <button>prev</button>
-                <button>pause/play</button>
+                <button onClick={() => _handleClick()}>{currentSong.playing ? <div>Pause</div> : 
+                <div>Play</div>}</button>
                 <button>next</button>
                 <button>repeat</button>
             </div>
