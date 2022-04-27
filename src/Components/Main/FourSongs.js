@@ -9,7 +9,7 @@ import { tokenContext, TracksContext, styleContext, currentSongContext } from ".
 import playIcon from "../../extra/playicon.png";
 import pauseIcon from "../../extra/pause.png";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { currentSongState, fourState, pauseState } from "../../atoms";
+import { currentSongState, fourState, pauseState, rendersState } from "../../atoms";
 import { setDoc, doc, getDoc } from "firebase/firestore";
 import db from "../../firebase.config";
 
@@ -97,6 +97,8 @@ function Song(props) {
 function Box({song, setSong, currentSong}) {
 
     const currentSongItem = useRecoilValue(currentSongState)
+    const [audio, setAudio] = useState({src: ""});
+    const audioRef = useRef();
 
     const hover = () => {
         setSong(prev => ({...prev, hovering: true}))
@@ -111,6 +113,20 @@ function Box({song, setSong, currentSong}) {
         const secs = ((song.duration_ms % 60000) / 1000).toFixed(0)
         return `${mins}:${secs < 10 ? `0${secs}` : `${secs}`}`
     }
+
+
+
+    useEffect(() => {
+        if (currentSongItem.init) return
+    
+        audioRef.current.pause();
+        audioRef.current.setAttribute("src", currentSongItem.preview_url)
+
+        if (currentSongItem.id === song.id) {
+            console.log("W")
+            audioRef.current.play();
+        }
+    }, [currentSongItem])
 
 
     return (
@@ -128,6 +144,7 @@ function Box({song, setSong, currentSong}) {
         </div>
         </div>
         <div id="length">{_getLength()}</div>
+        <audio ref={audioRef}></audio>
         </li>
     )
 }
@@ -160,27 +177,21 @@ function Artists({song, setSong, isCurrentSong}) {
 function Img({song, setSong, isCurrentSong}) {
 
     const [currentSong, setCurrentSong] = useRecoilState(currentSongState);
-    const [pause, setPause] = useRecoilState(pauseState)
-    const [audio, setAudio] = useState(new Audio(song.preview_url))
-    const audioRef = useRef();
 
-    
-    const _handleClick = () => { 
-        console.log(audioRef)
-        setCurrentSong({...song, playing: !currentSong.playing})
 
-        if (!pause) {
-            audioRef.current.play();
-        } else audioRef.current.pause();
-        setPause(!pause)
+
+    const _handleClick = () => {
+        if (currentSong.id !== song.id) {
+            setCurrentSong({...song, playing: true})
+        } else setCurrentSong({...song, playing: !currentSong.playing})
     }
+ 
 
-    console.log("W")
-    console.log(audioRef)
 
 
     return (
         <div id={song.id} className="img-container" onClick={() => _handleClick()}>
+        
         <img style={{opacity: song.hovering || (isCurrentSong &&currentSong.playing) ? "0.5" : "1"}}  className="song-img" 
          src={song.album && song.album.images[0].url}></img>
         <div className="play-mini-song">
@@ -198,7 +209,7 @@ function Img({song, setSong, isCurrentSong}) {
             src={playIcon}></img>
             
             <img style={{display: isCurrentSong && currentSong.playing ? "block" : "none"}} src={pauseIcon}></img>
-            <audio ref={audioRef}  src={song.preview_url}></audio>
+            
         </div>
         
 
@@ -215,6 +226,8 @@ function SongTitle({song, isCurrentSong}) {
         </div>
     )
 }
+
+
 
 
 

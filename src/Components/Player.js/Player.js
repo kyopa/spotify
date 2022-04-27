@@ -80,7 +80,6 @@ function PlayBar() {
         }
     }
 
-    console.log(currentSong)
 
     return (
         <div className="playbar-container">
