@@ -6,8 +6,9 @@ import { currentSongState, pauseState } from "../../atoms"
 import { currentSongContext } from "../../Context"
 
 
-function Player() {
+// NONE OF THIS IS SETUP PROPERLY YET
 
+function Player() {
     return (
         <div className="player">
             <div className="player-song-details">
@@ -23,15 +24,8 @@ function Player() {
     )
 }
 
-
-
-
 function SongDetails() {
-
     const [currentSong, setCurrentSong] = useRecoilState(currentSongState)
-    
-    const [img, setImg] = useState()
-
 
     useEffect(() => {
 
@@ -69,6 +63,8 @@ function SongDetails() {
 
 function PlayBar() {
 
+    // I HAVENT SET THIS UP YET PROPERLY
+
     const [currentSong, setCurrentSong] = useRecoilState(currentSongState)
     const [pause, setPause] = useRecoilState(pauseState)
 
@@ -76,10 +72,9 @@ function PlayBar() {
         setCurrentSong(prev => ({...prev, playing: !currentSong.playing}))
 
         if (!pause) {
-            
+
         }
     }
-
 
     return (
         <div className="playbar-container">

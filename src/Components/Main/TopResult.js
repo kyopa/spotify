@@ -1,5 +1,7 @@
 import { useContext, useMemo } from "react"
 import { useEffect } from "react"
+import { useRecoilState, useRecoilValue } from "recoil"
+import { searchState, topAlbumState, topArtistState, topTrackState } from "../../atoms"
 import { topResultContext, SearchContext, topAlbumContext, topArtistContext, topTrackContext} from "../../Context"
 import hamming from "../../extra/hamming"
 import FourSongs from "./FourSongs"
@@ -7,26 +9,20 @@ import FourSongs from "./FourSongs"
 function TopResult() {
 
 
-    const {search, setSearch} = useContext(SearchContext)
-    const {topAlbum, setTopAlbum} = useContext(topAlbumContext)
-    const {topArtist, setTopArtist} = useContext(topArtistContext)
-    const {topTrack, setTopTrack} = useContext(topTrackContext)
-    const {topResult, setTopResult} = useContext(topResultContext)
+    const search = useRecoilValue(searchState)
+    const topAlbum = useRecoilValue(topAlbumState)
+    const topArtist = useRecoilValue(topArtistState)
+    const topTrack = useRecoilValue(topTrackState)
+    const [topResult, setTopResult] = useRecoilState(topResult)
     
-    
-      useEffect(() => {
+
+    useEffect(() => {
+
         if (!topArtist || !topTrack || !topAlbum) return
         setTopResult(hamming(search, topArtist, topTrack, topAlbum))
 
-      }, [topAlbum, topTrack, topArtist])
+    }, [topAlbum, topTrack, topArtist])
 
-
-
-      // TODO: On click disable the current song that is playing
-      const handleClick = () => {
-          const song = new Audio(topResult.preview_url)
-          song.play();
-      }
     
     return (
         <div className="top-result-grid">
@@ -57,9 +53,6 @@ function TopResult() {
                     
                         </div>
                     )}
-                    
-
-
                 </div>
             </div>
 

@@ -3,30 +3,40 @@ import { useContext } from "react"
 import {tokenContext, AlbumsContext, ArtistsContext, SearchContext, topAlbumContext, topArtistContext, topTrackContext, TracksContext} from "../Context"
 import hamming from "../extra/hamming"
 import { debounce } from 'lodash'
+import { albumsState, artistsState, searchState, tokenState, topAlbumState, topArtistState, topTrackState, tracksState } from "../atoms"
+import { useRecoilCallback, useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil"
+
+
+// Searches spotify api everytime search input field changes
+// this could probably be a hook rather than a component tbh
 
 function Search() {
-  
-    const {tracks, setTracks} = useContext(TracksContext)
-    const {artists, setArtists} = useContext(ArtistsContext)
-    const {albums, setAlbums} = useContext(AlbumsContext)
-    const {token, setToken} = useContext(tokenContext)
-    const {search, setSearch} = useContext(SearchContext)
 
-    const {topTrack, setTopTrack} = useContext(topTrackContext)
-    const {topAlbum, setTopAlbum} = useContext(topAlbumContext)
-    const {topArtist, setTopArtist} = useContext(topArtistContext)
+    const [token, setToken] = useRecoilState(tokenState)
+    const [search, setSearch] = useRecoilState(searchState)
+    const setTopTrack = useSetRecoilState(topTrackState);
+    const setTopAlbum = useSetRecoilState(topAlbumState)
+    const setTopArtist = useSetRecoilState(topArtistState)
+    const setArtists = useSetRecoilState(artistsState)
+    const setAlbums = useSetRecoilState(albumsState)
+    const setTracks = useSetRecoilState(tracksState)
 
     // how many items to search for
     let limit = "20";
 
+    // idk if im supposed to update state like this 
+    // rather than setTracks()
+    const updateTracks = useRecoilCallback(({snapshot, set}) => (arr) => {
+      set(tracksState, arr)
+    })
 
+    // everytime search changes this will set a lot of state
     useEffect(() => {
         if (!token) return
+
         searchApi()
         .then(data => data.json())
         .then(res => {
-
-
           setTopTrack(res.tracks.items[0])
           
           setTopArtist(res.artists.items[0] || res.tracks.items[0].artists[0])
@@ -50,12 +60,10 @@ function Search() {
             })
             .catch(err => console.log(err))
           })
-          setTracks([])
-          console.log(res)
+          updateTracks([])
           const sorted = res.tracks.items.sort((a, b) => a.popularity - b.popularity)
-          setTracks(sorted.reverse())
+          updateTracks(sorted.reverse())
           res.artists.items.map(artist => {
-
             setArtists(prev => [...prev, artist])
           })
         })
@@ -73,7 +81,6 @@ function Search() {
     }
 
     const fetchAlbum = (album) => {
-      
       return fetch(`https://api.spotify.com/v1/albums/${album.id}`, {
           headers: {
             "Accept": "application/json",

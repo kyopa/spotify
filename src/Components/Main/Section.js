@@ -3,9 +3,6 @@ import Row from "./Row";
 
 
 function Section(props) {
-
-    
-
     return (
         <div>
             <div className="row-see-all">

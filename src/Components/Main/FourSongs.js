@@ -8,8 +8,8 @@ import { createContext } from "react";
 import { tokenContext, TracksContext, styleContext, currentSongContext } from "../../Context";
 import playIcon from "../../extra/playicon.png";
 import pauseIcon from "../../extra/pause.png";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { currentSongState, fourState, pauseState, rendersState } from "../../atoms";
+import { useRecoilCallback, useRecoilState, useRecoilStoreID, useRecoilValue } from "recoil";
+import { currentSongState, fourState, pauseState, rendersState, tokenState, tracksState } from "../../atoms";
 import { setDoc, doc, getDoc } from "firebase/firestore";
 import db from "../../firebase.config";
 
@@ -17,19 +17,41 @@ import db from "../../firebase.config";
 
 function FourSongs() {
 
-    const {tracks, setTracks} = useContext(TracksContext)
     
-    const [four, setFour] = useRecoilState(fourState)
+    // am i supposed to do something like this rather than
+    // const [four, setFour] = useRecoilState(fourState)??
+    const four = useRecoilCallback(({snapshot, set}) => () => {
+        const arr = snapshot.getPromise(tracksState)
+        set(fourState, arr.slice(0, 4))
 
+        return arr.slice(0, 4)
+    }, [])
+
+    /*
+    THIS IS HOW I WOULD PLAY THE CURRENT SONG
+    but this doesnt work because it will flash
+
+    const [currentSong, setCurrentSong] = useRecoilState(currentSongState)
+    const audioRef = useRef();
+    
     useEffect(() => {
-        setFour([tracks[0], tracks[1], tracks[2], tracks[3]])
-    }, [tracks])
+        if (currentSong.init) return
+
+        audioRef.current.pause();
+        audioRef.current.setAttribute("src", currentSong.preview_url)
+        audioRef.current.play();
+
+    }, [currentSong])
+
+    <audio ref={audioRef}></audio>
+    */
+
 
     return (
         <div>
             <div className="songs-see-all">
                 <h2>Songs</h2>
-                <a href="hundred bitches" id="see-all">See all</a>
+                <a href="www" id="see-all">See all</a>
             </div>
             
             {four && four.map(song => {
@@ -45,9 +67,7 @@ function FourSongs() {
 
 function Song(props) {
     const [song, setSong] = useState();
-    const [style, setStyle] = useState({})
-    const {token, setToken} = useContext(tokenContext)
-
+    const token = useRecoilValue(tokenState)
     const currentSong = useRecoilValue(currentSongState)
 
     const fetchSong = (song) => {
@@ -68,26 +88,18 @@ function Song(props) {
             const artists = props.song.artists.map(artist => {
                 return {...artist, hovering: false}
             })
-
             setSong({...res, artists: artists, playing: false})
         })
         .catch(err => console.log(err))
     }, [])
 
-
-
     return (
         <div>
             {song && (
                 <ul className="songs">
-                    
-                    <styleContext.Provider value={{style, setStyle}}>
-
-                        <Box song={song} setSong={setSong} 
-                        currentSong={currentSong.id === song.id ? true : false}
-                        />
-
-                        </styleContext.Provider>
+                    <Box song={song} setSong={setSong} 
+                    currentSong={currentSong.id === song.id ? true : false}
+                    />   
                 </ul>
             )}
     </div>
@@ -97,8 +109,6 @@ function Song(props) {
 function Box({song, setSong, currentSong}) {
 
     const currentSongItem = useRecoilValue(currentSongState)
-    const [audio, setAudio] = useState({src: ""});
-    const audioRef = useRef();
 
     const hover = () => {
         setSong(prev => ({...prev, hovering: true}))
@@ -114,26 +124,11 @@ function Box({song, setSong, currentSong}) {
         return `${mins}:${secs < 10 ? `0${secs}` : `${secs}`}`
     }
 
-
-
-    useEffect(() => {
-        if (currentSongItem.init) return
-    
-        audioRef.current.pause();
-        audioRef.current.setAttribute("src", currentSongItem.preview_url)
-
-        if (currentSongItem.id === song.id) {
-            console.log("W")
-            audioRef.current.play();
-        }
-    }, [currentSongItem])
-
-
     return (
         <li style={{backgroundColor: currentSong &&
-             currentSongItem.playing ? "rgba(255,255,255,.3)": ""}}
-        className="song" onMouseEnter={() => hover()}
-        onMouseLeave={() => noHover()}>
+            currentSongItem.playing ? "rgba(255,255,255,.3)": ""}}
+            className="song" onMouseEnter={() => hover()}
+            onMouseLeave={() => noHover()}>
         
         <Img song={song} setSong={setSong} isCurrentSong={currentSong}/>
         <div className="song-details">
@@ -144,12 +139,11 @@ function Box({song, setSong, currentSong}) {
         </div>
         </div>
         <div id="length">{_getLength()}</div>
-        <audio ref={audioRef}></audio>
         </li>
     )
 }
 
-function Artists({song, setSong, isCurrentSong}) {
+function Artists({song, isCurrentSong}) {
 
 
     const currentSong = useRecoilValue(currentSongState)
@@ -174,25 +168,20 @@ function Artists({song, setSong, isCurrentSong}) {
     )
 }
 
-function Img({song, setSong, isCurrentSong}) {
+function Img({song, isCurrentSong}) {
+    const [currentSong, setCurrentSong] = useRecoilState(currentSongState)
 
-    const [currentSong, setCurrentSong] = useRecoilState(currentSongState);
-
-
-
-    const _handleClick = () => {
+    const updateCurrentSong = useRecoilCallback(({snapshot, set}) => () => {
+        
         if (currentSong.id !== song.id) {
-            setCurrentSong({...song, playing: true})
-        } else setCurrentSong({...song, playing: !currentSong.playing})
-    }
- 
-
-
+            set(currentSongState, {...song, playing: true})
+        } else set(currentSongState, {...song, playing: !currentSong.playing})
+    }, [currentSong.id])
 
     return (
-        <div id={song.id} className="img-container" onClick={() => _handleClick()}>
+        <div id={song.id} className="img-container" onClick={updateCurrentSong}>
         
-        <img style={{opacity: song.hovering || (isCurrentSong &&currentSong.playing) ? "0.5" : "1"}}  className="song-img" 
+        <img loading="lazy" style={{opacity: song.hovering || (isCurrentSong &&currentSong.playing) ? "0.5" : "1"}}  className="song-img" 
          src={song.album && song.album.images[0].url}></img>
         <div className="play-mini-song">
 
@@ -201,9 +190,6 @@ function Img({song, setSong, isCurrentSong}) {
                  (isCurrentSong ? (song.hovering &&
                 !currentSong.playing) : song.hovering)
                 ? "block" : "none",
-                
-
-
             }}
              
             src={playIcon}></img>
@@ -226,6 +212,8 @@ function SongTitle({song, isCurrentSong}) {
         </div>
     )
 }
+
+
 
 
 

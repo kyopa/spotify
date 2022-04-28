@@ -8,10 +8,8 @@ function Top() {
 
     return (
         <div className="topbar-container">
-
             <Arrows />
             <Searchbar />
-
             <div className="profile">
                 Profile picture
             </div>

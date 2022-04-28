@@ -29,7 +29,6 @@ function Row({array, album}) {
 
 function Item({item, artist, album}) {
     
-
     const img = useMemo(() => {
         if (!item) return
 
@@ -40,12 +39,7 @@ function Item({item, artist, album}) {
 
     return (
         <div className="item-details">
-
-
             <img className={album === true ? "album" : ""} src={img} ></img>
-
-            
-            
             <div className="item-name">{item.name}</div>
             {artist && (
                 <div className="type">Artist</div>

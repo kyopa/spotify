@@ -1,19 +1,24 @@
 import { useContext } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { relatedArtistsContext, SearchContext, tokenContext, topResultContext } from "../../Context";
+import { useRecoilValue } from "recoil";
+import { relatedArtistsState, searchState, tokenState, topResultState } from "../../atoms";
 
+// THIS WILL RETURN AN ARRAY WITH
+// THE ARTIST
+// 3 RELATED ARTIST
+// 4 ARTISTS THAT HAVE A SIMILAR NAME AS THE ARTIST
 
-// useArtists
 function useArtists() {
 
-    const {topResult} = useContext(topResultContext)
-    const {token} = useContext(tokenContext)
+
     const [artist, setArtist] = useState();
-    const {search} = useContext(SearchContext)
-    
-    const {relatedArtists, setRelatedArtists} = useContext(relatedArtistsContext)
-        
+    const topResult = useRecoilValue(topResultState)
+    const token = useRecoilValue(tokenState)
+    const search = useRecoilValue(searchState)
+    const [relatedArtists, setRelatedArtists] = useRecoilState(relatedArtistsState)
+
+
     function fetchRelatedArtists(artist) {
         return fetch(`https://api.spotify.com/v1/artists/${artist.id}/related-artists`, {
             headers: {
@@ -37,7 +42,6 @@ function useArtists() {
     }
 
     function fetchArtist(artist) {
-        
         return fetch(`https://api.spotify.com/v1/artists/${artist.id}`, {
             headers: {
                 "Accept": "application/json",
@@ -49,8 +53,7 @@ function useArtists() {
 
     useEffect(() => {
         if (!topResult) return
-        
-
+    
         if (topResult.type === "artist") {
             setArtist(topResult)
         } else setArtist(topResult.artists[0])
@@ -75,67 +78,8 @@ function useArtists() {
 
     }, [topResult])
 
-
-    // Return related artists array
-
     return [relatedArtists]
 }
-
-
-/*
-function Artists() {
-
-    const {relatedArtists} = useContext(relatedArtistsContext)
-
-
-    return (
-        <div className="artists-container">
-            <div className="artists-see-all">
-                <h2>Artists</h2>
-                <a href="yo" id="see-all">See all</a>
-                </div>
-            <div className="artists-row">
-               
-                {relatedArtists && (
-                    relatedArtists.length > 1 ? relatedArtists.map(artist => {
-                        return (
-                            <Artist artist={artist}/>
-                        )
-                    }) :  <Artist artist={relatedArtists}/>
-                )}
-            </div>
-        </div>
-    )
-}
-
-
-/*
-function Artist(props) {
-
-    const artist = props.artist
-
-    const [img, setImg] = useState();
-    const {relatedArtists} = useContext(relatedArtistsContext)
-    
-
-    useEffect(() => {
-        if (!artist) return
-
-        if(artist.images === undefined || artist.images.length === 0) {
-            setImg(blackImg)
-        } else setImg(artist.images[0].url)
-
-    })
-
-    return (
-        <div >
-            <img src={img} className="artist-img"></img>
-            <div className="artist-name">{artist.name}</div>
-            <div className="type">Artist</div>
-        </div>
-    )
-}
-*/
 
 
 

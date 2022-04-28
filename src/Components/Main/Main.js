@@ -23,8 +23,6 @@ function SearchPage() {
     const [artists, setArtists] = useArtists();
     const [albums, setAlbums] = useAlbums();
 
-
-
     return (
         <div className="searchpage">
             <div className="search-results">
