@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import SearchContext from "../../Context";
 import Searchbar from "./Searchbar";
 
 function Top() {

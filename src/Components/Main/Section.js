@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Row from "./Row";
 
 function Section(props) {
@@ -9,7 +10,9 @@ function Section(props) {
           See all
         </a>
       </div>
-      <Row array={props.array} album={props.album} />
+      <Suspense fallback={<div>hello</div>}>
+        <Row array={props.array} album={props.album} />
+      </Suspense>
     </div>
   );
 }

@@ -1,13 +1,13 @@
 import { useContext } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import {
   relatedArtistsState,
   searchState,
   tokenState,
   topResultState,
-} from "../../atoms";
+} from "../../recoil/atoms";
 
 // THIS WILL RETURN AN ARRAY WITH
 // THE ARTIST
@@ -19,8 +19,7 @@ function useArtists() {
   const topResult = useRecoilValue(topResultState);
   const token = useRecoilValue(tokenState);
   const search = useRecoilValue(searchState);
-  const [relatedArtists, setRelatedArtists] =
-    useRecoilState(relatedArtistsState);
+  const [relatedArtists, setRelatedArtists] = useState();
 
   function fetchRelatedArtists(artist) {
     return fetch(
@@ -84,7 +83,7 @@ function useArtists() {
       .catch((err) => console.log(err));
   }, [topResult]);
 
-  return [relatedArtists];
+  return relatedArtists
 }
 
 export default useArtists;

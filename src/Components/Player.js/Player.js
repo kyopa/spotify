@@ -1,9 +1,7 @@
-import { useContext } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { currentSongState, pauseState } from "../../atoms";
-import { currentSongContext } from "../../Context";
+import { currentSongState, onPauseState } from "../../recoil/atoms";
 
 // NONE OF THIS IS SETUP PROPERLY YET
 
@@ -71,21 +69,16 @@ function PlayBar() {
   // I HAVENT SET THIS UP YET PROPERLY
 
   const [currentSong, setCurrentSong] = useRecoilState(currentSongState);
-  const [pause, setPause] = useRecoilState(pauseState);
 
-  const _handleClick = () => {
-    setCurrentSong((prev) => ({ ...prev, playing: !currentSong.playing }));
 
-    if (!pause) {
-    }
-  };
+
 
   return (
     <div className="playbar-container">
       <div className="buttons">
         <button>shuffle</button>
         <button>prev</button>
-        <button onClick={() => _handleClick()}>
+        <button >
           {currentSong.playing ? <div>Pause</div> : <div>Play</div>}
         </button>
         <button>next</button>

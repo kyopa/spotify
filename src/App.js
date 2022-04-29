@@ -5,7 +5,7 @@ import Top from "./Components/Top/Top.js";
 import Main from "./Components/Main/Main.js";
 import Player from "./Components/Player.js/Player.js";
 import { RecoilRoot, useRecoilState, useSetRecoilState } from "recoil";
-import { fourState, tokenState, tracksState } from "./atoms.js";
+import { fourState, tokenState } from "./recoil/atoms.js";
 
 function App() {
   // I heard that you cant store keys safely without a backend
@@ -28,8 +28,6 @@ function App() {
     getToken()
       .then((data) => data.json())
       .then((res) => set(tokenState, res.access_token));
-    set(fourState, []);
-    set(tracksState, []);
   };
 
   return (

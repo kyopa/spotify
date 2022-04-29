@@ -209,6 +209,8 @@ ul {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+
+
 .song:hover #artists > span > span > a {
   color: white;
 }
@@ -396,6 +398,9 @@ ul {
   font-size: 0.5rem;
   vertical-align: middle;
 }
+
+
+
 
 /* width */
 ::-webkit-scrollbar {

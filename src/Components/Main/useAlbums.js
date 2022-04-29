@@ -1,14 +1,13 @@
-import { useContext } from "react";
-import { albumsState } from "../../atoms";
-import { AlbumsContext } from "../../Context";
+import { albumsState, searchState, tokenState } from "../../recoil/atoms";
 import useArtists from "./useArtists";
-
+import { useRecoilValue } from "recoil";
+import { useContext } from "react";
+import { itemsState } from "../../recoil/selectors";
 
 function useAlbums() {
-    const albums = useRecoilValue(albumsState)
-    const eightAlbums = albums.slice(0, 8).sort((a, b) => a.popularity - b.popularity)
-
-    return [eightAlbums.reverse()]
+  const albumsData = useRecoilValue(itemsState("albums"));
+  if (!albumsData) return;
+  return albumsData.slice(0, 8)
 }
 
 export default useAlbums;

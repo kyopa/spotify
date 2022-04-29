@@ -1,26 +1,40 @@
-import { useContext, useMemo } from "react";
+import { useCallback, useContext, useMemo } from "react";
 import { useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useState } from "react";
+import { useRecoilState, useRecoilStoreID, useRecoilValue } from "recoil";
 import {
   searchState,
   topAlbumState,
   topArtistState,
+  topResultState,
   topTrackState,
-} from "../../atoms";
+} from "../../recoil/atoms";
 import hamming from "../../hamming";
+import { itemsState, topState } from "../../recoil/selectors";
 import FourSongs from "./FourSongs";
 
 function TopResult() {
+  const tracks = useRecoilValue(itemsState("tracks"));
+  const albums = useRecoilValue(itemsState("albums"));
+  const artists = useRecoilValue(itemsState("artists"));
   const search = useRecoilValue(searchState);
-  const topAlbum = useRecoilValue(topAlbumState);
-  const topArtist = useRecoilValue(topArtistState);
-  const topTrack = useRecoilValue(topTrackState);
-  const [topResult, setTopResult] = useRecoilState(topResult);
+  const [topResult, setTopResult] = useRecoilState(topResultState)
 
   useEffect(() => {
-    if (!topArtist || !topTrack || !topAlbum) return;
-    setTopResult(hamming(search, topArtist, topTrack, topAlbum));
-  }, [topAlbum, topTrack, topArtist]);
+    if (!artists || !tracks || !albums) return
+    console.log(artists)
+    console.log(tracks)
+    console.log(albums)
+
+    setTopResult(
+      hamming(
+        artists[0],
+        tracks[0],
+        albums[0],
+        search
+      )
+    );
+  }, [tracks, artists, albums]);
 
   return (
     <div className="top-result-grid">

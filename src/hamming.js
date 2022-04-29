@@ -1,4 +1,7 @@
-const hamming = (search, topArtist, topTrack, topAlbum) => {
+import { useRecoilValue } from "recoil";
+import { searchState } from "./recoil/atoms";
+
+const hamming = (topArtist, topTrack, topAlbum, search) => {
   const long = [topArtist.name, topTrack.name, topAlbum.name].sort(
     (a, b) => a.length - b.length
   )[2];

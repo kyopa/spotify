@@ -1,58 +1,38 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useMemo } from "react";
 import { useState } from "react";
 import playIcon from "../../extra/playicon.png";
 import pauseIcon from "../../extra/pause.png";
-import {
-  useRecoilCallback,
-  useRecoilState,
-  useRecoilStoreID,
-  useRecoilValue,
-} from "recoil";
-import {
-  currentSongState,
-  fourState,
-  pauseState,
-  rendersState,
-  tokenState,
-  tracksState,
-} from "../../atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { currentSongState, onPauseState, tokenState } from "../../recoil/atoms";
+import Search from "../Search";
+import { itemsState } from "../../recoil/selectors";
 
 function FourSongs() {
-  // am i supposed to do something like this rather than
-  // const [four, setFour] = useRecoilState(fourState)??
-  const four = useRecoilCallback(
-    ({ snapshot, set }) =>
-      () => {
-        const arr = snapshot.getPromise(tracksState);
-        set(fourState, arr.slice(0, 4));
+  const tracks = useRecoilValue(itemsState("tracks"));
+  const currentSong = useRecoilValue(currentSongState);
+  const [onPause, setOnPause] = useRecoilState(onPauseState);
+  const audioRef = useRef();
+  const songRef = useRef();
 
-        return arr.slice(0, 4);
-      },
-    []
-  );
+  useEffect(() => {
+    if (currentSong.init) return;
+    if (songRef.current === currentSong.id) {
+      onPause ? audioRef.current.play() : audioRef.current.pause();
+      setOnPause(!onPause);
+    } else {
+      setOnPause(false);
+      audioRef.current.pause();
+      audioRef.current.setAttribute("src", currentSong.preview_url);
+      audioRef.current.play();
+    }
 
-  /*
-    THIS IS HOW I WOULD PLAY THE CURRENT SONG
-    but this doesnt work because it will flash
-
-    const [currentSong, setCurrentSong] = useRecoilState(currentSongState)
-    const audioRef = useRef();
-    
-    useEffect(() => {
-        if (currentSong.init) return
-
-        audioRef.current.pause();
-        audioRef.current.setAttribute("src", currentSong.preview_url)
-        audioRef.current.play();
-
-    }, [currentSong])
-
-    <audio ref={audioRef}></audio>
-    */
+    songRef.current = currentSong.id;
+  }, [currentSong]);
 
   return (
     <div>
+      <audio ref={audioRef}></audio>
       <div className="songs-see-all">
         <h2>Songs</h2>
         <a href="www" id="see-all">
@@ -60,10 +40,10 @@ function FourSongs() {
         </a>
       </div>
 
-      {four &&
-        four.map((song) => {
+      {tracks &&
+        tracks.slice(0, 4).map((song) => {
           return (
-            <div key={crypto.randomUUID()}>
+            <div key={song.id}>
               <Song song={song} />
             </div>
           );
@@ -78,7 +58,7 @@ function Song(props) {
   const currentSong = useRecoilValue(currentSongState);
 
   const fetchSong = (song) => {
-    return fetch(`https://api.spotify.com/v1/tracks/${song.id}?market=ES`, {
+    return fetch(`https://api.spotify.com/v1/tracks/${song.id}?market=US`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -189,25 +169,25 @@ function Artists({ song, isCurrentSong }) {
 
 function Img({ song, isCurrentSong }) {
   const [currentSong, setCurrentSong] = useRecoilState(currentSongState);
+  const onPause = useRecoilValue(onPauseState)
+  console.log(onPause)
 
-  const updateCurrentSong = useRecoilCallback(
-    ({ snapshot, set }) =>
-      () => {
-        if (currentSong.id !== song.id) {
-          set(currentSongState, { ...song, playing: true });
-        } else
-          set(currentSongState, { ...song, playing: !currentSong.playing });
-      },
-    [currentSong.id]
-  );
+  const _handleClick = () => {
+    if (currentSong.id !== song.id) {
+      setCurrentSong({ ...song, playing: true });
+    } else setCurrentSong({ ...song, playing: !currentSong.playing });
+  };
+
+
 
   return (
-    <div id={song.id} className="img-container" onClick={updateCurrentSong}>
+    <div id={song.id} className="img-container" onClick={() => _handleClick()}>
       <img
         loading="lazy"
+        s
         style={{
           opacity:
-            song.hovering || (isCurrentSong && currentSong.playing)
+            song.hovering || (isCurrentSong && !onPause)
               ? "0.5"
               : "1",
         }}
@@ -219,18 +199,18 @@ function Img({ song, isCurrentSong }) {
           style={{
             display: (
               isCurrentSong
-                ? song.hovering && !currentSong.playing
+                ? song.hovering && !onPause
                 : song.hovering
             )
               ? "block"
               : "none",
           }}
-          src={playIcon}
+          src={playIcon}s
         ></img>
 
         <img
           style={{
-            display: isCurrentSong && currentSong.playing ? "block" : "none",
+            display: isCurrentSong && !onPause ? "block" : "none",
           }}
           src={pauseIcon}
         ></img>
@@ -250,4 +230,22 @@ function SongTitle({ song, isCurrentSong }) {
   );
 }
 
+/*
+    THIS IS HOW I WOULD PLAY THE CURRENT SONG
+    but this doesnt work because it will flash
+
+    const [currentSong, setCurrentSong] = useRecoilState(currentSongState)
+    const audioRef = useRef();
+    
+    useEffect(() => {
+        if (currentSong.init) return
+
+        audioRef.current.pause();
+        audioRef.current.setAttribute("src", currentSong.preview_url)
+        audioRef.current.play();
+
+    }, [currentSong])
+
+    <audio ref={audioRef}></audio>
+    */
 export default FourSongs;
