@@ -22,7 +22,7 @@ function SearchPage() {
 
   const artists = useArtists();
   const albums = useAlbums();
-  console.log(artists)
+
 
   return (
     <div className="searchpage">

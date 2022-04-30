@@ -11,7 +11,6 @@ function Row({ array, album }) {
         {array &&
           (array.length > 1 ? (
             array.map((item) => {
-              console.log(item)
               return (
                 <Item
                   key={crypto.randomUUID()}

@@ -18,8 +18,22 @@
 
 .progressbar {
   width: 100%;
-  background-color: coral;
-  padding: 5px;
+  background-color: hsla(0,0%,100%,0.3);
+  margin-right: 10px;
+  position: relative;
+  box-sizing: content-box;
+  border-radius: 10px;
+}
+
+.progressbar > .bar {
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+
+
+.progressbar:hover .bar {
+  background-color: #1db954;
 }
 
 .player-song-details {
@@ -28,7 +42,7 @@
   position: relative;
 }
 
-.player-song-details > div {
+.player-song-details > div > div {
   display: flex;
   align-items: center;
   gap: 16px;
@@ -68,7 +82,7 @@
   cursor: pointer;
 }
 
-.player-song-details > div > .name-artists {
+.player-song-details > div > div > .name-artists {
   display: flex;
   flex-direction: column;
 }
@@ -84,10 +98,69 @@
 .playbar-container {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  justify-content: center;
+  gap: 10px;
 }
 
 .playbar-container > .buttons {
+
   width: max-content;
+  display: flex;
+  gap: 12px;
   margin: auto;
 }
+
+.player-icon {
+  width: 35px;
+  filter: invert(78%);
+}
+
+.player-icon:hover {
+  filter: invert(100%);
+}
+
+.player-icon:active {
+  filter: invert(78%);
+}
+
+.center-icon {
+  width: 40px;
+  filter: invert(100%);
+}
+
+.center-icon:hover {
+  transform: scale(1.03);
+}
+
+.center-icon:active {
+  transform: scale(0.95);
+}
+
+.shuffle,
+.repeat {
+  width: 24px;
+}
+
+.bar-container {
+  display: flex;
+
+}
+
+.bar-container > div {
+  position: relative;
+  font-family: circular;
+  color: #a7a7a7;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-transform: none;
+  letter-spacing: normal;
+}
+#time {
+  position: absolute;
+  top: 40.5px;
+  left: -31px;
+}
+
+
+
+

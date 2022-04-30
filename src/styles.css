@@ -3,6 +3,7 @@ html {
   margin: 0;
   font-family: spotifyFont;
   user-select: none;
+  overflow: hidden;
 }
 
 @font-face {
@@ -229,7 +230,7 @@ ul {
   font-family: circular;
 }
 
-.song-img {
+#song-img {
   width: 40px;
 }
 
@@ -399,7 +400,32 @@ ul {
   vertical-align: middle;
 }
 
+.play-mini-song > .idle {
+  display: none;
+}
 
+.img-container .playing {
+  opacity: .5;
+}
+
+.song:hover .play-mini-song > .idle {
+  display: block;
+}
+
+
+#pause-icon {
+  display: none;
+}
+
+.playing {
+  display: block;
+}
+
+
+
+.song:hover .img-container > #song-img {
+  opacity: .5;
+}
 
 
 /* width */

@@ -1,8 +1,8 @@
-import { atom, atomFamily } from "recoil";
+import { atom, atomFamily, selector } from "recoil";
 
 export const currentSongState = atom({
   key: "currentSong",
-  default: { playing: false, init: true },
+  default: "",
 });
 
 export const searchResultsState = atom({
@@ -40,3 +40,23 @@ export const tokenState = atom({
   key: "token",
   default: "",
 });
+
+export const historyState = atom({
+  key: "history",
+  default: []
+})
+
+export const rewindState = atom({
+  key: "rewind",
+  default: false
+})
+
+export const searchedSongState = atom({
+  key: "searchedSong",
+  default: ""
+})
+
+export const currentTimeState = atom({
+  key: "currentTime",
+  default: 0
+})
