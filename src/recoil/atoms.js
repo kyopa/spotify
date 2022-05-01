@@ -60,3 +60,18 @@ export const currentTimeState = atom({
   key: "currentTime",
   default: 0
 })
+
+export const timeState = atom({
+  key: "time",
+  default: 0
+})
+
+export const songRestartState = atom({
+  key: "songRestart",
+  default: false
+})
+
+export const rangeValueState = atom({
+  key: "rangeValue",
+  default: 0.1
+})

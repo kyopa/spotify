@@ -6,6 +6,7 @@ import pauseIcon from "../../extra/pause.png";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   currentSongState,
+  currentTimeState,
   historyState,
   onPauseState,
   searchedSongState,
@@ -140,6 +141,7 @@ function Img({ song, isCurrentSong }) {
   const setCurrentSong = useSetRecoilState(currentSongState);
   const setSearchedSong = useSetRecoilState(searchedSongState);
   const [onPause, setOnPause] = useRecoilState(onPauseState);
+  const setCurrentTime = useSetRecoilState(currentTimeState)
 
   return (
     <div
@@ -150,7 +152,8 @@ function Img({ song, isCurrentSong }) {
           ? setOnPause(!onPause)
           : (setCurrentSong(song.id),
             setSearchedSong(song.id),
-            setOnPause(false));
+            setOnPause(false)),
+            setCurrentTime(0)
       }}
     >
       <img

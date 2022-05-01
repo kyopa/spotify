@@ -4,6 +4,9 @@ import {
   currentSongState,
   onPauseState,
   currentTimeState,
+  timeState,
+  songRestartState,
+  rangeValueState,
 } from "../recoil/atoms";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { useRef, useEffect } from "react";
@@ -15,7 +18,9 @@ const AudioControl = () => {
   const audioRef = useRef();
   const onPause = useRecoilValue(onPauseState);
   const [rewind, setRewind] = useRecoilState(rewindState);
-  const setCurrentTime = useSetRecoilState(currentTimeState)
+  const [currentTime, setCurrentTime] = useRecoilState(currentTimeState)
+  const [songRestart, setSongRestart] = useRecoilState(songRestartState)
+  const rangeValue = useRecoilValue(rangeValueState)
 
   useEffect(() => {
     if (!currentSong) return;
@@ -39,10 +44,43 @@ const AudioControl = () => {
     setRewind(false);
   }, [rewind]);
 
+
+  let interval;
   useEffect(() => {
-    let interval = setInterval(() => getCurrentTime(), 100);
-    return () => clearInterval(interval);
-  }, []);
+    if (!currentSong) return
+    audioRef.current.pause();
+    interval = setInterval(() => {
+      if (audioRef.current.currentTime >= 30) clearInterval(interval)
+      setCurrentTime(audioRef.current.currentTime)
+    }, 100)
+
+  }, [currentSong])
+
+
+  useEffect(() => {
+    if (!songRestart) return
+    console.log(50 / 100 * 30)
+    audioRef.current.pause();
+    audioRef.current.currentTime = rangeValue / 100 * 30
+    audioRef.current.play();
+    setSongRestart(false)
+  }, [songRestart])
+
+
+  useEffect(() => {
+    console.log(currentTime)
+  })
+
+
+
+
+  
+
+  
+
+
+
+
 
   const getCurrentTime = () => {
     const secs = audioRef.current.currentTime;

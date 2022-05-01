@@ -1,0 +1,29 @@
+.progressbar-container:hover input {
+  display: block;
+}
+
+.progressbar > div {
+  background: rgb(255, 255, 255);
+  width: 50%;
+  border-radius: inherit;
+  height: inherit;
+}
+
+.progressbar {
+  background: #5e5e5e;
+  width: 356px;
+  border-radius: 8px;
+  height: 4px;
+  position: absolute;
+}
+
+.range::-webkit-slider-thumb {
+    border: solid 6px rgb(255, 255, 255);
+    border-radius: 0;
+  
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    -webkit-appearance: none;
+  }
+  

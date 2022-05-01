@@ -1,30 +1,25 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { useRef } from "react";
-import {
-  useRecoilCallback,
-  useRecoilState,
-  useRecoilValue,
-  useSetRecoilState,
-} from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   currentSongState,
   currentTimeState,
-  historyState,
   onPauseState,
-  rewindState,
+  rangeValueState,
+  songRestartState,
   tokenState,
 } from "../../recoil/atoms";
 import fetchSong, { fetchQueue } from "../../fetchSong";
-import { lengthState, queueState } from "../../recoil/selectors";
+import { queueState } from "../../recoil/selectors";
 import nextIcon from "../../extra/skip-next.svg";
 import prevIcon from "../../extra/skip-previous.svg";
 import playIcon from "../../extra/play-circle.svg";
 import pauseIcon from "../../extra/pause-circle.svg";
 import shuffleIcon from "../../extra/shuffle-variant.svg";
 import repeatIcon from "../../extra/repeat-variant.svg";
-import getLength from "../../getLength";
-import AudioControl from "../AudioControl";
+import Bar from "./ProgressBar";
+
 
 // NONE OF THIS IS SETUP PROPERLY YET
 
@@ -97,8 +92,6 @@ function PlayBar() {
   const setCurrentSong = useSetRecoilState(currentSongState);
   const queue = useRecoilValue(queueState);
   const [index, setIndex] = useState(0);
-  const [currentTime, setCurrentTime] = useRecoilState(currentTimeState);
-  const [width, setWidth] = useState(0)
 
   const _handleNext = () => {
     setIndex(index + 1);
@@ -114,12 +107,6 @@ function PlayBar() {
     if (index === 0) return;
     setIndex(index - 1);
   };
-
-  useEffect(() => {
-    if (!currentTime) return
-    const time = currentTime.substring(2)
-    setWidth(((Number(time) / 30) * 100).toFixed(0))
-  }, [currentTime])
 
   return (
     <div className="playbar-container">
@@ -145,15 +132,57 @@ function PlayBar() {
       </div>
 
       <div className="bar-container">
-        <div id="time">{currentTime}</div>
-        <div className="progressbar">
-          <div style={{width: `${width}%`}} className="bar">bar</div>
-        </div>
-        <div id="length">0:30</div>
+        <ProgressBar />
       </div>
     </div>
   );
 }
+
+const ProgressBar = () => {
+  const [editing, setEditing] = useState(false);
+  const [value, setValue] = useRecoilState(rangeValueState)
+  const [currentTime, setCurrentTime] = useRecoilState(currentTimeState)
+  const setSongRestart = useSetRecoilState(songRestartState)
+
+  return (
+    <div>
+      <div>length</div>
+      <div>
+        <div className="progressbar-container">
+          <div className="progressbar">
+            <div
+              style={{
+                width: `${editing ? value : (currentTime / 30) * 100}%`,
+              }}
+            >
+              &nbsp;
+            </div>
+          </div>
+          <input
+            style={{
+              background: `
+              linear-gradient(to right, 
+              #1db954 ${editing ? value : (currentTime / 30) * 100}%,
+              #5e5e5e ${editing ? value : (currentTime / 30) * 100}%`,
+            }}
+            type="range"
+            min="1"
+            max="100"
+            value={editing ? value : (currentTime / 30) * 100}
+            className="range"
+            onChange={(e) => setValue(e.target.value)}
+            onMouseUp={() => {
+              setEditing(false);
+              setCurrentTime(Number((value / 100) * 30));
+              setSongRestart(true)
+            }}
+            onMouseDown={() => setEditing(true)}
+          ></input>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 function OtherStuff() {
   return <div>Volume</div>;
