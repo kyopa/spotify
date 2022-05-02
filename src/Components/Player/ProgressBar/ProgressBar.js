@@ -4,8 +4,8 @@ import {
   songRestartState,
   currentTimeState,
   rangeValueState,
-} from "../../recoil/atoms";
-import "./progressbar.css"
+} from "../../../recoil/atoms";
+import "./progressbar.css";
 
 const ProgressBar = () => {
   const [editing, setEditing] = useState(false);
@@ -13,9 +13,11 @@ const ProgressBar = () => {
   const [currentTime, setCurrentTime] = useRecoilState(currentTimeState);
   const setSongRestart = useSetRecoilState(songRestartState);
 
+
+
   return (
-    <div>
-      <div>length</div>
+    <div className="bar-container">
+      <div>{`0:${(currentTime.toFixed() < 10 ? `0` : `` )+ currentTime.toFixed()}`}</div>
       <div>
         <div className="progressbar-container">
           <div className="progressbar">
@@ -49,6 +51,7 @@ const ProgressBar = () => {
           ></input>
         </div>
       </div>
+      <div>0:30</div>
     </div>
   );
 };

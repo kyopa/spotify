@@ -69,6 +69,8 @@
 
 .otherstuff {
   margin-right: 16px;
+  display: flex;
+  align-items: center;
 }
 
 .player-img {
@@ -79,7 +81,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 10px;
+  gap: 5px;
 }
 
 .playbar-container > .buttons {
@@ -120,35 +122,14 @@
   width: 24px;
 }
 
-.bar-container {
+
+.otherstuff {
   display: flex;
+  align-self: center;
+  gap: 15px;
 }
 
-.bar-container > div {
-  position: relative;
-  font-family: circular;
-  color: #a7a7a7;
-  font-size: 0.75rem;
-  line-height: 1rem;
-  text-transform: none;
-  letter-spacing: normal;
-}
 
-#time {
-  position: absolute;
-  top: 40.5px;
-  left: -31px;
-}
 
-.range {
-  position: absolute;
-  display: none;
-  margin: 0;
-  border-radius: 8px;
-  height: 4px;
-  width: 356px;
-  outline: none;
-  transition: background 450ms ease-in;
 
-  -webkit-appearance: none;
-}
+

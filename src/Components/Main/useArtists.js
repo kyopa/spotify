@@ -8,6 +8,7 @@ import {
   tokenState,
   topResultState,
 } from "../../recoil/atoms";
+import { fetchRelatedArtists } from "../../recoil/selectors";
 
 // THIS WILL RETURN AN ARRAY WITH
 // THE ARTIST
@@ -20,19 +21,6 @@ function useArtists() {
   const token = useRecoilValue(tokenState);
   const search = useRecoilValue(searchState);
   const [relatedArtists, setRelatedArtists] = useState();
-
-  function fetchRelatedArtists(artist) {
-    return fetch(
-      `https://api.spotify.com/v1/artists/${artist.id}/related-artists`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-  }
 
   function fetchArtistsBySearch(artist) {
     return fetch(

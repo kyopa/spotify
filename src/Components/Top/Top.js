@@ -1,11 +1,15 @@
 import { useContext } from "react";
+import { Routes, Route } from "react-router-dom";
 import Searchbar from "./Searchbar";
 
 function Top() {
   return (
+    
     <div className="topbar-container">
       <Arrows />
-      <Searchbar />
+      <Routes>
+        <Route path="/search" element={<Searchbar />}/>
+      </Routes>
       <div className="profile">Profile picture</div>
     </div>
   );

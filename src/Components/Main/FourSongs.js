@@ -16,6 +16,7 @@ import Search from "../Search";
 import { itemsState } from "../../recoil/selectors";
 import fetchSong from "../../fetchSong";
 import getLength from "../../getLength";
+import { Link } from "react-router-dom";
 
 function FourSongs() {
   const tracks = useRecoilValue(itemsState("tracks"));
@@ -118,16 +119,16 @@ function Artists({ song, isCurrentSong }) {
           <span key={crypto.randomUUID()}>
             {i !== song.artists.length - 1 ? (
               <span>
-                <a id={artist.id} key={i}>
+                <Link to={`/artist/${artist.id}/`} id={artist.id} key={i}>
                   {artist.name}
-                </a>
+                </Link>
                 ,{" "}
               </span>
             ) : (
               <span>
-                <a id={artist.id} key={i}>
+                <Link to={`/artist/${artist.id}/`} key={i} id={artist.id}>
                   {artist.name}
-                </a>
+                </Link>
               </span>
             )}
           </span>

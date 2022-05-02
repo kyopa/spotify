@@ -1,0 +1,8 @@
+#queue-icon {
+  margin-top: 5px;
+  filter: invert(70%);
+}
+
+#queue-icon:hover {
+  filter: invert(100%);
+}

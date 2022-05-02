@@ -7,19 +7,18 @@ export const currentSongState = atom({
 
 export const searchResultsState = atom({
   key: "searchResults",
-  default: []
-})
+  default: [],
+});
 
 export const songState = atomFamily({
   key: "song",
-  default: ""
-})
+  default: "",
+});
 
 export const onPauseState = atom({
   key: "onPause",
   default: true,
 });
-
 
 export const searchState = atom({
   key: "search",
@@ -43,35 +42,45 @@ export const tokenState = atom({
 
 export const historyState = atom({
   key: "history",
-  default: []
-})
+  default: [],
+});
 
 export const rewindState = atom({
   key: "rewind",
-  default: false
-})
+  default: false,
+});
 
 export const searchedSongState = atom({
   key: "searchedSong",
-  default: ""
-})
+  default: "",
+});
 
 export const currentTimeState = atom({
   key: "currentTime",
-  default: 0
-})
+  default: 0,
+});
 
 export const timeState = atom({
   key: "time",
-  default: 0
-})
+  default: 0,
+});
 
 export const songRestartState = atom({
   key: "songRestart",
-  default: false
-})
+  default: false,
+});
 
 export const rangeValueState = atom({
   key: "rangeValue",
-  default: 0.1
+  default: 0.1,
+});
+
+export const volumeState = atom({
+  key: "volume",
+  default: .5
+});
+
+export const ArtistState = atom({
+  key: "artist",
+  default: ""
 })

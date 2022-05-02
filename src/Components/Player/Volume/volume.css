@@ -1,0 +1,53 @@
+.volume-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: 10px;
+}
+
+#volume-icon {
+  width: 26px;
+}
+
+#volume-icon:hover {
+    filter: contrast(500%);
+}
+
+.volumex {
+  width: 93px;
+  height: 5px;
+  border-radius: 8px;
+  background: #5e5e5e;
+}
+
+.volumex > div {
+  height: 5px;
+  border-radius: inherit;
+  background-color: #fff;
+}
+
+.volume-container > input {
+  position: absolute;
+  display: none;
+  width: 93px;
+  left: 34px;
+  -webkit-appearance: none;
+  height: 5px;
+  border-radius: 8px;
+}
+
+.volume-container:hover input {
+  display: block;
+}
+
+.volume-container input::-webkit-slider-thumb {
+    border: solid 6px #ffffff;
+    border-radius: 0;
+  
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    -webkit-appearance: none;
+}
+
+

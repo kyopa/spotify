@@ -7,6 +7,9 @@ import ThirdRow from "./useAlbums";
 import TopResult from "./TopResult";
 import useAlbums from "./useAlbums";
 import hamming from "../../hamming";
+import "../../styles.css"
+
+
 
 function Main() {
   return (

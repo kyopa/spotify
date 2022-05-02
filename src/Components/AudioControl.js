@@ -7,6 +7,7 @@ import {
   timeState,
   songRestartState,
   rangeValueState,
+  volumeState,
 } from "../recoil/atoms";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { useRef, useEffect } from "react";
@@ -18,9 +19,10 @@ const AudioControl = () => {
   const audioRef = useRef();
   const onPause = useRecoilValue(onPauseState);
   const [rewind, setRewind] = useRecoilState(rewindState);
-  const [currentTime, setCurrentTime] = useRecoilState(currentTimeState)
-  const [songRestart, setSongRestart] = useRecoilState(songRestartState)
-  const rangeValue = useRecoilValue(rangeValueState)
+  const [currentTime, setCurrentTime] = useRecoilState(currentTimeState);
+  const [songRestart, setSongRestart] = useRecoilState(songRestartState);
+  const rangeValue = useRecoilValue(rangeValueState);
+  const volume = useRecoilValue(volumeState);
 
   useEffect(() => {
     if (!currentSong) return;
@@ -44,43 +46,28 @@ const AudioControl = () => {
     setRewind(false);
   }, [rewind]);
 
-
   let interval;
   useEffect(() => {
-    if (!currentSong) return
+    if (!currentSong) return;
     audioRef.current.pause();
     interval = setInterval(() => {
-      if (audioRef.current.currentTime >= 30) clearInterval(interval)
-      setCurrentTime(audioRef.current.currentTime)
-    }, 100)
-
-  }, [currentSong])
-
+      if (audioRef.current.currentTime >= 30) clearInterval(interval);
+      setCurrentTime(audioRef.current.currentTime);
+    }, 100);
+  }, [currentSong]);
 
   useEffect(() => {
-    if (!songRestart) return
-    console.log(50 / 100 * 30)
-    audioRef.current.pause();
-    audioRef.current.currentTime = rangeValue / 100 * 30
-    audioRef.current.play();
-    setSongRestart(false)
-  }, [songRestart])
+    if (!songRestart) return;
+    if (!onPause) audioRef.current.pause();
+    audioRef.current.currentTime = (rangeValue / 100) * 30;
 
+    if (!onPause) audioRef.current.play();
+    setSongRestart(false);
+  }, [songRestart]);
 
   useEffect(() => {
-    console.log(currentTime)
-  })
-
-
-
-
-  
-
-  
-
-
-
-
+    audioRef.current.volume = volume / 100;
+  }, [volume]);
 
   const getCurrentTime = () => {
     const secs = audioRef.current.currentTime;

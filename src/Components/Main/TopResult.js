@@ -22,9 +22,6 @@ function TopResult() {
 
   useEffect(() => {
     if (!artists || !tracks || !albums) return
-    console.log(artists)
-    console.log(tracks)
-    console.log(albums)
 
     setTopResult(
       hamming(
