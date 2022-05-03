@@ -18,6 +18,7 @@ function Search() {
     searchApi()
       .then((data) => data.json())
       .then((res) => {
+        console.log(search)
         setSearchResults(res);
       })
       .catch((err) => {
@@ -29,7 +30,7 @@ function Search() {
     return fetch(
       `https://api.spotify.com/v1/search?q=${
         search || " "
-      }&type=track%2Cartist%2Calbum%2Cplaylist%2Cshow%2Cepisode&market=US&limit=20`,
+      }&type=track%2Cartist%2Calbum&market=US&limit=20`,
       {
         headers: {
           Accept: "application/json",

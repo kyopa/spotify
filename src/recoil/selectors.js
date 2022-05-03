@@ -4,7 +4,9 @@ import {
   currentSongState,
   searchedSongState,
   searchResultsState,
+  searchState,
   tokenState,
+  topResultState,
 } from "./atoms";
 import hamming from "../hamming";
 import fetchSong, { fetchQueue } from "../fetchSong";
@@ -106,16 +108,41 @@ export const artistItemsState = selectorFamily({
           } catch (err) {
             console.log(err);
           }
-        case "relatedArtists": 
+        case "relatedArtists":
           try {
-            const resG = await fetchRelatedArtists(artist, token)
+            const resG = await fetchRelatedArtists(artist, token);
             const dataG = await resG.json();
-            return dataG
+            return dataG;
           } catch (err) {
-            console.log(err)
+            console.log(err);
           }
       }
     },
+});
+
+export const artistsArrState = selector({
+  key: "artistsArr",
+  get: async ({ get }) => {
+    const token = get(tokenState);
+    const topResult = get(topResultState);
+    const search = get(searchState);
+    console.log(topResult);
+    let arr;
+    if (!topResult) return;
+    arr = [topResult.type === "artist" ? topResult : topResult.artists[0]];
+    fetchRelatedArtists(arr[0], token)
+      .then((res) => res.json())
+      .then(
+        (data) =>
+          (arr = [
+            ...arr,
+            data
+              .slice(0, 3)
+              .sort((a, b) => a.popularity - b.popularity)
+              .reverse(),
+          ])
+      );
+  },
 });
 
 const fetchTopTracks = (artist, token) => {
@@ -161,7 +188,7 @@ export const fetchArtistAlbums = (artist, token) => {
 };
 
 export const fetchApperances = (artist, token) => {
-  if (!token) return
+  if (!token) return;
   return fetch(
     `https://api.spotify.com/v1/artists/${artist.id}/albums?include_groups=appears_on&market=US&limit=20`,
     {
@@ -174,10 +201,24 @@ export const fetchApperances = (artist, token) => {
   );
 };
 
-
-export function fetchRelatedArtists(artist, token) {
+export async function fetchRelatedArtists(artist, token) {
+  if (!token) return;
   return fetch(
     `https://api.spotify.com/v1/artists/${artist.id}/related-artists`,
+    {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+}
+
+export function fetchArtistsBySearch(search, token) {
+  if (!token) return;
+  return fetch(
+    `https://api.spotify.com/v1/search?q=${search}&type=artist&limit=40`,
     {
       headers: {
         Accept: "application/json",

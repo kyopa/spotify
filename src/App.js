@@ -5,25 +5,37 @@ import Player from "./Components/Player/Player/Player.js";
 import AudioControl from "./Components/AudioControl.js";
 import { BrowserRouter, Routes, Route, useMatch } from "react-router-dom";
 import "./styles.css";
+import SearchPage from "./Components/Main/Main.js";
+import { ArtistState } from "./recoil/atoms.js";
+import GreenPlayButton from "./Components/greenPlayButton/x.js";
 import Artist from "./Components/ArtistPage/Artist.js";
 
 function App() {
+  console.log(Artist);
   return (
     <BrowserRouter>
       <div className="app">
         <AudioControl />
         <div className="sidebar">sidebar</div>
         <div className="main">
-          <div className="topbar">
-            <Top />
+          <div className="arrows">
+            <button>O</button>
+            <button>O</button>
           </div>
+
+          <Routes>
+            <Route path="/search" element={<Top />} />
+          </Routes>
+
           <div className="content-spacing">
             <Suspense>
-            <Routes>
-              <Route path="/search" element={<Main />} />
-              <Route path="/artist/:id" element={<Artist />}/>
-            </Routes>
-            </Suspense> 
+              <Routes>
+                <Route path="/search" element={<Main />} />
+                <Route path="/artist/:id" element={<Artist />} />
+
+                <Route path="/album/:id" />
+              </Routes>
+            </Suspense>
           </div>
         </div>
         <div className="music-player player">
@@ -35,9 +47,6 @@ function App() {
     </BrowserRouter>
   );
 }
-
-
-
 
 
 export default App;

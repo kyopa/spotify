@@ -1,5 +1,4 @@
 import { albumsState, searchState, tokenState } from "../../recoil/atoms";
-import useArtists from "./useArtists";
 import { useRecoilValue } from "recoil";
 import { useContext } from "react";
 import { itemsState } from "../../recoil/selectors";

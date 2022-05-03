@@ -2,40 +2,98 @@ import { useEffect, useState } from "react";
 import { BrowserRouter, useMatch } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { ArtistState, tokenState } from "../../recoil/atoms";
-import {
-  artistItemsState,
-  artistSingles,
-  artistSinglesState,
-  artistTopTracks,
-} from "../../recoil/selectors";
+import { artistItemsState } from "../../recoil/selectors";
+import "./Artist.css";
+import Vibrant, { getHex } from "node-vibrant/lib/config";
+import GreenPlayButton from "../greenPlayButton/x";
+import Track from "./Track";
+import Discography from "./Discography";
 
 function Artist() {
   const match = useMatch("/artist/:id");
   const { params } = match;
   const token = useRecoilValue(tokenState);
   const [artist, setArtist] = useRecoilState(ArtistState);
-  const topTracks = useRecoilValue(artistItemsState("topTracks"));
-  const artistSingles = useRecoilValue(artistItemsState("singles"));
-  const artistAlbums = useRecoilValue(artistItemsState("albums"));
-  const appearsOn = useRecoilValue(artistItemsState("appearsOn"))
-  const relatedArtists = useRecoilValue(artistItemsState("relatedArtists"))
+  const appearsOn = useRecoilValue(artistItemsState("appearsOn"));
+  const relatedArtists = useRecoilValue(artistItemsState("relatedArtists"));
 
   useEffect(() => {
     fetchArtist(params.id, token)
       .then((res) => res.json())
       .then((data) => setArtist(data));
-    console.log(topTracks);
+    return () => setArtist("");
   }, []);
 
+  return (
+    <div className="artist-page">
+      {artist && (
+        <div>
+          <Header />
+          <PlayFollow />
+          <Popular />
+          <Discography />
+        </div>
+      )}
+    </div>
+  );
+}
 
-  useEffect(() => {
-      console.log(appearsOn)
-  }, [appearsOn]);
+function Header() {
+  const artist = useRecoilValue(ArtistState);
+  return (
+    <div className="artist-header">
+      <div className="header-contents">
+        <img src={artist.images[0].url}></img>
+        <div className="header-details">
+          <div>verified Artist</div>
+          <h1>{artist.name}</h1>
+          <div id="listeners">monthly listeners</div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
+function PlayFollow() {
+  const [following, setFollowing] = useState(false);
+  return (
+    <div className="playfollow-container">
+      <button id="play">P</button>
+      <button id="follow" onClick={() => setFollowing(!following)}>
+        {!following ? "follow" : "following"}
+      </button>
+    </div>
+  );
+}
 
+function Popular() {
+  const topTracks = useRecoilValue(artistItemsState("topTracks"));
+  const [hide, setHide] = useState(true);
 
-
-  return <div>{artist.name}</div>;
+  return (
+    <div className="popular">
+      {topTracks && (
+        <div>
+          <h2>Popular</h2>
+          <div className="tracks-container" style={{}}>
+            {topTracks.tracks.map((track, i) => {
+              return (
+                <Track
+                key={i}
+                  hide={i >= 5 && hide === true}
+                  track={track}
+                  num={i + 1}
+                />
+              );
+            })}
+          </div>
+          <div id="hide" onClick={() => setHide(!hide)}>
+            {hide ? "show all" : "show less"}
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
 const fetchArtist = (id, token) => {

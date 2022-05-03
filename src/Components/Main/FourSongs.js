@@ -7,19 +7,17 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   currentSongState,
   currentTimeState,
-  historyState,
   onPauseState,
   searchedSongState,
   tokenState,
 } from "../../recoil/atoms";
-import Search from "../Search";
 import { itemsState } from "../../recoil/selectors";
-import fetchSong from "../../fetchSong";
 import getLength from "../../getLength";
 import { Link } from "react-router-dom";
 
 function FourSongs() {
   const tracks = useRecoilValue(itemsState("tracks"));
+
 
   return (
     <div>
@@ -42,7 +40,7 @@ function FourSongs() {
   );
 }
 
-function Song(props) {
+export function Song(props) {
   const [song, setSong] = useState();
   const token = useRecoilValue(tokenState);
   const currentSong = useRecoilValue(currentSongState);
@@ -81,7 +79,7 @@ function Song(props) {
   );
 }
 
-function Box({ song, isCurrentSong }) {
+export function Box({ song, isCurrentSong }) {
   const onPause = useRecoilValue(onPauseState);
   const setCurrentSong = useSetRecoilState(currentSongState);
   if (!song) return;

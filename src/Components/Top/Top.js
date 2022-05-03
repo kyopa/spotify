@@ -4,13 +4,15 @@ import Searchbar from "./Searchbar";
 
 function Top() {
   return (
-    
+    <div className="topbar">
     <div className="topbar-container">
-      <Arrows />
-      <Routes>
-        <Route path="/search" element={<Searchbar />}/>
-      </Routes>
-      <div className="profile">Profile picture</div>
+      <div className="takeup-space">
+        <button>w</button>
+        <button>w</button>
+      </div>
+
+      <Searchbar />
+    </div>
     </div>
   );
 }

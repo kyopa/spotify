@@ -1,19 +1,25 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import useArtists from "./useArtists";
 import blackImg from "../../extra/blackImage.webp";
 import { useMemo } from "react";
+import { Link } from "react-router-dom";
+import GreenPlayButton from "../greenPlayButton/x";
+import "../greenPlayButton/x.css";
+import playIcon from "../../extra/playIcon.png"
 
 function Row({ array, album }) {
+  console.log("RUNS")
+  console.log(array)
+
   return (
     <div>
       <div className="item-row">
         {array &&
           (array.length > 1 ? (
-            array.map((item) => {
+            array.slice(0, 7).map((item) => {
               return (
                 <Item
-                  key={crypto.randomUUID()}
+                  key={item.id}
                   album={album}
                   item={item}
                   artist={item.type === "artist" ? true : false}
@@ -21,7 +27,12 @@ function Row({ array, album }) {
               );
             })
           ) : (
-            <h2>hello</h2>
+            <Item
+              key={array[0].id}
+              album={album}
+              item={array[0]}
+              artist={array[0].type === "artist" ? true : false}
+            />
           ))}
       </div>
     </div>
@@ -39,26 +50,31 @@ function Item({ item, artist, album }) {
 
   return (
     <div className="item-details">
-      <img className={album === true ? "album" : ""} src={img}></img>
-      <div className="item-name">{item.name}</div>
-      {artist && <div className="type">Artist</div>}
-      {!artist && (
-        <div className="album-details">
-          <span>{item.release_date.substring(0, 4)}</span>{" "}
-          <span id="dot"> • </span>
-          {item.artists.map((artist, index) => {
-            return (
-              <span key={crypto.randomUUID()}>
-                {index !== item.artists.length - 1 ? (
-                  <a> {artist.name}, </a>
-                ) : (
-                  <a> {artist.name}</a>
-                )}
-              </span>
-            );
-          })}
+      <Link to={album ? `/album/${item.id}/` : `/artist/${item.id}/`}>
+        <div className="item-image">
+          <img className={album ? "album" : ""} src={img}></img>
+          <GreenPlayButton bottom="11" right="8" />
         </div>
-      )}
+        <div className="item-name">{item.name}</div>
+        {artist && <div className="type">Artist</div>}
+        {!artist && (
+          <div className="album-details">
+            <span>{item.release_date.substring(0, 4)}</span>{" "}
+            <span id="dot"> • </span>
+            {item.artists.map((artist, index) => {
+              return (
+                <span key={crypto.randomUUID()}>
+                  {index !== item.artists.length - 1 ? (
+                    <a> {artist.name}, </a>
+                  ) : (
+                    <a> {artist.name}</a>
+                  )}
+                </span>
+              );
+            })}
+          </div>
+        )}
+      </Link>
     </div>
   );
 }

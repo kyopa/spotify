@@ -1,0 +1,204 @@
+.artist-header {
+  background-color: rgb(197, 170, 64);
+  height: 340px;
+  margin: 0;
+  display: flex;
+  align-items: flex-end;
+}
+
+.header-contents {
+  padding-left: 32px;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 24px;
+}
+
+.header-contents > img {
+  width: 232px;
+  height: 232px;
+  border-radius: 50%;
+}
+
+.header-details {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  justify-content: flex-end;
+}
+
+#listeners {
+  margin-bottom: 10px;
+}
+
+.artist-page h1 {
+  margin: 0;
+  font-size: 96px;
+  text-transform: none;
+  letter-spacing: -0.04em;
+}
+
+.playfollow-container,
+.popular {
+  padding: 24px 32px;
+}
+
+.playfollow-container {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.playfollow-container > #play {
+  background-color: #1ed760;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  outline: 0;
+  border: 0;
+  cursor: default;
+}
+
+.playfollow-container > #play:hover {
+  transform: scale(1.05);
+}
+
+.playfollow-container > #follow {
+  width: fit-content;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  cursor: default;
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  color: rgb(255, 255, 255);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 16px;
+  padding: 7px 15px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.playfollow-container > #follow:hover {
+  border-color: rgb(255, 255, 255);
+}
+
+.popular {
+  padding-top: 5px;
+  font-size: 1rem;
+  line-height: 1.75rem;
+  text-transform: none;
+  letter-spacing: -0.04em;
+}
+
+.tracks-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.track {
+  display: flex;
+  gap: 16px;
+  width: 700px;
+}
+
+.popular > h2 {
+  margin: 0;
+}
+
+.track {
+  display: flex;
+  width: 1100px;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  margin-left: 20px;
+  background-color: transparent;
+  padding: 7px;
+  padding-left: 15px;
+  border-radius: 4px;
+}
+
+.track:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.track > #img {
+  width: 40px;
+  position: relative;
+  left: 25px;
+}
+
+.track > #trackname {
+  position: relative;
+  left: 25px;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  text-transform: none;
+  letter-spacing: normal;
+  font-family: circular;
+}
+
+.track > #num {
+  position: absolute;
+  margin-top: 5px;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  text-transform: none;
+  letter-spacing: normal;
+  color: #a6a6a6;
+  font-family: circular;
+}
+
+.track > #tracklength {
+  margin-left: auto;
+  margin-right: 20px;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  text-transform: none;
+  letter-spacing: normal;
+  color: #a6a6a6;
+  font-family: circular;
+}
+
+.tracks-container > div:nth-child(2) {
+  display: none;
+}
+
+.popular > div > #hide {
+  margin-top: 18px;
+  margin-left: 30px;
+  font-size: 0.72rem;
+  line-height: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #b3b3b3;
+}
+
+.popular > div > #hide:hover {
+  color: #fff;
+}
+
+.disco-container {
+  margin-left: 32px;
+}
+
+.disco-container > h2 {
+  font-size: 1.3rem;
+  width: fit-content;
+}
+
+.disco-container > h2:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.options > button {
+  font-size: 0.875rem;
+    line-height: 1rem;
+    text-transform: none;
+    letter-spacing: normal;
+}
