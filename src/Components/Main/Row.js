@@ -8,7 +8,7 @@ import "../greenPlayButton/x.css";
 import playIcon from "../../extra/playIcon.png"
 
 function Row({ array, album }) {
-  console.log("RUNS")
+  if (!array[0]) return
   console.log(array)
 
   return (
@@ -16,7 +16,7 @@ function Row({ array, album }) {
       <div className="item-row">
         {array &&
           (array.length > 1 ? (
-            array.slice(0, 7).map((item) => {
+            array.slice(0, 8).map((item) => {
               return (
                 <Item
                   key={item.id}
@@ -53,7 +53,7 @@ function Item({ item, artist, album }) {
       <Link to={album ? `/album/${item.id}/` : `/artist/${item.id}/`}>
         <div className="item-image">
           <img className={album ? "album" : ""} src={img}></img>
-          <GreenPlayButton bottom="11" right="8" />
+          <GreenPlayButton animate bottom="13px" right="8px" position="absolute"/>
         </div>
         <div className="item-name">{item.name}</div>
         {artist && <div className="type">Artist</div>}

@@ -1,27 +1,33 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, useMatch } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { ArtistState, tokenState } from "../../recoil/atoms";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { ArtistState, searchState, tokenState } from "../../recoil/atoms";
 import { artistItemsState } from "../../recoil/selectors";
 import "./Artist.css";
 import Vibrant, { getHex } from "node-vibrant/lib/config";
 import GreenPlayButton from "../greenPlayButton/x";
 import Track from "./Track";
 import Discography from "./Discography";
+import Similar from "./Similar";
+import Section from "../Main/Section";
 
 function Artist() {
   const match = useMatch("/artist/:id");
   const { params } = match;
   const token = useRecoilValue(tokenState);
   const [artist, setArtist] = useRecoilState(ArtistState);
-  const appearsOn = useRecoilValue(artistItemsState("appearsOn"));
-  const relatedArtists = useRecoilValue(artistItemsState("relatedArtists"));
+  const setSearch = useSetRecoilState(searchState) 
+  const similar = useRecoilValue(artistItemsState("relatedArtists"))
 
   useEffect(() => {
+    if (!token) return
     fetchArtist(params.id, token)
       .then((res) => res.json())
       .then((data) => setArtist(data));
-    return () => setArtist("");
+    return () => {
+      setArtist("")
+      setSearch("")
+    };
   }, []);
 
   return (
@@ -32,6 +38,7 @@ function Artist() {
           <PlayFollow />
           <Popular />
           <Discography />
+          <Similar />
         </div>
       )}
     </div>
@@ -97,6 +104,7 @@ function Popular() {
 }
 
 const fetchArtist = (id, token) => {
+  if (!token) return
   return fetch(`https://api.spotify.com/v1/artists/${id}`, {
     headers: {
       Accept: "application/json",

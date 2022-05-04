@@ -1,0 +1,71 @@
+.sidebar {
+  background-color: black;
+}
+
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 20px;
+  padding-right: 30px;
+  padding-top: 15px;
+  letter-spacing: 0.2rem;
+}
+
+.nav > div {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 5px;
+}
+
+
+.nav > div > a {
+  font-family: circular;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 700;
+  margin-top: 7px;
+  color: #b3b3b3;
+}
+
+.nav > div:hover {
+    cursor: pointer;
+}
+
+.nav > div:hover > a {
+    color: #fff;
+}
+
+.nav > div:hover > img {
+    filter: invert(100%);
+}
+
+.sidebar img {
+  filter: invert(75%);
+}
+
+.nav img {
+  width: 28px;
+}
+
+.best {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  margin-top: 10px;
+}
+
+.best > img {
+  filter: invert(100%);
+}
+
+#guitar {
+  width: 45px;
+}
+
+#superstar {
+  margin: 0;
+}

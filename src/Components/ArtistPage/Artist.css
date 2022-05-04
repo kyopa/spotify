@@ -182,23 +182,51 @@
   color: #fff;
 }
 
-.disco-container {
+.disco-container,
+.similar-container {
   margin-left: 32px;
 }
 
-.disco-container > h2 {
+.disco-container > h2,
+.similar-container > h2 {
   font-size: 1.3rem;
   width: fit-content;
 }
 
-.disco-container > h2:hover {
+.disco-container > h2:hover,
+.similar-container > h2:hover {
   text-decoration: underline;
   cursor: pointer;
 }
 
+.options {
+  margin-bottom: 25px;
+}
+
 .options > button {
+  margin-right: 10px;
   font-size: 0.875rem;
-    line-height: 1rem;
-    text-transform: none;
-    letter-spacing: normal;
+  line-height: 1rem;
+  text-transform: none;
+  letter-spacing: normal;
+  font-family: circular;
+  cursor: default;
+  padding: 8px 12px;
+  border: 0;
+  outline: none;
+  border-radius: 32px;
+}
+
+.idle {
+  background-color: #232323;
+  color: #fff;
+}
+
+.active {
+  color: #000;
+  background-color: #fff;
+}
+
+.similar-container {
+  margin-top: 40px;
 }

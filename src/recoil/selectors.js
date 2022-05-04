@@ -120,30 +120,6 @@ export const artistItemsState = selectorFamily({
     },
 });
 
-export const artistsArrState = selector({
-  key: "artistsArr",
-  get: async ({ get }) => {
-    const token = get(tokenState);
-    const topResult = get(topResultState);
-    const search = get(searchState);
-    console.log(topResult);
-    let arr;
-    if (!topResult) return;
-    arr = [topResult.type === "artist" ? topResult : topResult.artists[0]];
-    fetchRelatedArtists(arr[0], token)
-      .then((res) => res.json())
-      .then(
-        (data) =>
-          (arr = [
-            ...arr,
-            data
-              .slice(0, 3)
-              .sort((a, b) => a.popularity - b.popularity)
-              .reverse(),
-          ])
-      );
-  },
-});
 
 const fetchTopTracks = (artist, token) => {
   if (!artist) return;
@@ -159,7 +135,7 @@ const fetchTopTracks = (artist, token) => {
   );
 };
 
-const fetchArtistSingles = (artist, token) => {
+export const fetchArtistSingles = (artist, token) => {
   if (!artist) return;
   return fetch(
     `https://api.spotify.com/v1/artists/${artist.id}/albums?include_groups=single&market=US`,
@@ -174,6 +150,7 @@ const fetchArtistSingles = (artist, token) => {
 };
 
 export const fetchArtistAlbums = (artist, token) => {
+  console.log(artist)
   if (!artist) return;
   return fetch(
     `https://api.spotify.com/v1/artists/${artist.id}/albums?market=US`,

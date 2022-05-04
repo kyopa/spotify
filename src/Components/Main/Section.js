@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import Row from "./Row";
 
 function Section(props) {
-  console.log(props.array);
+  if (!props.array[0]) return
   return (
     <div>
       <div className="row-see-all">

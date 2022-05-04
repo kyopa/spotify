@@ -7,6 +7,7 @@ import { itemsState } from "../../recoil/selectors";
 import FourSongs from "./FourSongs";
 import { Link } from "react-router-dom";
 import GreenPlayButton from "../greenPlayButton/x";
+import blackIcon from "../../extra/blackImage.webp";
 
 
 function TopResult() {
@@ -15,12 +16,30 @@ function TopResult() {
   const artists = useRecoilValue(itemsState("artists"));
   const search = useRecoilValue(searchState);
   const [topResult, setTopResult] = useRecoilState(topResultState);
+  const [img, setImg] = useState();
 
   useEffect(() => {
     if (!artists || !tracks || !albums) return;
 
     setTopResult(hamming(artists[0], tracks[0], albums[0], search));
   }, [tracks, artists, albums]);
+  
+  useEffect(() => {
+    console.log(topResult)
+    if (!topResult) return setImg(blackIcon)
+    if (topResult.type === "artist") {
+      console.log(topResult)
+      return topResult.images.length !== 0 ? setImg(topResult.images[0].url) : setImg(blackIcon)
+    }
+    if (topResult.type === "album") {
+      console.log(topResult.images)
+      return topResult.images.length !== 0 ? setImg(topResult.images[0].url) : setImg(blackIcon)
+    }
+    if (topResult.type === "track") {
+      console.log(topResult.album.images)
+      return topResult.album.images.length !== 0 ? setImg(topResult.album.images[0].url) : setImg(blackIcon)
+    }
+  }, [topResult])
 
   return (
     <div>
@@ -30,13 +49,13 @@ function TopResult() {
             <h2>Top Result</h2>
             <div className="top-result-box">
               {topResult && (
-                <Link to={`/${topResult.type === "artist" ? "artist" : "album"}/${topResult.id}`}>
+                <Link
+                  to={`/${topResult.type === "artist" ? "artist" : "album"}/${
+                    topResult.id
+                  }`}
+                >
                   <div className="container">
-                    {topResult && !topResult.images ? (
-                      <img src={topResult.album.images[0].url}></img>
-                    ) : (
-                      <img src={topResult && topResult.images[0].url}></img>
-                    )}
+                    <img src={img}></img>
                     <div id="name">
                       {topResult && <div>{topResult.name}</div>}
                     </div>
@@ -58,7 +77,7 @@ function TopResult() {
                       </a>
                       <div className="type">{topResult.type}</div>
                     </div>
-                    <GreenPlayButton right="2" />
+                    <GreenPlayButton animate right="2px" position="absolute" />
                   </div>
                 </Link>
               )}
@@ -70,7 +89,10 @@ function TopResult() {
           </div>
         </div>
       )}
-      {topResult && topResult.name === "" && <h1>NO RESULT FOUND</h1>}
+      {topResult && topResult.name === "" && <div id="noresults">
+        <h3>No results found for "{search}"</h3>
+        <p>Please make sure your words are spelled correctly or use less or different keywords</p>
+        </div>}
     </div>
   );
 }

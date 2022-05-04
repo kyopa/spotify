@@ -1,0 +1,163 @@
+.album-header {
+    background: linear-gradient( hotpink 1%, black 95%);
+    
+    height: 340px;
+    margin: 0;
+    display: flex;
+    align-items: flex-end;
+}
+
+.header-content {
+    margin-left: 32px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.header-content > img {
+    width: 232px;
+    margin-right: 24px;
+}
+
+.header-content > .album-details {
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.album-details > #type {
+    cursor: text;
+}
+
+.album-details > #albumname {
+    font-size: 100px;
+    font-size: 3vw;
+}
+
+
+.minor-details {
+    display: flex;
+}
+
+.album-nav {
+    margin-top: 25px;
+    margin-left: 32px;
+    display: flex;
+    gap: 25px;
+}
+
+#dots {
+    filter: invert(75%);
+    width: 40px;
+}
+
+#dots:hover {
+    filter: invert(100%);
+}
+
+.album-tracks {
+    margin-left: 33px;
+    margin-top: 34px;
+}
+
+.tracks-header {
+    display: flex;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    font-size: 0.75rem;
+    line-height: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #b3b3b3;
+    font-family: circular;
+}
+
+.tracks-header > #hashtag {
+    font-size: 1rem;
+}
+
+.tracks-header > div {
+    margin-left: 20px;
+}
+
+.tracks {
+    margin-top: 30px;
+}
+
+.song-container {
+    display: flex;
+    align-items: center;
+    gap: 23px;
+    position: relative;
+    padding: 8px;
+    padding-top: 15px;
+    padding-left: 22px;
+    border-radius: 4px;
+}
+
+.song-container:hover {
+    background: rgba(255,255,255,.1);
+}
+
+.song-container  #trackname {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    text-transform: none;
+    font-family: circular;
+}
+
+
+.song-container > #num {
+    position: absolute;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    text-transform: none;
+    letter-spacing: normal;
+    color: #b3b3b3;
+    font-family: circular;
+}
+
+.song-container .song-details, #label, .moreby {
+    margin-left: 33px;
+}
+
+.moreby {
+    margin-top: 20px;
+    margin-bottom: 65px;
+}
+
+.artist-cell {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+#explicit {
+    font-size: 9px;
+    font-family: circular;
+    color: black;
+    background: rgb(255,255,255,.6);
+    padding: 3px 5px;
+    border-radius: 2px;
+}
+
+#artists {
+    font-size: 0.875rem;
+    line-height: 1rem;
+    text-transform: none;
+    letter-spacing: normal;
+    font-family: circular;
+    color: #b3b3b3;
+}
+
+#label {
+    margin-top: 22px;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    text-transform: none;
+    letter-spacing: normal;
+    font-family: circular;
+    color: #b3b3b3;
+}
+

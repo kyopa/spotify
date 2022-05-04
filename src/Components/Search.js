@@ -13,16 +13,16 @@ function Search() {
 
   useEffect(() => {
     if (!token) return;
-    if (search === "") return
+    if (search === "") return;
 
     searchApi()
       .then((data) => data.json())
       .then((res) => {
-        console.log(search)
+        console.log(search);
         setSearchResults(res);
       })
       .catch((err) => {
-        if (err.status === 404) alert("heeye")
+        if (err.status === 404) alert("heeye");
       });
   }, [search]);
 
@@ -44,6 +44,9 @@ function Search() {
   return (
     <div>
       <input
+        id="search"
+        autoComplete="off"
+        spellCheck="false"
         onChange={(e) => setSearch(e.target.value)}
         className="searchbar-input"
         placeholder="Artists, songs or podcasts"
