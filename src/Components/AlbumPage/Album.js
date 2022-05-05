@@ -1,29 +1,34 @@
 import { useEffect, useMemo, useState } from "react";
-import { useMatch } from "react-router-dom";
+import { useMatch, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { tokenState } from "../../recoil/atoms";
 import GreenPlayButton from "../greenPlayButton/x";
 import dotsIcon from "../../extra/dots-horizontal.svg";
+import { Link } from "react-router-dom";
 import "./Album.css";
 import Songs from "./Songs";
 import { fetchArtistAlbums, fetchArtistSingles } from "../../recoil/selectors";
 import Section from "../Main/Section";
+import FadeColor, { useGetColor } from "../FadeColor";
+import { getTotalLength } from "../../getLength";
 
 function Album() {
-  const id = useMatch("/album/:id").params.id;
   const token = useRecoilValue(tokenState);
   const [album, setAlbum] = useState([]);
   const [singles, setSingles] = useState([]);
   const [albums, setAlbums] = useState([]);
+  const id = useParams().id;
 
   useEffect(() => {
-    if (!id) return;
-    if (!token) return;
+    console.log(token, id);
+
     (async () => {
       try {
+        console.log(id);
         const res = await fetchItem("albums", id);
         const data = await res.json();
         setAlbum(data);
+        console.log(data);
         if (data.error) throw data.error;
       } catch (err) {
         console.log(err);
@@ -38,8 +43,8 @@ function Album() {
     })();
     return () => {
       setAlbum([]);
-      setAlbums([])
-      setSingles([])
+      setAlbums([]);
+      setSingles([]);
     };
   }, []);
 
@@ -57,20 +62,10 @@ function Album() {
       });
   }, [album]);
 
-  useEffect(() => {
-    console.log(albums);
-    console.log(singles);
-  }, [albums, singles]);
-
   const moreBy = useMemo(() => {
     return [...albums, ...singles];
   }, [albums, singles]);
 
-  useEffect(() => {
-    console.log(moreBy);
-  }, [moreBy]);
-
-  console.log(id);
   const fetchItem = (type, id) => {
     return fetch(`https://api.spotify.com/v1/${type}/${id}?market=US`, {
       headers: {
@@ -81,9 +76,19 @@ function Album() {
     });
   };
 
+  const src = useMemo(() => {
+    if (Array.isArray(album) || album.error) return;
+
+    return album.images[0].url;
+  }, [album]);
+  // get most dominant color
+  const data = useGetColor(src);
+  console.log(data);
+
   return (
     <div className="album-page">
-      <Header album={album} />
+      <Header album={album} color={data} />
+      <FadeColor data={data} />
       <Nav />
       <Songs album={album} />
       <Label album={album} />
@@ -101,22 +106,44 @@ function Album() {
   );
 }
 
-function Header({ album }) {
-  console.log(album);
+function Header({ album, color }) {
+  const length = getTotalLength(album.tracks);
+  console.log(length);
+  console.log("HELLO");
   return (
-    <div className="album-header">
+    <div
+      className="album-header"
+      style={{
+        background: `linear-gradient(transparent 0,rgba(0,0,0,.5) 100%), ${color}`,
+      }}
+    >
       {album.images && (
         <div className="header-content">
           <img src={album.images[0].url}></img>
           <div className="album-details">
-            <div id="type">type</div>
+            <div id="type">{album.type}</div>
             <div id="albumname">{album.name}</div>
 
             <div className="minor-details">
-              <div>{album.artists[0].name}</div>
-              <div>{album.release_date}</div>
-              <div>{album.total_tracks} songs</div>
-              <div>length</div>
+              <div className="details-artists">
+                {album.artists.map((artist) => {
+                  console.log(artist);
+                  return (
+                    <Link id="artistlink" to={`/artist/${artist.id}`}>
+                      {artist.name}
+                    </Link>
+                  );
+                })}
+              </div>
+              <div id="releasedate">
+                {" "}
+                {new Date(album.release_date).getFullYear()}
+              </div>
+              <div className="total">
+                {album.total_tracks}
+                {album.total_tracks > 1 ? " songs" : " song"}, &#8203;
+              </div>
+              <div id="albumlength"> {length}</div>
             </div>
           </div>
         </div>
@@ -135,7 +162,6 @@ function Nav() {
 }
 
 function Label({ album }) {
-  console.log(album);
   return <div id="label">{album.label}</div>;
 }
 

@@ -5,19 +5,21 @@ import playIcon from "../../extra/playicon.png";
 import pauseIcon from "../../extra/pause.png";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  currentSongState,
   currentTimeState,
   onPauseState,
+  posState,
   searchedSongState,
   tokenState,
 } from "../../recoil/atoms";
+import { currentSongState } from "../../recoil/atoms";
 import { itemsState } from "../../recoil/selectors";
 import getLength from "../../getLength";
 import { Link } from "react-router-dom";
+import { useRecoilCallback } from "recoil";
+import useSetCurrentInfo from "../../recoilCallback";
 
 function FourSongs() {
   const tracks = useRecoilValue(itemsState("tracks"));
-
 
   return (
     <div>
@@ -43,7 +45,6 @@ function FourSongs() {
 export function Song(props) {
   const [song, setSong] = useState();
   const token = useRecoilValue(tokenState);
-  const currentSong = useRecoilValue(currentSongState);
 
   const fetchSong = (song) => {
     return fetch(`https://api.spotify.com/v1/tracks/${song.id}?market=US`, {
@@ -72,34 +73,25 @@ export function Song(props) {
     <div>
       {song && (
         <ul className="songs">
-          <Box song={song} isCurrentSong={currentSong === song.id} />
+          <Box song={song} />
         </ul>
       )}
     </div>
   );
 }
 
-export function Box({ song, isCurrentSong }) {
-  const onPause = useRecoilValue(onPauseState);
-  const setCurrentSong = useSetRecoilState(currentSongState);
+export function Box({ song }) {
   if (!song) return;
   const length = getLength(song);
 
   return (
-    <li
-      style={{
-        backgroundColor:
-          isCurrentSong && !onPause ? "rgba(255,255,255,.3)" : "",
-      }}
-      className="song"
-      onDoubleClick={() => setCurrentSong(song.id)}
-    >
-      <Img song={song} isCurrentSong={isCurrentSong} />
+    <li className="song">
+      <Img song={song} />
       <div className="song-details">
-        <SongTitle song={song} isCurrentSong={isCurrentSong} />
+        <SongTitle song={song} />
         <div className="grey-details">
           {song.explicit ? <div id="E">E</div> : null}
-          <Artists song={song} isCurrentSong={isCurrentSong} />
+          <Artists song={song} />
         </div>
       </div>
       <div id="length">{length}</div>
@@ -107,11 +99,9 @@ export function Box({ song, isCurrentSong }) {
   );
 }
 
-function Artists({ song, isCurrentSong }) {
-  const onPause = useRecoilValue(onPauseState);
-
+function Artists({ song }) {
   return (
-    <div className={isCurrentSong && !onPause ? "playing" : ""} id="artists">
+    <div id="artists">
       {song.artists.map((artist, i) => {
         return (
           <span key={crypto.randomUUID()}>
@@ -136,57 +126,31 @@ function Artists({ song, isCurrentSong }) {
   );
 }
 
-function Img({ song, isCurrentSong }) {
-  const setCurrentSong = useSetRecoilState(currentSongState);
-  const setSearchedSong = useSetRecoilState(searchedSongState);
-  const [onPause, setOnPause] = useRecoilState(onPauseState);
-  const setCurrentTime = useSetRecoilState(currentTimeState)
+function Img({ song }) {
+  const setCurrentSongInfo = useSetCurrentInfo();
 
   return (
     <div
       id={song.id}
       className="img-container"
-      onClick={() => {
-        return isCurrentSong
-          ? setOnPause(!onPause)
-          : (setCurrentSong(song.id),
-            setSearchedSong(song.id),
-            setOnPause(false)),
-            setCurrentTime(0)
-      }}
+      onClick={() => setCurrentSongInfo(song.id)}
     >
       <img
         loading="lazy"
-        className={isCurrentSong && !onPause ? "playing" : ""}
         id="song-img"
         src={song.album && song.album.images[0].url}
       ></img>
       <div className="play-mini-song">
-        <img
-          id="play-icon"
-          src={playIcon}
-          className={isCurrentSong && !onPause ? "" : "idle"}
-        ></img>
+        <img id="play-icon" src={playIcon}></img>
 
-        <img
-          className={isCurrentSong && onPause ? "playing" : ""}
-          id="pause-icon"
-          src={pauseIcon}
-        ></img>
+        <img id="pause-icon" src={pauseIcon}></img>
       </div>
     </div>
   );
 }
 
-function SongTitle({ song, isCurrentSong }) {
-  return (
-    <div
-      style={{ color: isCurrentSong ? "#1db954" : "" }}
-      className="song-title"
-    >
-      {song.name}
-    </div>
-  );
+function SongTitle({ song }) {
+  return <div className="song-title">{song.name}</div>;
 }
 
 export default FourSongs;

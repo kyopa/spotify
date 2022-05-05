@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { BrowserRouter, useMatch } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { ArtistState, searchState, tokenState } from "../../recoil/atoms";
+import { ArtistState, currentSongState, searchState, tokenState } from "../../recoil/atoms";
 import { artistItemsState } from "../../recoil/selectors";
 import "./Artist.css";
 import Vibrant, { getHex } from "node-vibrant/lib/config";
@@ -10,31 +10,42 @@ import Track from "./Track";
 import Discography from "./Discography";
 import Similar from "./Similar";
 import Section from "../Main/Section";
+import { useColor } from "color-thief-react";
+import FadeColor, { useGetColor } from "../FadeColor";
 
 function Artist() {
   const match = useMatch("/artist/:id");
   const { params } = match;
   const token = useRecoilValue(tokenState);
   const [artist, setArtist] = useRecoilState(ArtistState);
-  const setSearch = useSetRecoilState(searchState) 
-  const similar = useRecoilValue(artistItemsState("relatedArtists"))
+  const setSearch = useSetRecoilState(searchState);
 
   useEffect(() => {
-    if (!token) return
+    if (!token) return;
     fetchArtist(params.id, token)
       .then((res) => res.json())
       .then((data) => setArtist(data));
     return () => {
-      setArtist("")
-      setSearch("")
+      setArtist("");
+      setSearch("");
     };
   }, []);
 
+  const src = useMemo(() => {
+    if (!artist) return;
+    console.log(artist.followers.total.toLocaleString())
+    return artist.images[0].url;
+  }, [artist]);
+
+  const data = useGetColor(src)
+
+  
   return (
     <div className="artist-page">
       {artist && (
-        <div>
-          <Header />
+        <div id="artist-page-box">
+          <Header color={data}/>
+          <FadeColor data={data}/>
           <PlayFollow />
           <Popular />
           <Discography />
@@ -45,16 +56,18 @@ function Artist() {
   );
 }
 
-function Header() {
+function Header({color}) {
   const artist = useRecoilValue(ArtistState);
+
+
   return (
-    <div className="artist-header">
+    <div className="artist-header" style={{background: `linear-gradient(transparent 0,rgba(0,0,0,.5) 100%), ${color}`}}>
       <div className="header-contents">
         <img src={artist.images[0].url}></img>
         <div className="header-details">
-          <div>verified Artist</div>
+          <div>Verified Artist</div>
           <h1>{artist.name}</h1>
-          <div id="listeners">monthly listeners</div>
+          <div id="listeners">{artist.followers.total.toLocaleString()} monthly listeners</div>
         </div>
       </div>
     </div>
@@ -85,12 +98,14 @@ function Popular() {
           <div className="tracks-container" style={{}}>
             {topTracks.tracks.map((track, i) => {
               return (
+                <Suspense fallback={<h1>loading track</h1>}>
                 <Track
-                key={i}
+                  key={i}
                   hide={i >= 5 && hide === true}
                   track={track}
                   num={i + 1}
                 />
+                </Suspense>
               );
             })}
           </div>
@@ -104,7 +119,7 @@ function Popular() {
 }
 
 const fetchArtist = (id, token) => {
-  if (!token) return
+  if (!token) return;
   return fetch(`https://api.spotify.com/v1/artists/${id}`, {
     headers: {
       Accept: "application/json",

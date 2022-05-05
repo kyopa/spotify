@@ -1,12 +1,11 @@
-import { useSetRecoilState, useRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilState, useRecoilCallback } from "recoil";
 import { currentSongState } from "../../recoil/atoms";
 import { searchedSongState } from "../../recoil/atoms";
 import { onPauseState } from "../../recoil/atoms";
 import { currentTimeState } from "../../recoil/atoms";
+import useSetCurrentInfo from "../../recoilCallback";
 
 function Songs({ album }) {
-  console.log(album.tracks);
-
   return (
     <div className="album-tracks">
       <div className="tracks-header">
@@ -25,24 +24,11 @@ function Songs({ album }) {
 }
 
 function Song({ song, num }) {
-  const [currentSong, setCurrentSong] = useRecoilState(currentSongState);
-  const setSearchedSong = useSetRecoilState(searchedSongState);
-  const [onPause, setOnPause] = useRecoilState(onPauseState);
-  const setCurrentTime = useSetRecoilState(currentTimeState);
+  const setCurrentSongInfo = useSetCurrentInfo();
 
   return (
     <div className="song-container">
-      <div
-        onClick={() =>
-          currentSong === song.id
-            ? setOnPause(!onPause)
-            : ((setCurrentSong(song.id),
-              setSearchedSong(song.id),
-              setOnPause(false)),
-              setCurrentTime(0))
-        }
-        id="num"
-      >
+      <div onClick={() => setCurrentSongInfo(song.id)} id="num">
         {num}
       </div>
       <div className="song-details">

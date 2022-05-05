@@ -5,19 +5,18 @@ import Player from "./Components/Player/Player/Player.js";
 import AudioControl from "./Components/AudioControl.js";
 import { BrowserRouter, Routes, Route, useMatch } from "react-router-dom";
 import "./styles.css";
-import SearchPage from "./Components/Main/Main.js";
-import { ArtistState } from "./recoil/atoms.js";
-import GreenPlayButton from "./Components/greenPlayButton/x.js";
+
 import Artist from "./Components/ArtistPage/Artist.js";
 import Sidebar from "./Components/Sidebar/Sidebar.js";
 import Album from "./Components/AlbumPage/Album.js";
 
 function App() {
-  console.log(Artist);
   return (
     <BrowserRouter>
       <div className="app">
-        <AudioControl />
+        <Suspense>
+          <AudioControl />
+        </Suspense>
         <div className="sidebar">
           <Sidebar />
         </div>

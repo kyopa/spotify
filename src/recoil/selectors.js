@@ -1,12 +1,12 @@
 import { selector, selectorFamily } from "recoil";
 import {
   ArtistState,
-  currentSongState,
   searchedSongState,
   searchResultsState,
   searchState,
   tokenState,
   topResultState,
+  currentSongState,
 } from "./atoms";
 import hamming from "../hamming";
 import fetchSong, { fetchQueue } from "../fetchSong";
@@ -28,11 +28,12 @@ export const queueState = selector({
   get: async ({ get }) => {
     const token = get(tokenState);
     const song = get(searchedSongState);
-    console.log(token);
+
     if (!token) return;
     if (!song) return;
     const res = await fetchSong(song, token);
     const data = await res.json();
+
     const artists = data.artists.map((artist) => artist.id);
     const resTwo = await fetchQueue(
       data.id,
@@ -57,7 +58,7 @@ export const lengthState = selector({
     if (!token) return;
     const res = await fetchSong(currentSong, token);
     const data = await res.json();
-    console.log(data);
+
     return getLength(data);
   },
 });
@@ -120,7 +121,6 @@ export const artistItemsState = selectorFamily({
     },
 });
 
-
 const fetchTopTracks = (artist, token) => {
   if (!artist) return;
   return fetch(
@@ -150,7 +150,6 @@ export const fetchArtistSingles = (artist, token) => {
 };
 
 export const fetchArtistAlbums = (artist, token) => {
-  console.log(artist)
   if (!artist) return;
   return fetch(
     `https://api.spotify.com/v1/artists/${artist.id}/albums?market=US`,

@@ -2,10 +2,12 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  currentSongState,
   onPauseState,
+  posState,
+  rewindState,
   tokenState,
 } from "../../../recoil/atoms";
+import { currentSongState } from "../../../recoil/atoms";
 import fetchSong from "../../../fetchSong";
 import { queueState } from "../../../recoil/selectors";
 import nextIcon from "../../../extra/skip-next.svg";
@@ -17,6 +19,7 @@ import repeatIcon from "../../../extra/repeat-variant.svg";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import Volume from "../Volume/Volume";
 import Queue from "../Queue/Queue";
+import { Link } from "react-router-dom";
 
 function Player() {
   return (
@@ -60,18 +63,20 @@ function SongDetails() {
           ></img>
 
           <div className="name-artists">
-            <div className="player-song-title">{song.name}</div>
+            <Link to={`album/${song.id}`} className="player-song-title">
+              {song.name}
+            </Link>
             <div className="player-artists">
               {song.artists &&
-                song.artists.map((artist, idx) => {
-                  return idx === 0 ? (
-                    <span key={crypto.randomUUID()}>
-                      <a>{artist.name}</a>
-                    </span>
-                  ) : (
-                    <span key={crypto.randomUUID()}>
-                      , <a>{artist.name}</a>
-                    </span>
+                song.artists.map((artist) => {
+                  return (
+                    <Link
+                      id="artistname-player"
+                      key={artist.id + 1}
+                      to={`/artist/${artist.id}`}
+                    >
+                      {artist.name}
+                    </Link>
                   );
                 })}
             </div>
@@ -84,23 +89,18 @@ function SongDetails() {
 
 function PlayBar() {
   const [onPause, setOnPause] = useRecoilState(onPauseState);
-  const setCurrentSong = useSetRecoilState(currentSongState);
-  const queue = useRecoilValue(queueState);
-  const [index, setIndex] = useState(0);
+
+  const [pos, setPos] = useRecoilState(posState);
+  const setRewind = useSetRecoilState(rewindState);
 
   const _handleNext = () => {
-    setIndex(index + 1);
+    console.log(pos);
+    setPos(pos + 1);
   };
 
-  useEffect(() => {
-    if (!queue) return;
-
-    setCurrentSong(queue[index].id);
-  }, [index]);
-
   const playPrev = () => {
-    if (index === 0) return;
-    setIndex(index - 1);
+    if (pos === 0) return setRewind(true);
+    setPos(pos - 1);
   };
 
   return (
@@ -141,7 +141,5 @@ function OtherStuff() {
     </div>
   );
 }
-
-
 
 export default Player;

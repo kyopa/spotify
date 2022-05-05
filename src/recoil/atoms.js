@@ -2,8 +2,8 @@ import { atom, atomFamily, selector } from "recoil";
 
 export const currentSongState = atom({
   key: "currentSong",
-  default: "",
-});
+  default: ""
+})
 
 export const searchResultsState = atom({
   key: "searchResults",
@@ -27,44 +27,7 @@ export const searchState = atom({
 
 export const topResultState = atom({
   key: "topResult",
-  default: {
-    "external_urls": {
-        "spotify": "https://open.spotify.com/artist/1zNqQNIdeOUZHb8zbZRFMX"
-    },
-    "followers": {
-        "href": null,
-        "total": 1463095
-    },
-    "genres": [
-        "melodic rap",
-        "trap"
-    ],
-    "href": "https://api.spotify.com/v1/artists/1zNqQNIdeOUZHb8zbZRFMX",
-    "id": "1zNqQNIdeOUZHb8zbZRFMX",
-    "images": [
-        {
-            "height": 640,
-            "url": "https://i.scdn.co/image/ab6761610000e5eb1489b2b245307f3bc5d51291",
-            "width": 640
-        },
-        {
-            "height": 320,
-            "url": "https://i.scdn.co/image/ab676161000051741489b2b245307f3bc5d51291",
-            "width": 320
-        },
-        {
-            "height": 160,
-            "url": "https://i.scdn.co/image/ab6761610000f1781489b2b245307f3bc5d51291",
-            "width": 160
-        }
-    ],
-    "name": "Swae Lee",
-    "popularity": 82,
-    "type": "artist",
-    "uri": "spotify:artist:1zNqQNIdeOUZHb8zbZRFMX",
-    "txt": "swae lee`````````````````````````````````````",
-    "dist": 37
-},
+  default: ""
 });
 
 export const relatedArtistsState = atom({
@@ -114,10 +77,20 @@ export const rangeValueState = atom({
 
 export const volumeState = atom({
   key: "volume",
-  default: .5
+  default: 0.5,
 });
 
 export const ArtistState = atom({
   key: "artist",
-  default: ""
+  default: "",
+});
+
+export const trackState = atomFamily({
+  key: "track",
+  default: "",
+});
+
+export const posState = atom({
+  key: "position",
+  default: 0
 })

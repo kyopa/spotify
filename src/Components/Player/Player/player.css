@@ -29,7 +29,14 @@
   width: 200px;
 }
 
-.player-artists > span {
+.player-artists {
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-top: 1px;
+}
+
+.player-artists > a {
   color: #b3b3b3;
   font-size: 0.6875rem;
   line-height: 1rem;
@@ -37,7 +44,11 @@
   letter-spacing: normal;
 }
 
-.player-artists > span:hover {
+#artistname-player:not(:last-child)::after {
+  content: ", "
+}
+
+.player-artists > a:hover {
   text-decoration: underline;
   cursor: pointer;
   color: #fff;
@@ -47,14 +58,14 @@
   font-size: 0.875rem;
   line-height: 1rem;
   margin-bottom: -5px;
-  width: 400px;
+  max-width: 251px;
   white-space: nowrap;
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 1) 95%,
-    rgba(0, 0, 0, 0)
-  );
+  color: #fff;
+}
+
+.name-artists > a {
+  color: #fff;
 }
 
 .player-song-title:hover {
@@ -122,14 +133,8 @@
   width: 24px;
 }
 
-
 .otherstuff {
   display: flex;
   align-self: center;
   gap: 15px;
 }
-
-
-
-
-

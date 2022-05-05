@@ -5,11 +5,10 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import GreenPlayButton from "../greenPlayButton/x";
 import "../greenPlayButton/x.css";
-import playIcon from "../../extra/playIcon.png"
+import playIcon from "../../extra/playIcon.png";
 
 function Row({ array, album }) {
-  if (!array[0]) return
-  console.log(array)
+  if (!array[0]) return;
 
   return (
     <div>
@@ -19,6 +18,7 @@ function Row({ array, album }) {
             array.slice(0, 8).map((item) => {
               return (
                 <Item
+                  id={item.id}
                   key={item.id}
                   album={album}
                   item={item}
@@ -28,6 +28,7 @@ function Row({ array, album }) {
             })
           ) : (
             <Item
+              id={array[0].id}
               key={array[0].id}
               album={album}
               item={array[0]}
@@ -49,11 +50,21 @@ function Item({ item, artist, album }) {
   });
 
   return (
-    <div className="item-details">
-      <Link to={album ? `/album/${item.id}/` : `/artist/${item.id}/`}>
+    <Link title={item.type} to={`/${item.type}/${item.id}`} id={item.id}>
+      <div
+        onContextMenu={(e) => console.log(e.type)}
+        className="item-details"
+        id={item.id}
+        title={item.type}
+      >
         <div className="item-image">
           <img className={album ? "album" : ""} src={img}></img>
-          <GreenPlayButton animate bottom="13px" right="8px" position="absolute"/>
+          <GreenPlayButton
+            animate
+            bottom="13px"
+            right="8px"
+            position="absolute"
+          />
         </div>
         <div className="item-name">{item.name}</div>
         {artist && <div className="type">Artist</div>}
@@ -74,8 +85,8 @@ function Item({ item, artist, album }) {
             })}
           </div>
         )}
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 }
 

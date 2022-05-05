@@ -1,21 +1,22 @@
 import {
   tokenState,
   rewindState,
-  currentSongState,
   onPauseState,
   currentTimeState,
-  timeState,
   songRestartState,
   rangeValueState,
   volumeState,
+  posState,
 } from "../recoil/atoms";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { useRef, useEffect } from "react";
 import fetchSong from "../fetchSong";
+import { currentSongState } from "../recoil/atoms";
+import { queueState } from "../recoil/selectors";
 
 const AudioControl = () => {
   const token = useRecoilValue(tokenState);
-  const currentSong = useRecoilValue(currentSongState);
+  const [currentSong, setCurrentSong] = useRecoilState(currentSongState);
   const audioRef = useRef();
   const onPause = useRecoilValue(onPauseState);
   const [rewind, setRewind] = useRecoilState(rewindState);
@@ -23,6 +24,8 @@ const AudioControl = () => {
   const [songRestart, setSongRestart] = useRecoilState(songRestartState);
   const rangeValue = useRecoilValue(rangeValueState);
   const volume = useRecoilValue(volumeState);
+  const queue = useRecoilValue(queueState);
+  const [pos, setPos] = useRecoilState(posState);
 
   useEffect(() => {
     if (!currentSong) return;
@@ -50,6 +53,7 @@ const AudioControl = () => {
   useEffect(() => {
     if (!currentSong) return;
     audioRef.current.pause();
+    if (!audioRef.current.currentTime) return;
     interval = setInterval(() => {
       if (audioRef.current.currentTime >= 30) clearInterval(interval);
       setCurrentTime(audioRef.current.currentTime);
@@ -68,6 +72,18 @@ const AudioControl = () => {
   useEffect(() => {
     audioRef.current.volume = volume / 100;
   }, [volume]);
+
+  useEffect(() => {
+    console.log(queue);
+    if (!queue) return;
+    setCurrentSong(queue[pos].id);
+  }, [pos]);
+
+  useEffect(() => {
+    audioRef.current.onended = () => {
+      setPos(pos + 1);
+    };
+  }, [currentTime]);
 
   const getCurrentTime = () => {
     const secs = audioRef.current.currentTime;

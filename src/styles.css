@@ -39,6 +39,9 @@ html {
   grid-column: 2 / 3;
   grid-row: 1 / 2;
   overflow: auto;
+  width: 100%;
+  z-index: 0;
+  position: relative;
 }
 
 .music-player {
@@ -130,7 +133,10 @@ button:hover {
 .search-results {
   display: grid;
   grid-template-rows: repeat(6, 1fr);
-  row-gap: 10px;
+}
+
+.search-results > div {
+  height: 285px;
 }
 
 .top-result-grid {
@@ -152,11 +158,15 @@ button:hover {
   padding: 20px;
   width: 385px;
   border-radius: 5px;
-  transition: 0.15s;
+  margin: 0;
 }
 
 .top-result-box:hover {
   background-color: #282828;
+}
+
+.container > #artist {
+  border-radius: 50%;
 }
 
 .top-result-box:hover .container > .green-play-button {
@@ -174,12 +184,18 @@ button:hover {
 
 .top-result-box > a > .container > .details {
   display: flex;
-  gap: 5px;
+  gap: 15px;
+  align-items: center;
 }
 
 .details a {
   font-size: 14px;
   color: #b3b3b3;
+  font-family: circular;
+}
+
+.details a:hover {
+  text-decoration: underline;
 }
 
 .top-result-box img {
@@ -355,11 +371,11 @@ ul {
   color: #fff;
 }
 
-.item-row > div {
+.item-row > a > .item-details {
   padding: 15px;
   background: #181818;
   width: 150px;
-  height: 235px;
+  height: 232px;
   border-radius: 4px;
   transition: background 0.3s;
   display: flex;
@@ -367,26 +383,40 @@ ul {
   position: relative;
 }
 
-.item-row > div:hover {
+.item-row > a > .item-details:hover {
   background: #282828;
   cursor: pointer;
 }
 
-.item-row > div:hover .item-image > .green-play-button {
+.item-row > a > .item-details:hover .item-image > .green-play-button {
   opacity: 1;
   transform: translateY(-2px);
   transition: 0.25s;
 }
 
-.item-row > div > a > div > img {
+.item-image > img {
   height: 150px;
   width: 150px;
   align-self: center;
   border-radius: 500px;
 }
 
+.item-image > .album {
+  border-radius: 3px;
+}
+
 .item-image {
   position: relative;
+}
+
+.item-name {
+  margin-top: 20px;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  width: 154px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: #fff;
 }
 
 #noresults {
@@ -395,7 +425,6 @@ ul {
   align-items: center;
   position: relative;
   top: 300px;
-
 }
 
 #noresults > h3 {
@@ -438,13 +467,21 @@ ul {
   color: #ffffff;
 }
 
+.section {
+  margin-bottom: 50px;
+}
+
 .type {
-  font-size: 0.875rem;
-  line-height: 1rem;
-  text-transform: none;
-  letter-spacing: normal;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
   font-family: circular;
-  color: #b3b3b3;
+  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 500px;
+  padding: 4px 12px;
+  margin-right: 10px;
 }
 
 .row-see-all {

@@ -26,6 +26,12 @@
   justify-content: flex-end;
 }
 
+.header-details > div {
+  font-size: 1rem;
+  font-family: circular;
+  font-size: 16px;
+}
+
 #listeners {
   margin-bottom: 10px;
 }
@@ -35,6 +41,7 @@
   font-size: 96px;
   text-transform: none;
   letter-spacing: -0.04em;
+  text-align: center;
 }
 
 .playfollow-container,
@@ -115,10 +122,9 @@
   align-items: center;
   justify-content: flex-start;
   position: relative;
-  margin-left: 20px;
   background-color: transparent;
   padding: 7px;
-  padding-left: 15px;
+  padding-left: 30px;
   border-radius: 4px;
 }
 
@@ -134,7 +140,7 @@
 
 .track > #trackname {
   position: relative;
-  left: 25px;
+  left: 30px;
   font-size: 1rem;
   line-height: 1.5rem;
   text-transform: none;
@@ -145,6 +151,7 @@
 .track > #num {
   position: absolute;
   margin-top: 5px;
+  left: 25px;
   font-size: 1rem;
   line-height: 1.5rem;
   text-transform: none;
@@ -229,4 +236,12 @@
 
 .similar-container {
   margin-top: 40px;
+}
+
+.backgroundcolor {
+  height: 232px;
+  width: 100%;
+  position: absolute;
+  overflow: auto;
+  z-index: -1;
 }

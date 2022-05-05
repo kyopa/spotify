@@ -4,9 +4,9 @@ import Row from "./Row";
 function Section(props) {
   if (!props.array[0]) return
   return (
-    <div>
+    <div className="section">
       <div className="row-see-all">
-        <h2>{props.title}</h2>
+        <h2 id="section-title">{props.title}</h2>
         {props.array && props.array.length >= 8 && (
           <a href="yo" id="see-all">
             See all

@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 import GreenPlayButton from "../greenPlayButton/x";
 import blackIcon from "../../extra/blackImage.webp";
 
-
 function TopResult() {
   const tracks = useRecoilValue(itemsState("tracks"));
   const albums = useRecoilValue(itemsState("albums"));
@@ -23,23 +22,29 @@ function TopResult() {
 
     setTopResult(hamming(artists[0], tracks[0], albums[0], search));
   }, [tracks, artists, albums]);
-  
+
   useEffect(() => {
-    console.log(topResult)
-    if (!topResult) return setImg(blackIcon)
+    console.log(topResult);
+    if (!topResult) return setImg(blackIcon);
     if (topResult.type === "artist") {
-      console.log(topResult)
-      return topResult.images.length !== 0 ? setImg(topResult.images[0].url) : setImg(blackIcon)
+      console.log(topResult);
+      return topResult.images.length !== 0
+        ? setImg(topResult.images[0].url)
+        : setImg(blackIcon);
     }
     if (topResult.type === "album") {
-      console.log(topResult.images)
-      return topResult.images.length !== 0 ? setImg(topResult.images[0].url) : setImg(blackIcon)
+      console.log(topResult.images);
+      return topResult.images.length !== 0
+        ? setImg(topResult.images[0].url)
+        : setImg(blackIcon);
     }
     if (topResult.type === "track") {
-      console.log(topResult.album.images)
-      return topResult.album.images.length !== 0 ? setImg(topResult.album.images[0].url) : setImg(blackIcon)
+      console.log(topResult.album.images);
+      return topResult.album.images.length !== 0
+        ? setImg(topResult.album.images[0].url)
+        : setImg(blackIcon);
     }
-  }, [topResult])
+  }, [topResult]);
 
   return (
     <div>
@@ -55,7 +60,7 @@ function TopResult() {
                   }`}
                 >
                   <div className="container">
-                    <img src={img}></img>
+                    <img id={topResult.type} src={img}></img>
                     <div id="name">
                       {topResult && <div>{topResult.name}</div>}
                     </div>
@@ -77,7 +82,12 @@ function TopResult() {
                       </a>
                       <div className="type">{topResult.type}</div>
                     </div>
-                    <GreenPlayButton animate right="2px" position="absolute" />
+                    <GreenPlayButton
+                      id={topResult.id}
+                      animate
+                      right="2px"
+                      position="absolute"
+                    />
                   </div>
                 </Link>
               )}
@@ -89,10 +99,15 @@ function TopResult() {
           </div>
         </div>
       )}
-      {topResult && topResult.name === "" && <div id="noresults">
-        <h3>No results found for "{search}"</h3>
-        <p>Please make sure your words are spelled correctly or use less or different keywords</p>
-        </div>}
+      {topResult && topResult.name === "" && (
+        <div id="noresults">
+          <h3>No results found for "{search}"</h3>
+          <p>
+            Please make sure your words are spelled correctly or use less or
+            different keywords
+          </p>
+        </div>
+      )}
     </div>
   );
 }
