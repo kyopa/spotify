@@ -34,7 +34,7 @@ function SearchResults() {
         <Suspense fallback={<h1>loading</h1>}>
           <TopResult />
           {artists ? <Section array={artists} title="Artists" /> : null}
-          {albums ? <Section array={albums} title={"Albums"} album /> : <h3>no results found</h3>}
+          <Section array={albums} title={"Albums"} album />
         </Suspense>
       </div>
     </div>

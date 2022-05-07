@@ -13,11 +13,11 @@ const ProgressBar = () => {
   const [currentTime, setCurrentTime] = useRecoilState(currentTimeState);
   const setSongRestart = useSetRecoilState(songRestartState);
 
-
-
   return (
     <div className="bar-container">
-      <div>{`0:${(currentTime.toFixed() < 10 ? `0` : `` )+ currentTime.toFixed()}`}</div>
+      <div>{`0:${
+        (currentTime.toFixed() < 10 ? `0` : ``) + currentTime.toFixed()
+      }`}</div>
       <div>
         <div className="progressbar-container">
           <div className="progressbar">

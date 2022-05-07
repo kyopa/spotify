@@ -1,16 +1,24 @@
 import getLength from "../../getLength";
-import { currentSongState } from "../../recoil/atoms";
-import { useRecoilCallback, useRecoilState, useRecoilValue } from "recoil";
-import { useEffect, useState } from "react";
-import { currentTimeState, onPauseState, trackState } from "../../recoil/atoms";
+import {
+  currentSongState,
+  posState,
+  songsState,
+  songQueState,
+  tokenState,
+} from "../../recoil/atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import useSetCurrentInfo from "../../recoilCallback";
+import { queArtistSongs } from "../../Queue/setQue";
 
-function Track({ track, num, hide }) {
-  const setCurrentSongInfo = useSetCurrentInfo(track);
+function Track({ track, num, hide, artist }) {
+  const setCurrentSongInfo = useSetCurrentInfo();
+  const handleClick = async () => {
+    setCurrentSongInfo(track, "artistpage", num - 1, artist);
+  };
 
   return (
     <div className="track" style={{ display: hide ? "none" : "flex" }}>
-      <div onClick={() => setCurrentSongInfo("artistpage")} id="num">
+      <div onClick={() => handleClick()} id="num">
         {num}
       </div>
       <img id="img" src={track.album.images[0].url}></img>

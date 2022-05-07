@@ -41,7 +41,8 @@
   font-size: 96px;
   text-transform: none;
   letter-spacing: -0.04em;
-  text-align: center;
+  white-space: nowrap;
+  width: 100%;
 }
 
 .playfollow-container,
@@ -204,6 +205,10 @@
 .similar-container > h2:hover {
   text-decoration: underline;
   cursor: pointer;
+}
+
+.similar-container > .artists {
+  margin-bottom: 40px;
 }
 
 .options {

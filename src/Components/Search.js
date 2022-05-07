@@ -12,13 +12,12 @@ function Search() {
   const setSearchResults = useSetRecoilState(searchResultsState);
 
   useEffect(() => {
-    if (!token) return;
-    if (search === "") return;
-
+    if (!search) return
     searchApi()
       .then((data) => data.json())
       .then((res) => {
         console.log(search);
+        console.log(res);
         setSearchResults(res);
       })
       .catch((err) => {
@@ -27,10 +26,9 @@ function Search() {
   }, [search]);
 
   const searchApi = () => {
+    if (!token) return
     return fetch(
-      `https://api.spotify.com/v1/search?q=${
-        search || " "
-      }&type=track%2Cartist%2Calbum&market=US&limit=20`,
+      `https://api.spotify.com/v1/search?q=${search}&type=track%2Cartist%2Calbum&market=US&limit=50`,
       {
         headers: {
           Accept: "application/json",

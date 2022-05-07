@@ -1,20 +1,24 @@
 import "./x.css";
 import playIcon from "../../extra/playIcon.png";
 import useSetCurrentInfo from "../../recoilCallback";
+import { useSetRecoilState } from "recoil";
+import { songsState } from "../../recoil/atoms";
 
-function GreenPlayButton({ id, right, bottom, position, page, animate }) {
+function GreenPlayButton({ type, id, right, bottom, position, page, animate }) {
   const setCurrentSongInfo = useSetCurrentInfo();
-  console.log(id)
+
+
+  const handleClick = (e) => {
+    e.preventDefault();
+
+  }
+
   return (
     <div
       data-id={page ? "page" : "null"}
       id={id}
       data-animate={animate ? "animate" : null}
-      onClick={(e) => {
-        e.preventDefault();
-        setCurrentSongInfo(id);
-        console.log(id)
-      }}
+      onClick={(e) => handleClick(e)}
       className={"green-play-button"}
       style={{
         right: right,

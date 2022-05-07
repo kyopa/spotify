@@ -15,7 +15,7 @@ function Row({ array, album }) {
       <div className="item-row">
         {array &&
           (array.length > 1 ? (
-            array.slice(0, 8).map((item) => {
+            array.slice(0, 7).map((item) => {
               return (
                 <Item
                   id={item.id}
@@ -44,6 +44,7 @@ function Item({ item, artist, album }) {
   const img = useMemo(() => {
     if (!item) return;
 
+
     if (item.images === undefined || item.images.length === 0) {
       return blackImg;
     } else return item.images[0].url;
@@ -60,6 +61,7 @@ function Item({ item, artist, album }) {
         <div className="item-image">
           <img className={album ? "album" : ""} src={img}></img>
           <GreenPlayButton
+          type={item.type}
             animate
             bottom="13px"
             right="8px"
@@ -67,7 +69,7 @@ function Item({ item, artist, album }) {
           />
         </div>
         <div className="item-name">{item.name}</div>
-        {artist && <div className="type">Artist</div>}
+        {artist && <div className="typerow">Artist</div>}
         {!artist && (
           <div className="album-details">
             <span>{item.release_date.substring(0, 4)}</span>{" "}

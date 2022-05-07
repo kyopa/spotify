@@ -1,7 +1,12 @@
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { BrowserRouter, useMatch } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { ArtistState, currentSongState, searchState, tokenState } from "../../recoil/atoms";
+import {
+  ArtistState,
+  currentSongState,
+  searchState,
+  tokenState,
+} from "../../recoil/atoms";
 import { artistItemsState } from "../../recoil/selectors";
 import "./Artist.css";
 import Vibrant, { getHex } from "node-vibrant/lib/config";
@@ -33,21 +38,20 @@ function Artist() {
 
   const src = useMemo(() => {
     if (!artist) return;
-    console.log(artist.followers.total.toLocaleString())
+    console.log(artist.followers.total.toLocaleString());
     return artist.images[0].url;
   }, [artist]);
 
-  const data = useGetColor(src)
+  const data = useGetColor(src);
 
-  
   return (
     <div className="artist-page">
       {artist && (
         <div id="artist-page-box">
-          <Header color={data}/>
-          <FadeColor data={data}/>
+          <Header color={data} />
+          <FadeColor data={data} />
           <PlayFollow />
-          <Popular />
+          <Popular artist={artist}/>
           <Discography />
           <Similar />
         </div>
@@ -56,18 +60,24 @@ function Artist() {
   );
 }
 
-function Header({color}) {
+function Header({ color }) {
   const artist = useRecoilValue(ArtistState);
 
-
   return (
-    <div className="artist-header" style={{background: `linear-gradient(transparent 0,rgba(0,0,0,.5) 100%), ${color}`}}>
+    <div
+      className="artist-header"
+      style={{
+        background: `linear-gradient(transparent 0,rgba(0,0,0,.5) 100%), ${color}`,
+      }}
+    >
       <div className="header-contents">
         <img src={artist.images[0].url}></img>
         <div className="header-details">
           <div>Verified Artist</div>
-          <h1>{artist.name}</h1>
-          <div id="listeners">{artist.followers.total.toLocaleString()} monthly listeners</div>
+          <h1 id="header-artist-name">{artist.name}</h1>
+          <div id="listeners">
+            {artist.followers.total.toLocaleString()} monthly listeners
+          </div>
         </div>
       </div>
     </div>
@@ -86,7 +96,7 @@ function PlayFollow() {
   );
 }
 
-function Popular() {
+function Popular({artist}) {
   const topTracks = useRecoilValue(artistItemsState("topTracks"));
   const [hide, setHide] = useState(true);
 
@@ -99,12 +109,12 @@ function Popular() {
             {topTracks.tracks.map((track, i) => {
               return (
                 <Suspense fallback={<h1>loading track</h1>}>
-                <Track
-                  key={i}
-                  hide={i >= 5 && hide === true}
-                  track={track}
-                  num={i + 1}
-                />
+                  <Track artist={artist.id}
+                    key={i}
+                    hide={i >= 5 && hide === true}
+                    track={track}
+                    num={i + 1}
+                  />
                 </Suspense>
               );
             })}

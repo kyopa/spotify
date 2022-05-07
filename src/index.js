@@ -20,6 +20,7 @@ const getToken = () => {
 };
 
 const initializeState = ({ set }) => {
+  console.log("init")
   getToken()
     .then((data) => data.json())
     .then((res) => {

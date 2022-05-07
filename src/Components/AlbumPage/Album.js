@@ -108,8 +108,8 @@ function Album() {
 
 function Header({ album, color }) {
   const length = getTotalLength(album.tracks);
-  console.log(length);
-  console.log("HELLO");
+  const { name } = album;
+
   return (
     <div
       className="album-header"
@@ -122,7 +122,16 @@ function Header({ album, color }) {
           <img src={album.images[0].url}></img>
           <div className="album-details">
             <div id="type">{album.type}</div>
-            <div id="albumname">{album.name}</div>
+            <div
+              style={{
+                fontSize: `${
+                  name.length < 12 ? 96 : name.length > 20 ? 72 : 48
+                }px`,
+              }}
+              id="albumname"
+            >
+              {name}
+            </div>
 
             <div className="minor-details">
               <div className="details-artists">
@@ -165,7 +174,7 @@ function Label({ album }) {
   return <div id="label">{album.label}</div>;
 }
 
-const removeDuplicates = (arr) => {
+export const removeDuplicates = (arr) => {
   return arr.filter(
     (item, idx) => arr.findIndex((o) => o.name === item.name) === idx
   );

@@ -1,14 +1,14 @@
 import { selector, selectorFamily } from "recoil";
 import {
   ArtistState,
-  searchedSongState,
+  songQueState,
   searchResultsState,
-  searchState,
   tokenState,
-  topResultState,
   currentSongState,
+  posState,
+  songToQue,
+  songToQueState,
 } from "./atoms";
-import hamming from "../hamming";
 import fetchSong, { fetchQueue } from "../fetchSong";
 import getLength from "../getLength";
 
@@ -23,31 +23,14 @@ export const itemsState = selectorFamily({
     },
 });
 
-export const queueState = selector({
-  key: "queue",
-  get: async ({ get }) => {
-    const token = get(tokenState);
-    const song = get(searchedSongState);
-
-    if (!token) return;
-    if (!song) return;
-    const res = await fetchSong(song, token);
-    const data = await res.json();
-
-    const artists = data.artists.map((artist) => artist.id);
-    const resTwo = await fetchQueue(
-      data.id,
-      artists.slice(0, 3).join(","),
-      token
-    );
-    const dataTwo = await resTwo.json();
-    const arr = [
-      data,
-      ...dataTwo.tracks.sort((a, b) => a.popularity - b.popularity).reverse(),
-    ];
-    return arr.filter((song) => song.preview_url !== null);
-  },
-});
+export const fetchAlbumTracks = (album, token) =>
+  fetch(`https://api.spotify.com/v1/albums/${album}/tracks`, {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
 
 export const lengthState = selector({
   key: "length",
@@ -56,7 +39,7 @@ export const lengthState = selector({
     const token = get(tokenState);
     if (!currentSong) return;
     if (!token) return;
-    const res = await fetchSong(currentSong, token);
+    const res = await fetchSong(currentSong.id, token);
     const data = await res.json();
 
     return getLength(data);
@@ -82,7 +65,7 @@ export const artistItemsState = selectorFamily({
           }
         case "topTracks":
           try {
-            const resX = await fetchTopTracks(artist, token);
+            const resX = await fetchTopTracks(artist, token, 10);
             const dataX = await resX.json();
             return dataX;
           } catch (err) {
@@ -121,10 +104,11 @@ export const artistItemsState = selectorFamily({
     },
 });
 
-const fetchTopTracks = (artist, token) => {
+export const fetchTopTracks = (artist, token, limit) => {
+  console.log(artist)
   if (!artist) return;
   return fetch(
-    `https://api.spotify.com/v1/artists/${artist.id}/top-tracks?market=US&limit=40`,
+    `https://api.spotify.com/v1/artists/${artist.id}/top-tracks?market=US&limit=${limit}`,
     {
       headers: {
         Accept: "application/json",

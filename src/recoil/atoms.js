@@ -2,7 +2,7 @@ import { atom, atomFamily, selector } from "recoil";
 
 export const currentSongState = atom({
   key: "currentSong",
-  default: ""
+  default: {}
 })
 
 export const searchResultsState = atom({
@@ -50,8 +50,8 @@ export const rewindState = atom({
   default: false,
 });
 
-export const searchedSongState = atom({
-  key: "searchedSong",
+export const songQueState = atom({
+  key: "songQue",
   default: "",
 });
 
@@ -93,4 +93,14 @@ export const trackState = atomFamily({
 export const posState = atom({
   key: "position",
   default: 0
+})
+
+export const onShuffleState = atom({
+  key: "onShuffle",
+  default: false
+})
+
+export const queueState = atom({
+  key: "queue",
+  default: []
 })

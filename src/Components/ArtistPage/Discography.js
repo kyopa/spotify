@@ -2,6 +2,8 @@ import { useRecoilValue } from "recoil";
 import { artistItemsState } from "../../recoil/selectors";
 import { useState } from "react";
 import Row from "../Main/Row";
+import { removeDuplicates } from "../AlbumPage/Album";
+import { remove } from "cheerio/lib/api/manipulation";
 
 function Discography() {
   const artistAlbums = useRecoilValue(artistItemsState("albums")).items;
@@ -19,13 +21,7 @@ function Discography() {
         album.album_type !== "compilation" && album.album_group !== "appears_on"
     );
 
-  // remove duplicates
-  const cleanLatest = sorted.filter((album, i) => {
-    return sorted.findIndex((a) => a.name === album.name) === i;
-  });
-  console.log(cleanLatest);
-
-  const [onDisplay, setOnDisplay] = useState(cleanLatest);
+  const [onDisplay, setOnDisplay] = useState(removeDuplicates(sorted));
   const [active, setActive] = useState("latest");
 
   return (
@@ -35,7 +31,7 @@ function Discography() {
       <div className="options">
         <button
           onClick={() => {
-            setOnDisplay(cleanLatest);
+            setOnDisplay(removeDuplicates(sorted));
             setActive("latest");
           }}
           className={active === "latest" ? "active" : "idle"}
@@ -45,7 +41,7 @@ function Discography() {
         <button
           className={active === "albums" ? "active" : "idle"}
           onClick={() => {
-            setOnDisplay(albums);
+            setOnDisplay(removeDuplicates(albums));
             setActive("albums");
           }}
         >
@@ -54,7 +50,7 @@ function Discography() {
         <button
           className={active === "singles" ? "active" : "idle"}
           onClick={() => {
-            setOnDisplay(artistSingles);
+            setOnDisplay(removeDuplicates(artistSingles));
             setActive("singles");
           }}
         >
@@ -63,7 +59,7 @@ function Discography() {
       </div>
 
       <div className="display">
-        <Row array={onDisplay} album/>
+        <Row array={onDisplay} album />
       </div>
     </div>
   );

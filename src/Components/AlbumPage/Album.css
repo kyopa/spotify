@@ -32,8 +32,7 @@
 }
 
 .album-details > #albumname {
-  font-size: 100px;
-  font-size: 3vw;
+  font-weight: 900;
 }
 
 .minor-details {
@@ -89,7 +88,6 @@
   display: flex;
   align-items: center;
   gap: 23px;
-  position: relative;
   padding: 8px;
   padding-top: 15px;
   padding-left: 22px;
@@ -107,7 +105,7 @@
   font-family: circular;
 }
 
-.song-container > #num {
+.song-container > .num {
   position: absolute;
   font-size: 1rem;
   line-height: 1.5rem;
@@ -190,6 +188,8 @@
   font-family: circular;
 }
 
-#releasedate, #albumlength, #total {
-    cursor: text;
+#releasedate,
+#albumlength,
+#total {
+  cursor: text;
 }

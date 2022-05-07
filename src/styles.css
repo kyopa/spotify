@@ -484,6 +484,15 @@ ul {
   margin-right: 10px;
 }
 
+.typerow {
+  font-size: 0.875rem;
+  line-height: 1rem;
+  text-transform: none;
+  letter-spacing: normal;
+  font-family: circular;
+}
+
+
 .row-see-all {
   display: flex;
   align-items: baseline;

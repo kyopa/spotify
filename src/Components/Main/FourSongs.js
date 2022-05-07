@@ -5,18 +5,19 @@ import playIcon from "../../extra/playicon.png";
 import pauseIcon from "../../extra/pause.png";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  currentTimeState,
-  onPauseState,
-  posState,
-  searchedSongState,
   tokenState,
+  songsState,
+  posState,
+  searchState,
+  queueState,
 } from "../../recoil/atoms";
 import { currentSongState } from "../../recoil/atoms";
 import { itemsState } from "../../recoil/selectors";
 import getLength from "../../getLength";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRecoilCallback } from "recoil";
-import useSetCurrentInfo from "../../recoilCallback";
+import useSetCurrentInfo, { fetchTracks } from "../../recoilCallback";
+import { queRelatedSongs } from "../../Queue/setQue";
 
 function FourSongs() {
   const tracks = useRecoilValue(itemsState("tracks"));
@@ -25,16 +26,16 @@ function FourSongs() {
     <div>
       <div className="songs-see-all">
         <h2>Songs</h2>
-        <a href="www" id="see-all">
+        <Link to="/" id="see-all">
           See all
-        </a>
+        </Link>
       </div>
 
       {tracks &&
-        tracks.slice(0, 4).map((song) => {
+        tracks.slice(0, 4).map((song, idx) => {
           return (
             <div key={song.id}>
-              <Song song={song} />
+              <Song song={song} idx={idx} />
             </div>
           );
         })}
@@ -73,20 +74,30 @@ export function Song(props) {
     <div>
       {song && (
         <ul className="songs">
-          <Box song={song} />
+          <Box song={song} idx={props.idx} />
         </ul>
       )}
     </div>
   );
 }
 
-export function Box({ song }) {
-  if (!song) return;
+export function Box({ song, idx }) {
   const length = getLength(song);
+  const [queue, setQueue] = useRecoilState(queueState);
+  const pos = useRecoilValue(posState);
+
+  const handleQue = () => {
+
+  }
 
   return (
     <li className="song">
-      <Img song={song} />
+      <button
+        onClick={() => handleQue()}
+      >
+        que
+      </button>
+      <Img song={song} idx={idx} />
       <div className="song-details">
         <SongTitle song={song} />
         <div className="grey-details">
@@ -126,15 +137,17 @@ function Artists({ song }) {
   );
 }
 
-function Img({ song }) {
+function Img({ song, idx }) {
   const setCurrentSongInfo = useSetCurrentInfo();
+  const [pos, setPos] = useRecoilState(posState);
+  const tracks = useRecoilValue(itemsState("tracks"));
+
+  const handleClick = async () => {
+    setCurrentSongInfo(song, "searchpage", idx);
+  };
 
   return (
-    <div
-      id={song.id}
-      className="img-container"
-      onClick={() => setCurrentSongInfo(song.id)}
-    >
+    <div id={song.id} className="img-container" onClick={() => handleClick()}>
       <img
         loading="lazy"
         id="song-img"

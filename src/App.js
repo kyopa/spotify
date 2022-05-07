@@ -13,7 +13,7 @@ import Album from "./Components/AlbumPage/Album.js";
 function App() {
   return (
     <BrowserRouter>
-      <div className="app">
+      <div className="app" onContextMenu={e => e.preventDefault()}>
         <Suspense>
           <AudioControl />
         </Suspense>
@@ -30,7 +30,9 @@ function App() {
           <div className="content-spacing">
             <Suspense>
               <Routes>
-                <Route path="/search" element={<Main />} />
+                <Route path="/search" element={<Main />}>
+                  <Route path=":id/tracks" element={<Tracks />} />
+                </Route>
                 <Route path="/artist/:id" element={<Artist />} />
                 <Route path="/album/:id" element={<Album />} />
               </Routes>
@@ -46,6 +48,8 @@ function App() {
     </BrowserRouter>
   );
 }
+
+const Tracks = () => <h1>oalwdo0awld0oawld0oawd</h1>;
 
 const Arrows = () => {
   return (

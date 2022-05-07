@@ -83,6 +83,7 @@ function TopResult() {
                       <div className="type">{topResult.type}</div>
                     </div>
                     <GreenPlayButton
+                    type={topResult.type}
                       id={topResult.id}
                       animate
                       right="2px"

@@ -1,0 +1,31 @@
+.contextmenu {
+  color: rgba(255, 255, 255, 0.9);
+  background: #282828;
+  z-index: 500;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 4px;
+}
+
+.addtoque {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  border-radius: 2px;
+}
+
+.addtoque:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.addtoque > div {
+  font-size: 0.875rem;
+  line-height: 1rem;
+  text-transform: none;
+  letter-spacing: normal;
+  font-family: circular;
+  margin-left: 15px;
+}
