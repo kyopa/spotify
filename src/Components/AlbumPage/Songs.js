@@ -1,24 +1,23 @@
 import { useRef, useState, useEffect } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { posState, songsState, tokenState } from "../../recoil/atoms";
+import { useRecoilCallback, useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  selectedItemState,
+} from "../../recoil/atoms";
 
 import useSetCurrentInfo from "../../recoilCallback";
-import ContextMenu from "../ContextMenu/ContextMenu";
 import useContextMenu from "../ContextMenu/useContextMenu";
 
 function Songs({ album }) {
   const { handleMenu } = useContextMenu();
-  const [selected, setSelected] = useState();
+  const setSelectedItem = useSetRecoilState(selectedItemState);
 
   return (
     <div
       className="album-tracks"
       onContextMenu={(e) => {
-        setSelected(e.target.id);
+        setSelectedItem({ type: "song", id: e.target.id });
       }}
     >
-      <ContextMenu selected={selected} type="song" />
-
       <div className="tracks-header">
         <div id="hashtag">#</div>
         <div>TITLE</div>

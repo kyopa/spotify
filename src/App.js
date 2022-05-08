@@ -5,7 +5,7 @@ import Player from "./Components/Player/Player/Player.js";
 import AudioControl from "./Components/AudioControl.js";
 import { BrowserRouter, Routes, Route, useMatch } from "react-router-dom";
 import "./styles.css";
-
+import Items from "./Components/Search>Items/Items.js";
 import Artist from "./Components/ArtistPage/Artist.js";
 import Sidebar from "./Components/Sidebar/Sidebar.js";
 import Album from "./Components/AlbumPage/Album.js";
@@ -13,7 +13,7 @@ import Album from "./Components/AlbumPage/Album.js";
 function App() {
   return (
     <BrowserRouter>
-      <div className="app" onContextMenu={e => e.preventDefault()}>
+      <div className="app" onContextMenu={(e) => e.preventDefault()}>
         <Suspense>
           <AudioControl />
         </Suspense>
@@ -22,22 +22,15 @@ function App() {
         </div>
         <div className="main">
           <Arrows />
-
-          <Routes>
-            <Route path="/search" element={<Top />} />
-          </Routes>
-
-          <div className="content-spacing">
-            <Suspense>
-              <Routes>
-                <Route path="/search" element={<Main />}>
-                  <Route path=":id/tracks" element={<Tracks />} />
-                </Route>
-                <Route path="/artist/:id" element={<Artist />} />
-                <Route path="/album/:id" element={<Album />} />
-              </Routes>
-            </Suspense>
-          </div>
+          <Suspense>
+            <Routes>
+              <Route path="/search" element={<Main />} />
+              <Route path="/search/:id" element={<Items />}/>
+              
+              <Route path="/artist/:id" element={<Artist />} />
+              <Route path="/album/:id" element={<Album />} />
+            </Routes>
+          </Suspense>
         </div>
         <div className="music-player player">
           <Suspense fallback={<h1>loading</h1>}>

@@ -119,3 +119,8 @@ export const displayContextMenuState = atom({
   key: "displayContextMenu",
   default: false
 })
+
+export const selectedItemState = atom({
+  key: "selectedItem",
+  default: {}
+})

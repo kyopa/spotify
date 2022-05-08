@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useMatch, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { tokenState } from "../../recoil/atoms";
+import { selectedItemState, tokenState } from "../../recoil/atoms";
 import GreenPlayButton from "../greenPlayButton/x";
 import dotsIcon from "../../extra/dots-horizontal.svg";
 import { Link } from "react-router-dom";
@@ -19,6 +19,7 @@ function Album() {
   const [albums, setAlbums] = useState([]);
   const id = useParams().id;
 
+  console.log(id);
   useEffect(() => {
     (async () => {
       try {
@@ -43,7 +44,7 @@ function Album() {
       setAlbums([]);
       setSingles([]);
     };
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (!album.artists) return;
@@ -95,6 +96,8 @@ function Album() {
             array={moreBy}
             title={`More by ${album.artists[0].name}`}
             album
+            open={"See discography"}
+            type="albums"
           />
         )}
       </div>

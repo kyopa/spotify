@@ -53,6 +53,7 @@ export const artistItemsState = selectorFamily({
     async ({ get }) => {
       const token = get(tokenState);
       const artist = get(ArtistState);
+      console.log(artist)
       if (!artist) return;
       switch (type) {
         case "singles":
@@ -96,6 +97,7 @@ export const artistItemsState = selectorFamily({
           try {
             const resG = await fetchRelatedArtists(artist, token);
             const dataG = await resG.json();
+            console.log(dataG)
             return dataG;
           } catch (err) {
             console.log(err);

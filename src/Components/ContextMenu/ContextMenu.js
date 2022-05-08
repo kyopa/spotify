@@ -4,6 +4,7 @@ import fetchSong from "../../fetchSong";
 import {
   contextMenuAtoms,
   displayContextMenuState,
+  selectedItemState,
   tokenState,
   urgentSongsState,
 } from "../../recoil/atoms";
@@ -19,26 +20,26 @@ function ContextMenu({ selected, type }) {
   const x = useRecoilValue(contextMenuAtoms("x"));
   const y = useRecoilValue(contextMenuAtoms("y"));
   const [display, setDisplay] = useRecoilState(displayContextMenuState);
+  const selectedItem = useRecoilValue(selectedItemState);
 
   const fetchLoad = async () => {
-    switch (type) {
+    console.log(selectedItem);
+    switch (selectedItem.type) {
       case "album":
-        fetchAlbumTracks(selected, token);
-        const res = await fetchAlbumTracks(selected, token);
+        const res = await fetchAlbumTracks(selectedItem.id, token);
         const data = await res.json();
         return data.items;
       case "song":
-        const resX = await fetchSong(selected, token);
-        const dataX = await res.json();
-        return dataX;
+        const resX = await fetchSong(selectedItem.id, token);
+        const dataX = await resX.json();
+        return [dataX];
     }
   };
 
   const handleQue = async (e) => {
     e.preventDefault();
-    const arr = await fetchLoad();
-    console.log(arr)
-    setUrgentSongs((prev) => [...prev, load]);
+    let load = await fetchLoad();
+    setUrgentSongs((prev) => [...prev, ...load]);
     setDisplay(false);
   };
   return (

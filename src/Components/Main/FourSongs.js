@@ -10,6 +10,7 @@ import {
   posState,
   searchState,
   queueState,
+  selectedItemState,
 } from "../../recoil/atoms";
 import { currentSongState } from "../../recoil/atoms";
 import { itemsState } from "../../recoil/selectors";
@@ -24,11 +25,11 @@ import ContextMenu from "../ContextMenu/ContextMenu";
 function FourSongs() {
   const tracks = useRecoilValue(itemsState("tracks"));
   const { handleMenu } = useContextMenu();
-  const [selected, setSelected] = useState();
+  const setSelectedItem = useSetRecoilState(selectedItemState)
 
   return (
     <div>
-      <ContextMenu selected={selected} type="song"/>
+
       <div className="songs-see-all">
         <h2>Songs</h2>
         <Link to="/" id="see-all">
@@ -38,7 +39,7 @@ function FourSongs() {
 
       <div onContextMenu={e => {
         console.log(e.target)
-        setSelected(e.target.id)
+        setSelectedItem({type: "song", id: e.target.id})
         handleMenu(e)
       }}>
         {tracks &&

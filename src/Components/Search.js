@@ -11,16 +11,12 @@ function Search() {
   const [search, setSearch] = useRecoilState(searchState);
   const setSearchResults = useSetRecoilState(searchResultsState);
 
-  console.log(token);
   useEffect(() => {
     if (!search) return;
-    console.log(token);
     if (!token) return;
     searchApi()
       .then((data) => data.json())
       .then((res) => {
-        console.log(search);
-        console.log(res);
         setSearchResults(res);
       })
       .catch((err) => {

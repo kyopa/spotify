@@ -52,6 +52,7 @@ html {
 
 .takeup-space {
   opacity: 0;
+  margin-left: 0;
 }
 
 .topbar {
@@ -105,9 +106,8 @@ html {
   height: 32px;
 }
 
-.arrows,
-.takeup-space {
-  margin-left: 40px;
+.arrows {
+  margin-left: 35px;
 }
 
 button:hover {

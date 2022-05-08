@@ -47,10 +47,16 @@ const AudioControl = () => {
   }, [currentSong]);
 
   useEffect(() => {
+    console.log(urgentSongs)
+  }, [urgentSongs])
+
+  useEffect(() => {
     if (pos.decr) return;
     console.log(pos, "normal");
+    console.log(urgentSongs)
 
     if (urgentSongs[0] && !pos.click) {
+      console.log("urgnent songs triggerd")
       setCurrentSong(urgentSongs[0]);
       setUrgentSongs([...urgentSongs.slice(1)]);
       setPos({ idx: pos - 1, decr: true });

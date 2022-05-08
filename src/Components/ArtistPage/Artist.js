@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useMemo, useState } from "react";
-import { BrowserRouter, useMatch } from "react-router-dom";
+import { BrowserRouter, useMatch, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   ArtistState,
@@ -19,22 +19,21 @@ import { useColor } from "color-thief-react";
 import FadeColor, { useGetColor } from "../FadeColor";
 
 function Artist() {
-  const match = useMatch("/artist/:id");
-  const { params } = match;
+  const id = useParams().id
   const token = useRecoilValue(tokenState);
   const [artist, setArtist] = useRecoilState(ArtistState);
   const setSearch = useSetRecoilState(searchState);
 
   useEffect(() => {
     if (!token) return;
-    fetchArtist(params.id, token)
+    fetchArtist(id, token)
       .then((res) => res.json())
       .then((data) => setArtist(data));
     return () => {
       setArtist("");
       setSearch("");
     };
-  }, []);
+  }, [id]);
 
   const src = useMemo(() => {
     if (!artist) return;

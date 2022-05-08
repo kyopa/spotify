@@ -8,6 +8,8 @@ import "../greenPlayButton/x.css";
 import playIcon from "../../extra/playIcon.png";
 import ContextMenu from "../ContextMenu/ContextMenu";
 import useContextMenu from "../ContextMenu/useContextMenu";
+import { useSetRecoilState } from "recoil";
+import { selectedItemState } from "../../recoil/atoms";
 
 function Row({ array, album }) {
   if (!array[0]) return;
@@ -17,7 +19,7 @@ function Row({ array, album }) {
       <div className="item-row">
         {array &&
           (array.length > 1 ? (
-            array.slice(0, 7).map((item) => {
+            array.slice(0, 8).map((item) => {
               return (
                 <Item
                   id={item.id}
@@ -42,7 +44,7 @@ function Row({ array, album }) {
   );
 }
 
-function Item({ item, artist, album }) {
+export function Item({ item, artist, album }) {
   const img = useMemo(() => {
     if (!item) return;
 
@@ -51,8 +53,7 @@ function Item({ item, artist, album }) {
     } else return item.images[0].url;
   });
   const { handleMenu } = useContextMenu();
-  const [selected, setSelected] = useState();
-  console.log(selected)
+  const setSelectedItem = useSetRecoilState(selectedItemState)
 
   return (
     <Link title={item.type} to={`/${item.type}/${item.id}`} id={item.id}>
@@ -60,13 +61,13 @@ function Item({ item, artist, album }) {
         onContextMenu={(e) => {
           if (!album) return;
           handleMenu(e);
-          setSelected(e.target.id)
+          setSelectedItem({type: "album", id: item.id})
         }}
         className="item-details"
         id={item.id}
         title={item.type}
       >
-        {album && <ContextMenu selected={selected} type="album"/>}
+        {album && <ContextMenu />}
         <div id={item.id} className="item-image">
           <img id={item.id} className={album ? "album" : ""} src={img}></img>
           <GreenPlayButton
