@@ -11,8 +11,11 @@ function Search() {
   const [search, setSearch] = useRecoilState(searchState);
   const setSearchResults = useSetRecoilState(searchResultsState);
 
+  console.log(token);
   useEffect(() => {
-    if (!search) return
+    if (!search) return;
+    console.log(token);
+    if (!token) return;
     searchApi()
       .then((data) => data.json())
       .then((res) => {
@@ -26,7 +29,6 @@ function Search() {
   }, [search]);
 
   const searchApi = () => {
-    if (!token) return
     return fetch(
       `https://api.spotify.com/v1/search?q=${search}&type=track%2Cartist%2Calbum&market=US&limit=50`,
       {

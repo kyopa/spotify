@@ -20,15 +20,12 @@ function Album() {
   const id = useParams().id;
 
   useEffect(() => {
-    console.log(token, id);
-
     (async () => {
       try {
-        console.log(id);
         const res = await fetchItem("albums", id);
         const data = await res.json();
         setAlbum(data);
-        console.log(data);
+
         if (data.error) throw data.error;
       } catch (err) {
         console.log(err);
@@ -83,7 +80,6 @@ function Album() {
   }, [album]);
   // get most dominant color
   const data = useGetColor(src);
-  console.log(data);
 
   return (
     <div className="album-page">
@@ -136,7 +132,6 @@ function Header({ album, color }) {
             <div className="minor-details">
               <div className="details-artists">
                 {album.artists.map((artist) => {
-                  console.log(artist);
                   return (
                     <Link id="artistlink" to={`/artist/${artist.id}`}>
                       {artist.name}

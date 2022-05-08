@@ -8,6 +8,7 @@ import {
   volumeState,
   posState,
   searchState,
+  urgentSongsState,
 } from "../recoil/atoms";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { useRef, useEffect, useState } from "react";
@@ -29,10 +30,7 @@ const AudioControl = () => {
   const [pos, setPos] = useRecoilState(posState);
   const search = useRecoilValue(searchState);
   const [queue, setQueue] = useRecoilState(queueState);
-
-  useEffect(() => {
-    setQueue(queue.filter((song) => song.que === true));
-  }, [search]);
+  const [urgentSongs, setUrgentSongs] = useRecoilState(urgentSongsState);
 
   useEffect(() => {
     console.log(currentSong);
@@ -49,15 +47,25 @@ const AudioControl = () => {
   }, [currentSong]);
 
   useEffect(() => {
-    if (!queue[0]) return;
-    if (currentSong.que) {
-      // if song was from que remove it from the array
-      setQueue([...queue.slice(0, pos - 1), ...queue.slice(pos)]);
+    if (pos.decr) return;
+    console.log(pos, "normal");
+
+    if (urgentSongs[0] && !pos.click) {
+      setCurrentSong(urgentSongs[0]);
+      setUrgentSongs([...urgentSongs.slice(1)]);
+      setPos({ idx: pos - 1, decr: true });
+    } else {
+      if (!queue[0]) return;
+
+      // if last song in album for example
+      if (pos === queue.length) {
+        const random = Math.floor(Math.random() * queue.length) + 1;
+        setPos(random);
+        setCurrentSong(queue[random]);
+      } else {
+        setCurrentSong(queue[pos.idx ? pos.idx : pos]);
+      }
     }
-    console.log(pos);
-    console.log(queue[pos]);
-    console.log(queue);
-    setCurrentSong(queue[pos]);
   }, [pos]);
 
   useEffect(() => {
@@ -94,6 +102,8 @@ const AudioControl = () => {
   useEffect(() => {
     audioRef.current.volume = volume / 100;
   }, [volume]);
+
+  useEffect(() => {}, [urgentSongs]);
 
   return <audio ref={audioRef}></audio>;
 };

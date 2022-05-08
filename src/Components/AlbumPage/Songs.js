@@ -7,23 +7,18 @@ import ContextMenu from "../ContextMenu/ContextMenu";
 import useContextMenu from "../ContextMenu/useContextMenu";
 
 function Songs({ album }) {
-  const WIDTH = 186;
-  const HEIGHT = 40;
-  const { handleMenu, x, y, display, setDisplay } = useContextMenu(HEIGHT, WIDTH);
+  const { handleMenu } = useContextMenu();
   const [selected, setSelected] = useState();
 
   return (
-    <div className="album-tracks" onContextMenu={(e) => setSelected(e.target.firstChild)}>
-      {display && (
-        <ContextMenu
-          selected={selected}
-          setDisplay={setDisplay}
-          height={HEIGHT}
-          width={WIDTH}
-          top={y}
-          left={x}
-        />
-      )}
+    <div
+      className="album-tracks"
+      onContextMenu={(e) => {
+        setSelected(e.target.id);
+      }}
+    >
+      <ContextMenu selected={selected} type="song" />
+
       <div className="tracks-header">
         <div id="hashtag">#</div>
         <div>TITLE</div>
@@ -49,13 +44,19 @@ function Song({ song, num, album, idx }) {
   };
 
   return (
-    <div className="song-container">
-      <div onClick={() => handleClick()} className="num" id={song.id}>{num}</div>
+    <div id={song.id} className="song-container">
+      <div onClick={() => handleClick()} className="num" id={song.id}>
+        {num}
+      </div>
       <div className="song-details">
-        <div id="trackname">{song.name}</div>
-        <div className="artist-cell">
+        <div id={song.id} class="trackname">
+          {song.name}
+        </div>
+        <div id={song.id} className="artist-cell">
           {song.explicit ? <span id="explicit">E</span> : null}
-          <span id="artists">{song.artists[0].name}</span>
+          <span id={song.id} class="artists">
+            {song.artists[0].name}
+          </span>
         </div>
       </div>
     </div>

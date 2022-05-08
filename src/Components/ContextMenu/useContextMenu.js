@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { contextMenuAtoms, displayContextMenuState } from "../../recoil/atoms";
 
 const useContextMenu = (height, width) => {
-  const [display, setDisplay] = useState(false);
-  const [x, setX] = useState();
+  const [display, setDisplay] = useRecoilState(displayContextMenuState);
+  const [x, setX] = useRecoilState(contextMenuAtoms("x"));
   const [rightX, setRightX] = useState();
-  const [y, setY] = useState();
+  const [y, setY] = useRecoilState(contextMenuAtoms("y"));
   const [botY, setBotY] = useState();
 
   const handleMenu = (e) => {
@@ -35,7 +37,7 @@ const useContextMenu = (height, width) => {
     return () => document.removeEventListener("click", handleDisplay);
   }, [handleDisplay]);
 
-  return { handleMenu, x, y, display, setDisplay };
+  return { handleMenu, x, y };
 };
 
 export default useContextMenu;

@@ -104,3 +104,18 @@ export const queueState = atom({
   key: "queue",
   default: []
 })
+
+export const urgentSongsState = atom({
+  key: "urgent",
+  default: []
+})
+
+export const contextMenuAtoms = atomFamily({
+  key: "contextMenu",
+  default: ""
+})
+
+export const displayContextMenuState = atom({
+  key: "displayContextMenu",
+  default: false
+})

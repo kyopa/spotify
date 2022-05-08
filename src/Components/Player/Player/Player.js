@@ -46,8 +46,8 @@ function SongDetails() {
   const [song, setSong] = useState();
 
   useEffect(() => {
+    if (!currentSong) return;
     if (!currentSong.id) return;
-
 
     fetchSong(currentSong.id, token)
       .then((res) => res.json())
@@ -97,14 +97,14 @@ function PlayBar() {
   const [onShuffle, setOnShuffle] = useRecoilState(onShuffleState);
   const queue = useRecoilValue(queueState);
 
-
-
   const handleNext = () => {
-    setPos(pos + 1)
+    setPos(pos.idx + 1 || pos + 1);
   };
 
   const playPrev = () => {
-    setPos(pos - 1)
+    // if first song on album for example
+    if (pos.idx === 0 || pos === 0) return setRewind(true);
+    setPos(pos - 1);
   };
 
   return (

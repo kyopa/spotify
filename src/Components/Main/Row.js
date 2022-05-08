@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import GreenPlayButton from "../greenPlayButton/x";
 import "../greenPlayButton/x.css";
 import playIcon from "../../extra/playIcon.png";
+import ContextMenu from "../ContextMenu/ContextMenu";
+import useContextMenu from "../ContextMenu/useContextMenu";
 
 function Row({ array, album }) {
   if (!array[0]) return;
@@ -44,43 +46,50 @@ function Item({ item, artist, album }) {
   const img = useMemo(() => {
     if (!item) return;
 
-
     if (item.images === undefined || item.images.length === 0) {
       return blackImg;
     } else return item.images[0].url;
   });
+  const { handleMenu } = useContextMenu();
+  const [selected, setSelected] = useState();
+  console.log(selected)
 
   return (
     <Link title={item.type} to={`/${item.type}/${item.id}`} id={item.id}>
       <div
-        onContextMenu={(e) => console.log(e.type)}
+        onContextMenu={(e) => {
+          if (!album) return;
+          handleMenu(e);
+          setSelected(e.target.id)
+        }}
         className="item-details"
         id={item.id}
         title={item.type}
       >
-        <div className="item-image">
-          <img className={album ? "album" : ""} src={img}></img>
+        {album && <ContextMenu selected={selected} type="album"/>}
+        <div id={item.id} className="item-image">
+          <img id={item.id} className={album ? "album" : ""} src={img}></img>
           <GreenPlayButton
-          type={item.type}
+            type={item.type}
             animate
             bottom="13px"
             right="8px"
             position="absolute"
           />
         </div>
-        <div className="item-name">{item.name}</div>
+        <div id={item.id} className="item-name">{item.name}</div>
         {artist && <div className="typerow">Artist</div>}
         {!artist && (
-          <div className="album-details">
-            <span>{item.release_date.substring(0, 4)}</span>{" "}
+          <div id={item.id} className="album-details">
+            <span id={item.id}>{item.release_date.substring(0, 4)}</span>{" "}
             <span id="dot"> • </span>
             {item.artists.map((artist, index) => {
               return (
                 <span key={crypto.randomUUID()}>
                   {index !== item.artists.length - 1 ? (
-                    <a> {artist.name}, </a>
+                    <a id={item.id}> {artist.name}, </a>
                   ) : (
-                    <a> {artist.name}</a>
+                    <a id={item.id}> {artist.name}</a>
                   )}
                 </span>
               );

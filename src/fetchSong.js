@@ -3,8 +3,7 @@ import { tokenState } from "./recoil/atoms";
 
 
 const fetchSong = (song, token) => {
-  if (!token) return
-  if (!song) return
+  console.log(song)
   return fetch(`https://api.spotify.com/v1/tracks/${song}`, {
     headers: {
       Accept: "application/json",

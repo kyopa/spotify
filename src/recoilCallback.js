@@ -11,11 +11,11 @@ import {
   posState,
 } from "./recoil/atoms";
 
-
 const useSetCurrentInfo = () => {
   return useRecoilCallback(
     ({ snapshot, set }) =>
       async (song, type, idx, item) => {
+        set(queueState, []);
         const currentSong = snapshot.getLoadable(currentSongState).contents;
         const token = snapshot.getLoadable(tokenState).contents;
         if (song.id === currentSong.id) {
@@ -24,7 +24,7 @@ const useSetCurrentInfo = () => {
         } else {
           set(currentSongState, song);
           set(onPauseState, false);
-          set(posState, idx);
+          set(posState, { idx: idx, click: true });
           const queue = snapshot.getLoadable(queueState).contents;
           const cleanQue = queue.filter((song) => song.que);
           if (type === "searchpage") {
@@ -36,9 +36,9 @@ const useSetCurrentInfo = () => {
             set(queueState, [arr[0], ...cleanQue, ...arr.slice(1)]);
           } else if (type === "artistpage") {
             const arr = await queArtistSongs(item, token);
-            console.log([arr[0], ...cleanQue, ...arr.slice(1)])
-            console.log(idx)
-            set(queueState, [arr[0], ...cleanQue, ...arr.slice(1)])
+            console.log([arr[0], ...cleanQue, ...arr.slice(1)]);
+            console.log(idx);
+            set(queueState, [arr[0], ...cleanQue, ...arr.slice(1)]);
           }
         }
       },

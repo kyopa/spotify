@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import Row from "./Row";
 
 function Section(props) {
-  console.log(props.array)
   if (!props.array) return;
   return (
     <div className="section">

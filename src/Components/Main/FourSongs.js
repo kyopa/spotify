@@ -18,12 +18,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRecoilCallback } from "recoil";
 import useSetCurrentInfo, { fetchTracks } from "../../recoilCallback";
 import { queRelatedSongs } from "../../Queue/setQue";
+import useContextMenu from "../ContextMenu/useContextMenu";
+import ContextMenu from "../ContextMenu/ContextMenu";
 
 function FourSongs() {
   const tracks = useRecoilValue(itemsState("tracks"));
+  const { handleMenu } = useContextMenu();
+  const [selected, setSelected] = useState();
 
   return (
     <div>
+      <ContextMenu selected={selected} type="song"/>
       <div className="songs-see-all">
         <h2>Songs</h2>
         <Link to="/" id="see-all">
@@ -31,14 +36,20 @@ function FourSongs() {
         </Link>
       </div>
 
-      {tracks &&
-        tracks.slice(0, 4).map((song, idx) => {
-          return (
-            <div key={song.id}>
-              <Song song={song} idx={idx} />
-            </div>
-          );
-        })}
+      <div onContextMenu={e => {
+        console.log(e.target)
+        setSelected(e.target.id)
+        handleMenu(e)
+      }}>
+        {tracks &&
+          tracks.slice(0, 4).map((song, idx) => {
+            return (
+              <div id={song.id} key={song.id}>
+                <Song song={song} idx={idx} />
+              </div>
+            );
+          })}
+      </div>
     </div>
   );
 }
@@ -83,20 +94,9 @@ export function Song(props) {
 
 export function Box({ song, idx }) {
   const length = getLength(song);
-  const [queue, setQueue] = useRecoilState(queueState);
-  const pos = useRecoilValue(posState);
-
-  const handleQue = () => {
-
-  }
 
   return (
-    <li className="song">
-      <button
-        onClick={() => handleQue()}
-      >
-        que
-      </button>
+    <li id={song.id} className="song">
       <Img song={song} idx={idx} />
       <div className="song-details">
         <SongTitle song={song} />
@@ -117,14 +117,14 @@ function Artists({ song }) {
         return (
           <span key={crypto.randomUUID()}>
             {i !== song.artists.length - 1 ? (
-              <span>
-                <Link to={`/artist/${artist.id}/`} id={artist.id} key={i}>
+              <span id={song.id}>
+                <Link to={`/artist/${artist.id}/`} id={song.id} key={i}>
                   {artist.name}
                 </Link>
                 ,{" "}
               </span>
             ) : (
-              <span>
+              <span id={song.id}>
                 <Link to={`/artist/${artist.id}/`} key={i} id={artist.id}>
                   {artist.name}
                 </Link>
@@ -148,22 +148,22 @@ function Img({ song, idx }) {
 
   return (
     <div id={song.id} className="img-container" onClick={() => handleClick()}>
-      <img
+      <img id={song.id}
         loading="lazy"
-        id="song-img"
+        class="song-img"
         src={song.album && song.album.images[0].url}
       ></img>
       <div className="play-mini-song">
-        <img id="play-icon" src={playIcon}></img>
+        <img id={song.id} class="play-icon" src={playIcon}></img>
 
-        <img id="pause-icon" src={pauseIcon}></img>
+        <img id={song.id} class="pause-icon" src={pauseIcon}></img>
       </div>
     </div>
   );
 }
 
 function SongTitle({ song }) {
-  return <div className="song-title">{song.name}</div>;
+  return <div id={song.id} className="song-title">{song.name}</div>;
 }
 
 export default FourSongs;

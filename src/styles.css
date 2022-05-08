@@ -283,7 +283,7 @@ ul {
   font-family: circular;
 }
 
-#song-img {
+.song-img {
   width: 40px;
 }
 
@@ -492,7 +492,6 @@ ul {
   font-family: circular;
 }
 
-
 .row-see-all {
   display: flex;
   align-items: baseline;
@@ -529,7 +528,7 @@ ul {
   display: block;
 }
 
-#pause-icon {
+.pause-icon {
   display: none;
 }
 
@@ -542,7 +541,7 @@ a:visited {
   color: #b3b3b3;
 }
 
-.song:hover .img-container > #song-img {
+.song:hover .img-container > .song-img {
   opacity: 0.5;
 }
 

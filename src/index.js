@@ -20,12 +20,15 @@ const getToken = () => {
 };
 
 const initializeState = ({ set }) => {
-  console.log("init")
+  console.log("init");
   getToken()
     .then((data) => data.json())
     .then((res) => {
-        console.log(res)
-        set(tokenState, res.access_token)
+      console.log(res);
+      set(
+        tokenState,
+        "BQAg0SVYv9dSbh_Gr926DwHmsyay1spHrwEwr7jeCbmJIrAT1F2XMkHYtaqNvoKaEOc-4x3axS8kjlFNGk3ueO37yJqtJF3nbIsHwhO87SymMXE9CM-HK-HZB7XGFp9nBL7mUR40tKPccg"
+      );
     });
 };
 
