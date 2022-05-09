@@ -24,7 +24,7 @@ const fetchSong = async (song, token) => {
 export const fetchQueue = (song, artists, token) => {
   if (!token) return
   return fetch(
-    `https://api.spotify.com/v1/recommendations?limit=40&market=US&seed_artists=${artists}&seed_tracks=${song}`,
+    `https://api.spotify.com/v1/recommendations?limit=50&market=US&seed_artists=${artists}&seed_tracks=${song}`,
     {
       headers: {
         Accept: "application/json",

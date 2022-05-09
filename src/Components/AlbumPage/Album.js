@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import "./Album.css";
 import Songs from "./Songs";
 import { fetchArtistAlbums, fetchArtistSingles } from "../../recoil/selectors";
-import Section from "../Main/Section";
+import Section from "../Section";
 import FadeColor, { useGetColor } from "../FadeColor";
 import { getTotalLength } from "../../getLength";
 
@@ -95,9 +95,10 @@ function Album() {
           <Section
             array={moreBy}
             title={`More by ${album.artists[0].name}`}
-            album
             open={"See discography"}
             type="albums"
+            disco
+            artist={album.artists[0]}
           />
         )}
       </div>

@@ -11,10 +11,9 @@ import {
 import { fetchAlbumTracks } from "../../recoil/selectors";
 import "./x.css";
 
-function ContextMenu({ selected, type }) {
+function ContextMenu() {
   const setUrgentSongs = useSetRecoilState(urgentSongsState);
   const token = useRecoilValue(tokenState);
-  const [load, setLoad] = useState();
   const WIDTH = 186;
   const HEIGHT = 40;
   const x = useRecoilValue(contextMenuAtoms("x"));
@@ -33,6 +32,8 @@ function ContextMenu({ selected, type }) {
         const resX = await fetchSong(selectedItem.id, token);
         const dataX = await resX.json();
         return [dataX];
+      default:
+        console.log("lol");
     }
   };
 

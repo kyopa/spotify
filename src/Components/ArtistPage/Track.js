@@ -1,10 +1,6 @@
 import getLength from "../../getLength";
 import {
-  currentSongState,
-  posState,
-  songsState,
-  songQueState,
-  tokenState,
+  selectedItemState,
 } from "../../recoil/atoms";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import useSetCurrentInfo from "../../recoilCallback";
@@ -15,9 +11,10 @@ function Track({ track, num, hide, artist }) {
   const handleClick = async () => {
     setCurrentSongInfo(track, "artistpage", num - 1, artist);
   };
+  const setSelected = useSetRecoilState(selectedItemState)
 
   return (
-    <div className="track" style={{ display: hide ? "none" : "flex" }}>
+    <div id={track.id} onContextMenu={(e) => setSelected({id: e.currentTarget.id, type: "song"})} className="track" style={{ display: hide ? "none" : "flex" }}>
       <div onClick={() => handleClick()} id="num">
         {num}
       </div>

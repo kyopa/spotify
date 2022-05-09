@@ -2,8 +2,8 @@ import { atom, atomFamily, selector } from "recoil";
 
 export const currentSongState = atom({
   key: "currentSong",
-  default: {}
-})
+  default: {},
+});
 
 export const searchResultsState = atom({
   key: "searchResults",
@@ -27,7 +27,7 @@ export const searchState = atom({
 
 export const topResultState = atom({
   key: "topResult",
-  default: ""
+  default: "",
 });
 
 export const relatedArtistsState = atom({
@@ -92,35 +92,40 @@ export const trackState = atomFamily({
 
 export const posState = atom({
   key: "position",
-  default: 0
-})
+  default: 0,
+});
 
 export const onShuffleState = atom({
   key: "onShuffle",
-  default: false
-})
+  default: false,
+});
 
 export const queueState = atom({
   key: "queue",
-  default: []
-})
+  default: [],
+});
 
 export const urgentSongsState = atom({
   key: "urgent",
-  default: []
-})
+  default: [],
+});
 
 export const contextMenuAtoms = atomFamily({
   key: "contextMenu",
-  default: ""
-})
+  default: "",
+});
 
 export const displayContextMenuState = atom({
   key: "displayContextMenu",
-  default: false
-})
+  default: false,
+});
 
 export const selectedItemState = atom({
   key: "selectedItem",
-  default: {}
-})
+  default: {},
+});
+
+export const recentSearchesState = atom({
+  key: "recentSearches",
+  default: [],
+});

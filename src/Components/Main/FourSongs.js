@@ -1,26 +1,18 @@
-import { useCallback, useEffect, useRef } from "react";
-import { useMemo } from "react";
+import {  useEffect } from "react";
 import { useState } from "react";
 import playIcon from "../../extra/playicon.png";
 import pauseIcon from "../../extra/pause.png";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   tokenState,
-  songsState,
   posState,
-  searchState,
-  queueState,
   selectedItemState,
 } from "../../recoil/atoms";
-import { currentSongState } from "../../recoil/atoms";
 import { itemsState } from "../../recoil/selectors";
 import getLength from "../../getLength";
-import { Link, useNavigate } from "react-router-dom";
-import { useRecoilCallback } from "recoil";
-import useSetCurrentInfo, { fetchTracks } from "../../recoilCallback";
-import { queRelatedSongs } from "../../Queue/setQue";
+import { Link } from "react-router-dom";
+import useSetCurrentInfo from "../../recoilCallback";
 import useContextMenu from "../ContextMenu/useContextMenu";
-import ContextMenu from "../ContextMenu/ContextMenu";
 
 function FourSongs() {
   const tracks = useRecoilValue(itemsState("tracks"));

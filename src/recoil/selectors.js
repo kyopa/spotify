@@ -1,15 +1,11 @@
 import { selector, selectorFamily } from "recoil";
 import {
   ArtistState,
-  songQueState,
   searchResultsState,
   tokenState,
   currentSongState,
-  posState,
-  songToQue,
-  songToQueState,
 } from "./atoms";
-import fetchSong, { fetchQueue } from "../fetchSong";
+import fetchSong from "../fetchSong";
 import getLength from "../getLength";
 
 export const itemsState = selectorFamily({
@@ -58,12 +54,13 @@ export const artistItemsState = selectorFamily({
       switch (type) {
         case "singles":
           try {
-            const res = await fetchArtistSingles(artist, token);
+            const res = await fetchArtistSingles(artist, token, 50);
             const data = await res.json();
             return data;
           } catch (err) {
             console.log(err);
           }
+          break;
         case "topTracks":
           try {
             const resX = await fetchTopTracks(artist, token, 10);
@@ -72,6 +69,7 @@ export const artistItemsState = selectorFamily({
           } catch (err) {
             console.log(err);
           }
+          break;
         case "albums":
           try {
             const resY = await fetchArtistAlbums(artist, token);
@@ -80,7 +78,7 @@ export const artistItemsState = selectorFamily({
           } catch (err) {
             console.log(err);
           }
-
+          break;
         case "appearsOn":
           try {
             const resF = await fetchApperances(artist, token);
@@ -93,6 +91,7 @@ export const artistItemsState = selectorFamily({
           } catch (err) {
             console.log(err);
           }
+          break;
         case "relatedArtists":
           try {
             const resG = await fetchRelatedArtists(artist, token);
@@ -102,12 +101,15 @@ export const artistItemsState = selectorFamily({
           } catch (err) {
             console.log(err);
           }
+          break;
+        default:
+          console.log("lol")
       }
     },
 });
 
 export const fetchTopTracks = (artist, token, limit) => {
-  console.log(artist)
+  console.log(artist.id)
   if (!artist) return;
   return fetch(
     `https://api.spotify.com/v1/artists/${artist.id}/top-tracks?market=US&limit=${limit}`,
@@ -124,7 +126,7 @@ export const fetchTopTracks = (artist, token, limit) => {
 export const fetchArtistSingles = (artist, token) => {
   if (!artist) return;
   return fetch(
-    `https://api.spotify.com/v1/artists/${artist.id}/albums?include_groups=single&market=US`,
+    `https://api.spotify.com/v1/artists/${artist.id}/albums?include_groups=single&market=US&limit=50`,
     {
       headers: {
         Accept: "application/json",
@@ -138,7 +140,7 @@ export const fetchArtistSingles = (artist, token) => {
 export const fetchArtistAlbums = (artist, token) => {
   if (!artist) return;
   return fetch(
-    `https://api.spotify.com/v1/artists/${artist.id}/albums?market=US`,
+    `https://api.spotify.com/v1/artists/${artist.id}/albums?market=US&limit=50`,
     {
       headers: {
         Accept: "application/json",

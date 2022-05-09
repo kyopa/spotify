@@ -6,7 +6,7 @@ import { fetchTopTracks } from "../recoil/selectors";
 
 export const queArtistSongs = async (artist, token) => {
   const fetchTracks = () => {
-    return fetch(`https://api.spotify.com/v1/artists/${artist}/albums`, {
+    return fetch(`https://api.spotify.com/v1/artists/${artist?.id || artist}/albums`, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${token}`,
@@ -16,7 +16,7 @@ export const queArtistSongs = async (artist, token) => {
   };
   console.log(artist)
 
-  const resX = await fetchTopTracks({ id: artist }, token, 10);
+  const resX = await fetchTopTracks({ id: artist?.id || artist }, token, 10);
   const dataX = await resX.json();
   console.log(dataX);
 

@@ -1,4 +1,5 @@
 import { useRecoilCallback } from "recoil";
+import { fetchQueue } from "./fetchSong";
 import { queAlbumSongs, queArtistSongs, queRelatedSongs } from "./Queue/setQue";
 import {
   currentSongState,
@@ -24,21 +25,26 @@ const useSetCurrentInfo = () => {
         } else {
           set(currentSongState, song);
           set(onPauseState, false);
+
           set(posState, { idx: idx, click: true });
           const queue = snapshot.getLoadable(queueState).contents;
-          const cleanQue = queue.filter((song) => song.que);
           if (type === "searchpage") {
             const search = snapshot.getLoadable(searchState).contents;
             const arr = await searchPageArr(search, token);
-            set(queueState, [arr[0], ...cleanQue, ...arr.slice(1)]);
+            set(queueState, arr);
           } else if (type === "albumpage") {
             const arr = await queAlbumSongs(item.id, token);
-            set(queueState, [arr[0], ...cleanQue, ...arr.slice(1)]);
+            set(queueState, arr);
           } else if (type === "artistpage") {
             const arr = await queArtistSongs(item, token);
-            console.log([arr[0], ...cleanQue, ...arr.slice(1)]);
-            console.log(idx);
-            set(queueState, [arr[0], ...cleanQue, ...arr.slice(1)]);
+            console.log(arr)
+            set(queueState, arr);
+          } else if (type === "topresultSong") {
+            const res = await fetchQueue(song.id, song.artists[0].id, token);
+            const data = await res.json();
+            if (!data) return;
+            console.log(data)
+            set(queueState, [song, ...data.tracks]);
           }
         }
       },

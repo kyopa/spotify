@@ -1,25 +1,18 @@
 import { useRecoilValue } from "recoil";
 import { artistItemsState } from "../../recoil/selectors";
 import { useState } from "react";
-import Row from "../Main/Row";
+import Row from "../Row";
 import { removeDuplicates } from "../AlbumPage/Album";
 import { remove } from "cheerio/lib/api/manipulation";
 
-function Discography() {
+function MiniDiscoGraphy() {
   const artistAlbums = useRecoilValue(artistItemsState("albums")).items;
   const artistSingles = useRecoilValue(artistItemsState("singles")).items;
   const albums = artistAlbums.filter((album) => album.album_type === "album");
 
-  //sorted by release date and remove spam items
   const arr = [...artistSingles, ...artistAlbums];
-  const sorted = arr
-    .slice()
-    .sort((a, b) => new Date(a.release_date) - new Date(b.release_date))
-    .reverse()
-    .filter(
-      (album) =>
-        album.album_type !== "compilation" && album.album_group !== "appears_on"
-    );
+  //sorted by release date and remove spam items
+  const sorted = sortAlbumsSingles(arr);
 
   const [onDisplay, setOnDisplay] = useState(removeDuplicates(sorted));
   const [active, setActive] = useState("latest");
@@ -65,4 +58,15 @@ function Discography() {
   );
 }
 
-export default Discography;
+export const sortAlbumsSingles = (arr) => {
+  return arr
+    .slice()
+    .sort((a, b) => new Date(a.release_date) - new Date(b.release_date))
+    .reverse()
+    .filter(
+      (album) =>
+        album.album_type !== "compilation" && album.album_group !== "appears_on"
+    );
+};
+
+export default MiniDiscoGraphy;

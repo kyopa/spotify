@@ -33,7 +33,6 @@ const AudioControl = () => {
   const [urgentSongs, setUrgentSongs] = useRecoilState(urgentSongsState);
 
   useEffect(() => {
-    console.log(currentSong);
     if (!currentSong) return;
     if (!currentSong.id) return;
 
@@ -44,25 +43,27 @@ const AudioControl = () => {
         audioRef.current.setAttribute("src", data.preview_url);
         audioRef.current.play();
       });
-  }, [currentSong]);
+  }, [currentSong, token]);
 
   useEffect(() => {
-    console.log(urgentSongs)
-  }, [urgentSongs])
+    console.log(urgentSongs);
+  }, [urgentSongs]);
 
   useEffect(() => {
     if (pos.decr) return;
     console.log(pos, "normal");
-    console.log(urgentSongs)
+    console.log(urgentSongs.length, urgentSongs.length !== 0);
+    console.log(queue);
 
-    if (urgentSongs[0] && !pos.click) {
-      console.log("urgnent songs triggerd")
+    if (urgentSongs.length !== 0 && !pos.click) {
+      console.log("urgnent songs triggerd");
       setCurrentSong(urgentSongs[0]);
       setUrgentSongs([...urgentSongs.slice(1)]);
       setPos({ idx: pos - 1, decr: true });
     } else {
       if (!queue[0]) return;
-
+      // this might break the app
+      if (pos.click) return;
       // if last song in album for example
       if (pos === queue.length) {
         const random = Math.floor(Math.random() * queue.length) + 1;
@@ -89,7 +90,7 @@ const AudioControl = () => {
     if (!currentSong) return;
 
     interval = setInterval(() => {
-      if (audioRef.current.currentTime >= 30) clearInterval(interval);
+      if (audioRef.current.currentTime >= 29.95) clearInterval(interval);
       setCurrentTime(audioRef.current.currentTime);
     }, 100);
   }, [currentSong]);
@@ -97,19 +98,23 @@ const AudioControl = () => {
   useEffect(() => {
     if (!songRestart) return;
     if (!onPause) audioRef.current.pause();
-    /*
+
     audioRef.current.currentTime = (rangeValue / 100) * 30;
 
     if (!onPause) audioRef.current.play();
     setSongRestart(false);
-    */
   }, [songRestart]);
 
   useEffect(() => {
     audioRef.current.volume = volume / 100;
   }, [volume]);
 
-  useEffect(() => {}, [urgentSongs]);
+  useEffect(() => {
+    audioRef.current.onended = () => {
+      setPos(pos.idx + 1 || pos + 1);
+      audioRef.current.currentTime = 0;
+    };
+  }, [currentTime]);
 
   return <audio ref={audioRef}></audio>;
 };

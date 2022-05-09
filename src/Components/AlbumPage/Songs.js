@@ -1,8 +1,11 @@
 import { useRef, useState, useEffect } from "react";
-import { useRecoilCallback, useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  selectedItemState,
-} from "../../recoil/atoms";
+  useRecoilCallback,
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+} from "recoil";
+import { selectedItemState } from "../../recoil/atoms";
 
 import useSetCurrentInfo from "../../recoilCallback";
 import useContextMenu from "../ContextMenu/useContextMenu";

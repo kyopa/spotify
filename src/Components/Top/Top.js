@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import Searchbar from "./Searchbar";
 
-function Top({marginleft}) {
+function Top({marginleft, hideSearchBar}) {
   return (
     <div className="topbar">
       <div className="topbar-container">
@@ -11,7 +11,7 @@ function Top({marginleft}) {
           <button>w</button>
         </div>
 
-        <Searchbar />
+        {!hideSearchBar ? <Searchbar /> : null}
       </div>
     </div>
   );

@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   constSelector,
-  useGetRecoilValueInfo_UNSTABLE,
   useRecoilValue,
   useSetRecoilState,
 } from "recoil";
 import { ArtistState, searchState } from "../../recoil/atoms";
 import { artistItemsState, itemsState } from "../../recoil/selectors";
-import { Item } from "../Main/Row";
+import { Item } from "../Row";
 import Top from "../Top/Top";
 import "./items.css";
 
@@ -26,8 +25,6 @@ function Items() {
   const setArtist = useSetRecoilState(ArtistState);
   const [arr, setArr] = useState([]);
 
-  console.log(items);
-  console.log(relatedArtists);
   useEffect(() => {
     if (!items) return;
     if (type === "artists") {
@@ -35,13 +32,13 @@ function Items() {
     } else {
       setArr(items);
     }
-  }, []);
+  }, [items, type, setArtist]);
 
   useEffect(() => {
     if (!relatedArtists) return;
     if (type !== "artists") return;
     setArr([items[0], ...relatedArtists.artists, ...items.slice(1)]);
-  }, [relatedArtists]);
+  }, [relatedArtists, items, type]);
 
   return (
     <div className="items-container">

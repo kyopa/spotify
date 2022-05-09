@@ -3,23 +3,20 @@ import { BrowserRouter, useMatch, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   ArtistState,
-  currentSongState,
   searchState,
   tokenState,
 } from "../../recoil/atoms";
 import { artistItemsState } from "../../recoil/selectors";
 import "./Artist.css";
-import Vibrant, { getHex } from "node-vibrant/lib/config";
-import GreenPlayButton from "../greenPlayButton/x";
 import Track from "./Track";
-import Discography from "./Discography";
 import Similar from "./Similar";
-import Section from "../Main/Section";
-import { useColor } from "color-thief-react";
 import FadeColor, { useGetColor } from "../FadeColor";
+import MiniDiscoGraphy from "./MiniDisco";
+import useContextMenu from "../ContextMenu/useContextMenu";
+import { selectedItemState } from "../../recoil/atoms";
 
 function Artist() {
-  const id = useParams().id
+  const id = useParams().id;
   const token = useRecoilValue(tokenState);
   const [artist, setArtist] = useRecoilState(ArtistState);
   const setSearch = useSetRecoilState(searchState);
@@ -28,7 +25,10 @@ function Artist() {
     if (!token) return;
     fetchArtist(id, token)
       .then((res) => res.json())
-      .then((data) => setArtist(data));
+      .then((data) => {
+        console.log(data);
+        setArtist(data);
+      });
     return () => {
       setArtist("");
       setSearch("");
@@ -37,8 +37,8 @@ function Artist() {
 
   const src = useMemo(() => {
     if (!artist) return;
-    console.log(artist.followers.total.toLocaleString());
-    return artist.images[0].url;
+    console.log(artist)
+    return artist?.images[0]?.url;
   }, [artist]);
 
   const data = useGetColor(src);
@@ -50,8 +50,8 @@ function Artist() {
           <Header color={data} />
           <FadeColor data={data} />
           <PlayFollow />
-          <Popular artist={artist}/>
-          <Discography />
+          <Popular artist={artist} />
+          <MiniDiscoGraphy />
           <Similar />
         </div>
       )}
@@ -95,20 +95,23 @@ function PlayFollow() {
   );
 }
 
-function Popular({artist}) {
+function Popular({ artist }) {
   const topTracks = useRecoilValue(artistItemsState("topTracks"));
   const [hide, setHide] = useState(true);
+  const {handleMenu} = useContextMenu();
+  const setSelectedItem = useSetRecoilState(selectedItemState);
 
   return (
     <div className="popular">
       {topTracks && (
         <div>
           <h2>Popular</h2>
-          <div className="tracks-container" style={{}}>
+          <div className="tracks-container" onContextMenu={(e) => handleMenu(e)}>
             {topTracks.tracks.map((track, i) => {
               return (
                 <Suspense fallback={<h1>loading track</h1>}>
-                  <Track artist={artist.id}
+                  <Track
+                    artist={artist.id}
                     key={i}
                     hide={i >= 5 && hide === true}
                     track={track}

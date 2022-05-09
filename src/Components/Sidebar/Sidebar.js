@@ -5,11 +5,13 @@ import homeOutline from "../../extra/home-variant-outline.svg"
 import searchIcon from "../../extra/icons8-search.svg"
 import libraryIcon from "../../extra/bookshelf.svg"
 import { Link } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { searchState } from "../../recoil/atoms";
 
 
 function Sidebar() {
 
-
+  const setSearch = useSetRecoilState(searchState)
 
   return (
     <div className="sidebar-content">
@@ -25,7 +27,7 @@ function Sidebar() {
         </div>
         <div id="search">
             <img src={searchIcon}></img>
-          <Link to="/search">Search</Link>
+          <Link onClick={() => setSearch("")} to="/search">Search</Link>
         </div>
         <div id="library">
             <img src={libraryIcon}></img>

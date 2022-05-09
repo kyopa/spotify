@@ -97,17 +97,35 @@ html {
   gap: 16px;
   position: absolute;
   z-index: 1000;
-  top: 16px;
+  top: 20px;
 }
 
-.arrows > button {
+.arrows > div {
   border-radius: 50%;
   width: 32px;
   height: 32px;
+  background-color: rgba(0,0,0,.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
 }
 
 .arrows {
   margin-left: 35px;
+}
+
+.arrows > div > img {
+  transform: scale(1.3);
+}
+
+.arrows > div > .default {
+  filter: invert(100%);
+}
+
+.history-end {
+  filter: invert(60%);
+  cursor: not-allowed;
 }
 
 button:hover {
@@ -544,6 +562,20 @@ a:visited {
 .song:hover .img-container > .song-img {
   opacity: 0.5;
 }
+
+.delete {
+  position: absolute;
+  left: 83%;
+  filter: invert(100%);
+  cursor: default;
+  z-index: 9999;
+}
+
+.delete:hover {
+  transform: scale(1.1);
+}
+
+
 
 /* width */
 ::-webkit-scrollbar {

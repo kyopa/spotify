@@ -1,5 +1,5 @@
 import { Suspense, useContext, useMemo } from "react";
-import Section from "./Section";
+import Section from "../Section";
 import TopResult from "./TopResult";
 import "../../styles.css";
 import { useRecoilValue } from "recoil";
@@ -7,6 +7,7 @@ import { ArtistState, searchState, topResultState } from "../../recoil/atoms";
 import { itemsState } from "../../recoil/selectors";
 import useArtists from "./useArtists";
 import Top from "../Top/Top";
+import RecentSearches from "./RecentSearches";
 
 function Main() {
   const search = useRecoilValue(searchState);
@@ -16,7 +17,7 @@ function Main() {
     <div className="main-spacing">
       <Top />
       <Suspense fallback={<h1>hello</h1>}>
-        {search !== "" ? <SearchResults /> : <h1>Recent Searches</h1>}
+        {search !== "" ? <SearchResults /> : <RecentSearches />}
       </Suspense>
     </div>
   );
@@ -32,8 +33,8 @@ function SearchResults() {
       <div className="search-results">
         <Suspense fallback={<h1>loading</h1>}>
           <TopResult />
-          <Section array={artists} title="Artists" type="artists"/>
-          <Section array={albums} title={"Albums"} type="albums" album  />
+          <Section fromSearchpage array={artists} title="Artists" type="artists" />
+          <Section fromSearchpage array={albums} title={"Albums"} type="albums" album />
         </Suspense>
       </div>
     </div>

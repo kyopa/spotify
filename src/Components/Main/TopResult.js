@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { useRecoilState, useRecoilStoreID, useRecoilValue } from "recoil";
-import { searchState, topResultState } from "../../recoil/atoms";
+import { useRecoilState, useRecoilStoreID, useRecoilValue, useSetRecoilState } from "recoil";
+import { recentSearchesState, searchState, topResultState } from "../../recoil/atoms";
 import hamming from "../../hamming";
 import { itemsState } from "../../recoil/selectors";
 import FourSongs from "./FourSongs";
@@ -16,6 +16,7 @@ function TopResult() {
   const search = useRecoilValue(searchState);
   const [topResult, setTopResult] = useRecoilState(topResultState);
   const [img, setImg] = useState();
+  const setRecentSearches = useSetRecoilState(recentSearchesState)
 
   useEffect(() => {
     if (!artists || !tracks || !albums) return;
@@ -45,6 +46,11 @@ function TopResult() {
         : setImg(blackIcon);
     }
   }, [topResult]);
+  console.log(topResult);
+
+  const addToRecent = () => {
+    
+  }
 
   return (
     <div>
@@ -54,7 +60,7 @@ function TopResult() {
             <h2>Top Result</h2>
             <div className="top-result-box">
               {topResult && (
-                <Link
+                <Link onClick={() => setRecentSearches(prev => [...prev, topResult])}
                   to={`/${topResult.type === "artist" ? "artist" : "album"}/${
                     topResult.id
                   }`}
@@ -83,7 +89,12 @@ function TopResult() {
                       <div className="type">{topResult.type}</div>
                     </div>
                     <GreenPlayButton
-                    type={topResult.type}
+                      artist={
+                        topResult.type === "artist"
+                          ? topResult
+                          : topResult.artists[0]
+                      }
+                      type={topResult.type}
                       id={topResult.id}
                       animate
                       right="2px"
