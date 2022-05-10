@@ -86,7 +86,7 @@ function Album() {
     <div className="album-page">
       <Header album={album} color={data} />
       <FadeColor data={data} />
-      <Nav />
+      <Nav album={album}/>
       <Songs album={album} />
       <Label album={album} />
 
@@ -160,10 +160,10 @@ function Header({ album, color }) {
   );
 }
 
-function Nav() {
+function Nav({album}) {
   return (
     <div className="album-nav">
-      <GreenPlayButton page position="relative" />
+      <GreenPlayButton id={album.id} type={album.type}  page position="relative" />
       <img id="dots" src={dotsIcon}></img>
     </div>
   );

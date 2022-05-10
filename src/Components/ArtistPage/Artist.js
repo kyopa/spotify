@@ -22,6 +22,7 @@ function Artist() {
   const setSearch = useSetRecoilState(searchState);
 
   useEffect(() => {
+    console.log(token)
     if (!token) return;
     fetchArtist(id, token)
       .then((res) => res.json())
@@ -30,14 +31,15 @@ function Artist() {
         setArtist(data);
       });
     return () => {
-      setArtist("");
-      setSearch("");
+      console.log("UNM;OUNT")
+      setArtist();
+      setSearch();
     };
   }, [id]);
 
   const src = useMemo(() => {
-    if (!artist) return;
-    console.log(artist)
+    if (!artist || !artist.images) return;
+    
     return artist?.images[0]?.url;
   }, [artist]);
 
@@ -66,11 +68,11 @@ function Header({ color }) {
     <div
       className="artist-header"
       style={{
-        background: `linear-gradient(transparent 0,rgba(0,0,0,.5) 100%), ${color}`,
+        backgroundImage: `url(${artist?.images[0].url})`,
+  
       }}
     >
       <div className="header-contents">
-        <img src={artist.images[0].url}></img>
         <div className="header-details">
           <div>Verified Artist</div>
           <h1 id="header-artist-name">{artist.name}</h1>

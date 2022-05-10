@@ -12,6 +12,8 @@ function Search() {
   const setSearchResults = useSetRecoilState(searchResultsState);
 
   useEffect(() => {
+    console.log(search, token)
+    console.log(token)
     if (!search) return;
     if (!token) return;
     searchApi()
@@ -22,7 +24,7 @@ function Search() {
       .catch((err) => {
         if (err.status === 404) alert("heeye");
       });
-  }, [search]);
+  }, [search, token]);
 
   const searchApi = () => {
     return fetch(

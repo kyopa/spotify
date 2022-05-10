@@ -19,7 +19,9 @@ const useSetCurrentInfo = () => {
         set(queueState, []);
         const currentSong = snapshot.getLoadable(currentSongState).contents;
         const token = snapshot.getLoadable(tokenState).contents;
-        if (song.id === currentSong.id) {
+        console.log(song)
+        console.log(currentSong)
+        if (song.id === currentSong?.id) {
           const onPause = snapshot.getLoadable(onPauseState).contents;
           set(onPauseState, !onPause);
         } else {

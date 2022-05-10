@@ -21,10 +21,8 @@ function GreenPlayButton({
   const setCurrentSongInfo = useSetCurrentInfo();
 
   const handleClick = async (e) => {
-    console.log(artist);
+    console.log(e.target)
     e.preventDefault();
-    console.log(e.target);
-    console.log(e.target.getAttribute("data-artist"));
 
     switch (e.target.title) {
       case "track":

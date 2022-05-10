@@ -62,8 +62,6 @@ const AudioControl = () => {
       setPos({ idx: pos - 1, decr: true });
     } else {
       if (!queue[0]) return;
-      // this might break the app
-      if (pos.click) return;
       // if last song in album for example
       if (pos === queue.length) {
         const random = Math.floor(Math.random() * queue.length) + 1;

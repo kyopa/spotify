@@ -26,8 +26,8 @@ function Discography() {
   const artistAlbums = useRecoilValue(artistItemsState("albums"));
   console.log(artistAlbums);
   const sorted = sortAlbumsSingles([
-    ...artistSingles.items,
-    ...artistAlbums.items,
+    ...artistSingles?.items,
+    ...artistAlbums?.items,
   ]);
   const [onDisplay, setOnDisplay] = useState(removeDuplicates(sorted));
 
