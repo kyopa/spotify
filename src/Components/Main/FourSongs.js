@@ -1,4 +1,4 @@
-import {  useEffect } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import playIcon from "../../extra/playicon.png";
 import pauseIcon from "../../extra/pause.png";
@@ -31,7 +31,7 @@ function FourSongs() {
 
       <div onContextMenu={e => {
         console.log(e.target)
-        setSelectedItem({type: "song", id: e.target.id})
+        setSelectedItem({ type: "song", id: e.target.id })
         handleMenu(e)
       }}>
         {tracks &&

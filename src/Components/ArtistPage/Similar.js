@@ -11,7 +11,7 @@ function Similar() {
             <h2>Fans Also Like</h2>
 
             <div className="artists">
-                <Row array={similar.artists}/>
+                <Row array={similar.artists} />
 
             </div>
         </div>

@@ -49,7 +49,7 @@ function TopResult() {
   console.log(topResult);
 
   const addToRecent = () => {
-    
+
   }
 
   return (
@@ -61,9 +61,8 @@ function TopResult() {
             <div className="top-result-box">
               {topResult && (
                 <Link onClick={() => setRecentSearches(prev => [...prev, topResult])}
-                  to={`/${topResult.type === "artist" ? "artist" : "album"}/${
-                    topResult.id
-                  }`}
+                  to={`/${topResult.type === "artist" ? "artist" : "album"}/${topResult.id
+                    }`}
                 >
                   <div className="container">
                     <img id={topResult.type} src={img}></img>

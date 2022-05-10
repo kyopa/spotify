@@ -16,7 +16,7 @@ function Sidebar() {
   return (
     <div className="sidebar-content">
       <div className="best">
-          <img id="guitar" src={guitar}></img>
+        <img id="guitar" src={guitar}></img>
         <h2 id="superstar">Superstar</h2>
       </div>
 
@@ -26,11 +26,11 @@ function Sidebar() {
           <Link to="/">Home</Link>
         </div>
         <div id="search">
-            <img src={searchIcon}></img>
+          <img src={searchIcon}></img>
           <Link onClick={() => setSearch("")} to="/search">Search</Link>
         </div>
         <div id="library">
-            <img src={libraryIcon}></img>
+          <img src={libraryIcon}></img>
           <Link to="/Library">Library</Link>
         </div>
       </div>

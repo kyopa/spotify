@@ -14,7 +14,7 @@ import RecentSearches from "./Main/RecentSearches";
 
 function Row({ array, album, fromSearchpage }) {
   if (!array[0]) return;
- 
+
 
   return (
     <div>
@@ -55,7 +55,7 @@ export function Item({
 }) {
   const setRecentSearches = useSetRecoilState(recentSearchesState);
   const img = useMemo(() => {
-    
+
     if (item.type === "track") {
       return item?.album?.images[0]?.url;
     }

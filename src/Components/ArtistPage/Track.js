@@ -14,7 +14,7 @@ function Track({ track, num, hide, artist }) {
   const setSelected = useSetRecoilState(selectedItemState)
 
   return (
-    <div id={track.id} onContextMenu={(e) => setSelected({id: e.currentTarget.id, type: "song"})} className="track" style={{ display: hide ? "none" : "flex" }}>
+    <div id={track.id} onContextMenu={(e) => setSelected({ id: e.currentTarget.id, type: "song" })} className="track" style={{ display: hide ? "none" : "flex" }}>
       <div onClick={() => handleClick()} id="num">
         {num}
       </div>

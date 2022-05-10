@@ -19,7 +19,6 @@
   padding: 5px;
 }
 
-
 .nav > div > a {
   font-family: circular;
   font-size: 0.875rem;
@@ -32,15 +31,15 @@
 }
 
 .nav > div:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .nav > div:hover > a {
-    color: #fff;
+  color: #fff;
 }
 
 .nav > div:hover > img {
-    filter: invert(100%);
+  filter: invert(100%);
 }
 
 .sidebar img {

@@ -16,7 +16,6 @@
   gap: 24px;
 }
 
-
 .header-details {
   display: flex;
   flex-direction: column;
@@ -289,7 +288,6 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
-
 .select > img {
   transform: scale(1.4);
   filter: invert(70%);
@@ -319,11 +317,10 @@
   letter-spacing: normal;
   font-family: circular;
   color: rgba(255, 255, 255, 0.7);
-
 }
 
 .dropdown > li:hover {
-  background-color: rgba(255,255,255,.1);
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 2px;
   color: #fff;
 }

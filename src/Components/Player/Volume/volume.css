@@ -10,7 +10,7 @@
 }
 
 #volume-icon:hover {
-    filter: contrast(500%);
+  filter: contrast(500%);
 }
 
 .volumex {
@@ -41,13 +41,11 @@
 }
 
 .volume-container input::-webkit-slider-thumb {
-    border: solid 6px #ffffff;
-    border-radius: 0;
-  
-    height: 12px;
-    width: 12px;
-    border-radius: 50%;
-    -webkit-appearance: none;
+  border: solid 6px #ffffff;
+  border-radius: 0;
+
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  -webkit-appearance: none;
 }
-
-

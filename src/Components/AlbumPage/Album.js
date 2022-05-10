@@ -86,7 +86,7 @@ function Album() {
     <div className="album-page">
       <Header album={album} color={data} />
       <FadeColor data={data} />
-      <Nav album={album}/>
+      <Nav album={album} />
       <Songs album={album} />
       <Label album={album} />
 
@@ -124,9 +124,8 @@ function Header({ album, color }) {
             <div id="type">{album.type}</div>
             <div
               style={{
-                fontSize: `${
-                  name.length < 12 ? 96 : name.length > 20 ? 72 : 48
-                }px`,
+                fontSize: `${name.length < 12 ? 96 : name.length > 20 ? 72 : 48
+                  }px`,
               }}
               id="albumname"
             >
@@ -160,10 +159,10 @@ function Header({ album, color }) {
   );
 }
 
-function Nav({album}) {
+function Nav({ album }) {
   return (
     <div className="album-nav">
-      <GreenPlayButton id={album.id} type={album.type}  page position="relative" />
+      <GreenPlayButton id={album.id} type={album.type} page position="relative" />
       <img id="dots" src={dotsIcon}></img>
     </div>
   );

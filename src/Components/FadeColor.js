@@ -16,13 +16,13 @@ function FadeColor({ data }) {
 }
 
 export const useGetColor = (src) => {
-    console.log(src)
-    const { data } = useColor(src, "rgbString", {
-        crossOrigin: "anonymous",
-        quality: "1000",
-      });
-      console.log(data)
-    return data
+  console.log(src)
+  const { data } = useColor(src, "rgbString", {
+    crossOrigin: "anonymous",
+    quality: "1000",
+  });
+  console.log(data)
+  return data
 }
 
 export default FadeColor;

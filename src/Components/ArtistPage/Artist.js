@@ -39,7 +39,7 @@ function Artist() {
 
   const src = useMemo(() => {
     if (!artist || !artist.images) return;
-    
+
     return artist?.images[0]?.url;
   }, [artist]);
 
@@ -69,7 +69,7 @@ function Header({ color }) {
       className="artist-header"
       style={{
         backgroundImage: `url(${artist?.images[0].url})`,
-  
+
       }}
     >
       <div className="header-contents">
@@ -100,7 +100,7 @@ function PlayFollow() {
 function Popular({ artist }) {
   const topTracks = useRecoilValue(artistItemsState("topTracks"));
   const [hide, setHide] = useState(true);
-  const {handleMenu} = useContextMenu();
+  const { handleMenu } = useContextMenu();
   const setSelectedItem = useSetRecoilState(selectedItemState);
 
   return (

@@ -6,7 +6,7 @@ function Searchbar() {
     <div className="searchbar-container">
       <form>
         <Suspense fallback={<h1>shit</h1>}>
-        <Search />
+          <Search />
         </Suspense>
       </form>
     </div>
